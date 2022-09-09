@@ -46,7 +46,9 @@ const Users = () => {
     ];
 
     React.useEffect(() => {
-        axios.get("http://localhost:5000/users")
+        axios.get("http://localhost:5000/users", {
+            headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` }
+        })
             .then((res) => {
                 setUsers(res.data);
             });

@@ -15,7 +15,8 @@ const AuthProvider = ({ children }) => {
             password,
         })
             .then(res => {
-                let userInfo = res.data;
+                let userInfo = res.data.user;
+                localStorage.setItem("access_token", res.data.access_token);
                 setUserInfo(userInfo);
                 setIsLoading(false);
                 const destination = location?.state?.from || '/';
@@ -27,6 +28,7 @@ const AuthProvider = ({ children }) => {
     };
 
     const logout = () => {
+        localStorage.removeItem("access_token");
         setUserInfo({});
     }
 
