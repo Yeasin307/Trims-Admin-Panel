@@ -26,8 +26,12 @@ function Dashboard(props) {
                     <Button sx={{ width: '95%' }} variant='contained'>Dashboard</Button>
                 </Link>
 
-                <Link style={{ textDecoration: 'none' }} to="/users">
+                <Link style={{ textDecoration: 'none', marginBottom: '10px' }} to="/users">
                     <Button sx={{ width: '95%' }} variant='contained'>Users</Button>
+                </Link>
+
+                <Link style={{ textDecoration: 'none' }} to="/productmanagement">
+                    <Button sx={{ width: '95%' }} variant='contained'>Product Management</Button>
                 </Link>
 
                 <div>
@@ -61,7 +65,7 @@ function Dashboard(props) {
                             <MenuIcon />
                         </IconButton>
                         <Typography variant="h4" noWrap component="div">
-                            Welcome to Admin Panel
+                            WELCOME TO ADMIN PANEL
                         </Typography>
                     </Toolbar>
                 </AppBar>
