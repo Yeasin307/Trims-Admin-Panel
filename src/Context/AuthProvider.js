@@ -4,13 +4,14 @@ import React, { createContext, useState } from 'react';
 export const AuthContext = createContext();
 
 const AuthProvider = ({ children }) => {
+    const [open, setOpen] = React.useState(false);
     const [userInfo, setUserInfo] = useState({});
     const [isLoading, setIsLoading] = useState(false);
 
     const loginUser = (email, password, location, navigate) => {
         setIsLoading(true);
 
-        axios.post("http://localhost:5000/login", {
+        axios.post("http://localhost:5000/auth/login", {
             email,
             password,
         })
@@ -38,7 +39,9 @@ const AuthProvider = ({ children }) => {
                 isLoading,
                 userInfo,
                 loginUser,
-                logout
+                logout,
+                open,
+                setOpen
             }}>
             {children}
         </AuthContext.Provider>
