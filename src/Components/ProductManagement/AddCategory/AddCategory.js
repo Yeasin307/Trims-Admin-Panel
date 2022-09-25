@@ -93,7 +93,7 @@ const AddCategory = () => {
                                 error={formik.touched.parentId && Boolean(formik.errors.parentId)}
                                 helperText={formik.touched.parentId && formik.errors.parentId}
                             >
-                                {previousCategories.map(Category => (
+                                {previousCategories?.map(Category => (
                                     <MenuItem key={Category?.id} value={Category?.id}>{Category?.name}</MenuItem>
                                 ))};
 

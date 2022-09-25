@@ -33,6 +33,28 @@ const AuthProvider = ({ children }) => {
         setUserInfo({});
     }
 
+    const cycleDetection = (arr, id, newParentId) => {
+        if (newParentId === '') {
+            return false;
+        }
+        else {
+            let parId = newParentId;
+            while (parId !== null) {
+                if (parId === id) {
+                    return true;
+                }
+                else {
+                    for (let i = 0; i < arr.length; i++) {
+                        if (parId === arr[i].id) {
+                            parId = arr[i].parentId;
+                        }
+                    }
+                }
+            }
+            return false;
+        }
+    };
+
     return (
         <AuthContext.Provider
             value={{
@@ -41,7 +63,8 @@ const AuthProvider = ({ children }) => {
                 loginUser,
                 logout,
                 open,
-                setOpen
+                setOpen,
+                cycleDetection
             }}>
             {children}
         </AuthContext.Provider>
