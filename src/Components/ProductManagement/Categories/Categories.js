@@ -12,10 +12,12 @@ const Categories = () => {
     const [categories, setCategories] = React.useState([]);
     const [category, setCategory] = React.useState({});
     const [categoryChild, setCategoryChild] = React.useState([]);
+    const [preCategories, setPreCategories] = React.useState([]);
+    const [open, setOpen] = React.useState(false);
     const [viewOpen, setViewOpen] = React.useState(false);
     const [editOpen, setEditOpen] = React.useState(false);
     const [active, setActive] = React.useState("");
-    const { open, userInfo, cycleDetection } = React.useContext(AuthContext);
+    const { userInfo, cycleDetection } = React.useContext(AuthContext);
 
     const formik = useFormik({
         enableReinitialize: true,
@@ -26,7 +28,6 @@ const Categories = () => {
         },
         validationSchema: validationSchema,
         onSubmit: async (values, actions) => {
-            console.log(values);
             const checkCycle = await cycleDetection(categories, category?.id, values.parentId);
             if (checkCycle) {
                 alert("Please change parent category name. Here create a cycle!");
@@ -60,6 +61,13 @@ const Categories = () => {
     };
 
     const handleEditOpen = async (id) => {
+        await axios.get("http://localhost:5000/categories/active", {
+            headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` }
+        })
+            .then((res) => {
+                setPreCategories(res.data);
+            });
+
         await axios.post("http://localhost:5000/categories/category-details", { id }, {
             headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` }
         })
@@ -80,16 +88,13 @@ const Categories = () => {
     };
 
     React.useEffect(() => {
-        const fetchCategories = () => {
-            axios.get("http://localhost:5000/categories", {
-                headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` }
-            })
-                .then((res) => {
-                    setCategories(res?.data);
-                });
-        };
-        fetchCategories();
-    }, [open, editOpen]);
+        axios.get("http://localhost:5000/categories", {
+            headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` }
+        })
+            .then((res) => {
+                setCategories(res?.data);
+            });
+    }, [open, active, editOpen]);
 
     const handleActive = async (e, categoryId, userId) => {
         await axios.put("http://localhost:5000/categories/activate-deactivate", { categoryId, userId, activateDeactivate: e.target.value }, {
@@ -102,7 +107,12 @@ const Categories = () => {
 
     return (
         <>
-            <AddCategory></AddCategory>
+            <AddCategory
+                open={open}
+                setOpen={setOpen}
+                editOpen={editOpen}
+                active={active}
+            ></AddCategory>
 
             <TableContainer component={Paper}>
                 <Table sx={{ width: 1200 }} aria-label="categories table">
@@ -208,12 +218,12 @@ const Categories = () => {
                             sx={{ fontsize: '18px', mt: 4, mb: 4 }}
                         />
 
-                        <FormLabel style={{ color: 'green' }} >PARENT CATEGORY : {category?.Parent?.name ? category?.Parent?.name : 'NONE'}</FormLabel>
+                        <FormLabel style={{ color: 'blue' }} >PARENT CATEGORY : {category?.Parent?.name ? category?.Parent?.name : 'NONE'}</FormLabel>
 
                         <FormControl variant="standard" sx={{ fontsize: '18px', mt: 2, mb: 2.5, width: "100%" }}>
 
                             <Typography variant="button" display="block" gutterBottom>
-                                Change Parent Category
+                                Change Parent Category? If Yes Then Select
                             </Typography>
 
                             <NativeSelect
@@ -223,8 +233,14 @@ const Categories = () => {
                                 helperText={formik.touched.parentId && formik.errors.parentId}
                             >
                                 <option value={""}>None</option>
-                                {categories?.map(Category => (
-                                    <option key={Category?.id} value={Category?.id}>{Category?.name}</option>
+                                {preCategories?.map(cate => (
+                                    <option
+                                        key={cate?.id}
+                                        value={cate?.id}
+                                        selected={cate?.id === category?.Parent?.id}
+                                    >
+                                        {cate?.name}
+                                    </option>
                                 ))};
                             </NativeSelect>
                         </FormControl>

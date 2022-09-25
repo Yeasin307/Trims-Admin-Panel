@@ -4,7 +4,6 @@ import React, { createContext, useState } from 'react';
 export const AuthContext = createContext();
 
 const AuthProvider = ({ children }) => {
-    const [open, setOpen] = React.useState(false);
     const [userInfo, setUserInfo] = useState({});
     const [isLoading, setIsLoading] = useState(false);
 
@@ -47,6 +46,7 @@ const AuthProvider = ({ children }) => {
                     for (let i = 0; i < arr.length; i++) {
                         if (parId === arr[i].id) {
                             parId = arr[i].parentId;
+                            break;
                         }
                     }
                 }
@@ -62,8 +62,6 @@ const AuthProvider = ({ children }) => {
                 userInfo,
                 loginUser,
                 logout,
-                open,
-                setOpen,
                 cycleDetection
             }}>
             {children}

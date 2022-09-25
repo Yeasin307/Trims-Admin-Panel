@@ -6,9 +6,9 @@ import { useFormik } from "formik";
 import * as yup from "yup";
 import { AuthContext } from '../../../Context/AuthProvider';
 
-const AddCategory = () => {
+const AddCategory = ({ open, setOpen, editOpen, active }) => {
     const [previousCategories, setPreviousCategories] = React.useState([]);
-    const { open, setOpen, userInfo } = React.useContext(AuthContext);
+    const { userInfo } = React.useContext(AuthContext);
     const { id } = userInfo;
 
     const formik = useFormik({
@@ -32,14 +32,14 @@ const AddCategory = () => {
     });
 
     React.useEffect(() => {
-        axios.get("http://localhost:5000/categories", {
+        axios.get("http://localhost:5000/categories/active", {
             headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` }
         })
             .then((res) => {
                 setPreviousCategories(res.data);
             });
 
-    }, [])
+    }, [open, editOpen, active])
 
     const handleOpen = () => {
         setOpen(true);
