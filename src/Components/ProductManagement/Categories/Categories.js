@@ -12,7 +12,7 @@ const Categories = () => {
     const [categories, setCategories] = React.useState([]);
     const [category, setCategory] = React.useState({});
     const [categoryChild, setCategoryChild] = React.useState([]);
-    const [preCategories, setPreCategories] = React.useState([]);
+    // const [preCategories, setPreCategories] = React.useState([]);
     const [open, setOpen] = React.useState(false);
     const [viewOpen, setViewOpen] = React.useState(false);
     const [editOpen, setEditOpen] = React.useState(false);
@@ -61,12 +61,12 @@ const Categories = () => {
     };
 
     const handleEditOpen = async (id) => {
-        await axios.get("http://localhost:5000/categories/active", {
-            headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` }
-        })
-            .then((res) => {
-                setPreCategories(res.data);
-            });
+        // await axios.get("http://localhost:5000/categories/active", {
+        //     headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` }
+        // })
+        //     .then((res) => {
+        //         setPreCategories(res.data);
+        //     });
 
         await axios.post("http://localhost:5000/categories/category-details", { id }, {
             headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` }
@@ -233,7 +233,7 @@ const Categories = () => {
                                 helperText={formik.touched.parentId && formik.errors.parentId}
                             >
                                 <option value={""}>None</option>
-                                {preCategories?.map(cate => (
+                                {categories?.map(cate => (
                                     <option
                                         key={cate?.id}
                                         value={cate?.id}
