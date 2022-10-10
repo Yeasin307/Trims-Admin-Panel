@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Box, Button, FormControl, NativeSelect, TextField, Typography } from '@mui/material';
+import { Box, Button, FormControl, FormControlLabel, FormLabel, NativeSelect, Radio, RadioGroup, TextField, Typography } from '@mui/material';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import * as yup from "yup";
@@ -9,25 +9,24 @@ import { TagsInput } from "react-tag-input-component";
 import ImageUploading from "react-images-uploading";
 import CancelOutlinedIcon from '@mui/icons-material/CancelOutlined';
 import "../CreateProduct/CreateProduct.css";
-// import { AuthContext } from '../../../Context/AuthProvider';
+import { AuthContext } from '../../../Context/AuthProvider';
 
 const EditProduct = () => {
     const { id } = useParams();
     const [product, setProduct] = React.useState({});
     const [categories, setCategories] = React.useState([]);
     const [tags, setTags] = React.useState([]);
-    // const { userInfo } = React.useContext(AuthContext);
-    // const { id } = userInfo;
-
-    console.log(product);
+    const [active, setActive] = React.useState("");
+    const { userInfo } = React.useContext(AuthContext);
 
     React.useEffect(() => {
         axios.get(`http://localhost:5000/products/viewproduct/${id}`, {
             headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` }
         })
             .then((res) => {
-                setProduct(res?.data);
-                if (res.data.tags.length !== 0) {
+                setProduct(res.data);
+                setActive(res?.data.active);
+                if (res?.data?.tags?.length !== 0) {
                     const tagsArray = res?.data?.tags.split(",");
                     setTags(tagsArray);
                 }
@@ -46,13 +45,54 @@ const EditProduct = () => {
             });
     }, []);
 
+    const handleActive = async (e, productId, userId) => {
+        if (e.target.value === "0") {
+            const proceed = window.confirm("Are you sure to deactivated?");
+            if (proceed) {
+                await axios.put("http://localhost:5000/products/activate-deactivate", { productId, userId, activateDeactivate: e.target.value }, {
+                    headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` }
+                })
+                    .then(() => {
+                        setActive(e.target.value);
+                    });
+            }
+        } else {
+            const proceed = window.confirm("Are you sure to activated?");
+            if (proceed) {
+                await axios.put("http://localhost:5000/products/activate-deactivate", { productId, userId, activateDeactivate: e.target.value }, {
+                    headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` }
+                })
+                    .then(() => {
+                        setActive(e.target.value);
+                    });
+            }
+        }
+    };
+
     return (
         <Box >
             <Typography sx={{ mt: 5, mb: 2 }} variant="h6" gutterBottom>
                 PLEASE EDIT PRODUCT INFORMATION
             </Typography>
 
-            <Formik
+            <Box sx={{ display: 'flex', justifyContent: 'center', my: 3 }}>
+                <Box sx={{ textAlign: 'start', width: '60%' }}>
+                    <FormControl >
+                        <FormLabel style={{ color: '#002884' }} >THIS PRODUCT IS </FormLabel>
+                        <RadioGroup
+                            row
+                            name="active"
+                            value={active}
+                            onChange={e => handleActive(e, product?.id, userInfo?.id)}
+                        >
+                            <FormControlLabel value="1" control={<Radio />} label="Activate" />
+                            <FormControlLabel value="0" control={<Radio />} label="Deactivate" />
+                        </RadioGroup>
+                    </FormControl>
+                </Box>
+            </Box>
+
+            {active === "1" && <Formik
                 enableReinitialize={true}
                 initialValues={{
                     name: product.productName,
@@ -367,7 +407,7 @@ const EditProduct = () => {
                         </Form>
                     );
                 }}
-            </Formik >
+            </Formik >}
         </Box >
     );
 };
