@@ -6,9 +6,9 @@ import { useFormik } from "formik";
 import * as yup from "yup";
 import { AuthContext } from '../../../Context/AuthProvider';
 
-const AddCategory = ({ open, setOpen, editOpen, active }) => {
+const CreateCategory = ({ open, setOpen, editOpen, active }) => {
     const [previousCategories, setPreviousCategories] = React.useState([]);
-    const { userInfo } = React.useContext(AuthContext);
+    const { userInfo, uniqueName } = React.useContext(AuthContext);
     const { id } = userInfo;
 
     const formik = useFormik({
@@ -18,16 +18,22 @@ const AddCategory = ({ open, setOpen, editOpen, active }) => {
             parentId: ""
         },
         validationSchema: validationSchema,
-        onSubmit: (values, actions) => {
-            axios.post("http://localhost:5000/categories/create", { values, id }, {
-                headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` }
-            })
-                .then(() => {
-                    actions.setSubmitting(false);
-                    actions.resetForm();
-                    setOpen(false);
-                    alert("New Category Created Successfully.");
-                });
+        onSubmit: async (values, actions) => {
+            const checkUniqueName = await uniqueName(previousCategories, values.name);
+            if (checkUniqueName) {
+                axios.post("http://localhost:5000/categories/create", { values, id }, {
+                    headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` }
+                })
+                    .then(() => {
+                        actions.setSubmitting(false);
+                        actions.resetForm();
+                        setOpen(false);
+                        alert("New Category Created Successfully.");
+                    });
+            }
+            else {
+                alert("This category already exist! Please change category name.");
+            }
         }
     });
 
@@ -53,9 +59,9 @@ const AddCategory = ({ open, setOpen, editOpen, active }) => {
     };
 
     return (
-        <Box style={{ marginTop: '-36px' }}>
-            <Box style={{ display: 'flex', justifyContent: 'end' }} >
-                <Button variant="outlined" onClick={handleOpen}>ADD NEW CATEGORY</Button>
+        <Box>
+            <Box style={{ marginTop: '-56px', marginBottom: '24px', display: 'flex', justifyContent: 'end' }} >
+                <Button variant="outlined" onClick={handleOpen}>CREATE NEW CATEGORY</Button>
             </Box>
 
             <Dialog maxWidth="sm" fullWidth={true} open={open} onClose={handleClose}>
@@ -121,4 +127,4 @@ const validationSchema = yup.object({
     parentId: yup.string()
 });
 
-export default AddCategory;
+export default CreateCategory;

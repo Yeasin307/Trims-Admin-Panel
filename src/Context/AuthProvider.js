@@ -32,20 +32,29 @@ const AuthProvider = ({ children }) => {
         setUserInfo({});
     }
 
-    const cycleDetection = (arr, id, newParentId) => {
-        if (newParentId === '') {
+    const uniqueName = (categories, newName) => {
+        for (let i = 0; i < categories.length; i++) {
+            if (categories[i].name === newName) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    const cycleDetection = (categories, id, newParentId) => {
+        if (newParentId === "") {
             return false;
         }
         else {
-            let parId = newParentId;
-            while (parId !== null) {
-                if (parId === id) {
+            let parentId = newParentId;
+            while (parentId !== null) {
+                if (parentId === id) {
                     return true;
                 }
                 else {
-                    for (let i = 0; i < arr.length; i++) {
-                        if (parId === arr[i].id) {
-                            parId = arr[i].parentId;
+                    for (let i = 0; i < categories.length; i++) {
+                        if (parentId === categories[i].id) {
+                            parentId = categories[i].parentId;
                             break;
                         }
                     }
@@ -62,6 +71,7 @@ const AuthProvider = ({ children }) => {
                 userInfo,
                 loginUser,
                 logout,
+                uniqueName,
                 cycleDetection
             }}>
             {children}

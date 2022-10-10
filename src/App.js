@@ -12,6 +12,9 @@ import Users from './Components/Users/Users';
 import ProductManagementMenu from './Components/ProductManagement/ProductManagementMenu/ProductManagementMenu';
 import Categories from './Components/ProductManagement/Categories/Categories';
 import Products from './Components/ProductManagement/Products/Products';
+import CreateProduct from './Components/ProductManagement/CreateProduct/CreateProduct';
+import ViewProduct from './Components/ProductManagement/ViewProduct/ViewProduct';
+import EditProduct from './Components/ProductManagement/EditProduct/EditProduct';
 
 function App() {
   return (
@@ -22,14 +25,16 @@ function App() {
 
             <Route path="/" element={<PrivateRoute><Dashboard /></PrivateRoute>}>
 
-              <Route path="/users" element={<Users />}></Route>
+              <Route path="/users" element={<Users />} />
               <Route path="/productmanagement" element={<ProductManagementMenu />}>
 
                 <Route path="/productmanagement/categories" element={<Categories />} />
                 <Route path="/productmanagement/products" element={<Products />} />
+                <Route path="/productmanagement/createproduct" element={<CreateProduct />} />
+                <Route path="/productmanagement/viewproduct/:id" element={<ViewProduct />} />
+                <Route path="/productmanagement/editproduct/:id" element={<EditProduct />} />
 
               </Route>
-
             </Route>
             <Route path="/login" element={< Login />} />
 

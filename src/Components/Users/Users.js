@@ -5,19 +5,20 @@ import axios from 'axios';
 
 const Users = () => {
     const [users, setUsers] = React.useState([]);
+    const [pageSize, setPageSize] = React.useState(10);
 
     const columns = [
         {
             field: 'username',
             headerName: 'User Name',
-            width: 200,
-            sortable: false
+            sortable: false,
+            width: 200
         },
         {
             field: 'email',
             headerName: 'Email',
-            width: 350,
-            sortable: false
+            sortable: false,
+            width: 350
         },
         {
             field: 'firstName',
@@ -40,8 +41,8 @@ const Users = () => {
         {
             field: 'password',
             headerName: 'Password',
-            width: 250,
-            sortable: false
+            sortable: false,
+            width: 250
         }
     ];
 
@@ -60,7 +61,10 @@ const Users = () => {
             <DataGrid
                 rows={users}
                 columns={columns}
-                pageSize={10}
+                pageSize={pageSize}
+                onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
+                rowsPerPageOptions={[5, 10, 20]}
+                pagination
                 disableSelectionOnClick
             />
         </Box>

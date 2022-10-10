@@ -1,49 +1,82 @@
 import * as React from 'react';
-import { Table, Paper, TableRow, TableBody, TableHead, TableContainer, TableCell, Button, Dialog, DialogActions, DialogContent, DialogTitle, FormControl, TextField, FormLabel, RadioGroup, FormControlLabel, Radio, NativeSelect, Typography } from '@mui/material';
+import { Table, Paper, TableRow, TableBody, TableHead, TableContainer, TableCell, Button, Dialog, DialogActions, DialogContent, DialogTitle, FormControl, TextField, FormLabel, RadioGroup, FormControlLabel, Radio, NativeSelect, InputLabel } from '@mui/material';
 import { Textarea } from '@mui/joy';
 import axios from 'axios';
 import { useFormik } from "formik";
 import dateFormat from "dateformat";
 import * as yup from "yup";
-import AddCategory from '../AddCategory/AddCategory';
+import CreateCategory from '../CreateCategory/CreateCategory';
 import { AuthContext } from '../../../Context/AuthProvider';
 
 const Categories = () => {
+    // const [preCategories, setPreCategories] = React.useState([]);
     const [categories, setCategories] = React.useState([]);
     const [category, setCategory] = React.useState({});
     const [categoryChild, setCategoryChild] = React.useState([]);
-    // const [preCategories, setPreCategories] = React.useState([]);
     const [open, setOpen] = React.useState(false);
     const [viewOpen, setViewOpen] = React.useState(false);
     const [editOpen, setEditOpen] = React.useState(false);
     const [active, setActive] = React.useState("");
-    const { userInfo, cycleDetection } = React.useContext(AuthContext);
+    const { userInfo, uniqueName, cycleDetection } = React.useContext(AuthContext);
 
     const formik = useFormik({
         enableReinitialize: true,
         initialValues: {
             name: category?.name,
             description: category?.description,
-            parentId: category?.Parent?.id || ""
+            parentId: category?.Parent?.id ? category?.Parent?.id : ""
         },
         validationSchema: validationSchema,
         onSubmit: async (values, actions) => {
-            const checkCycle = await cycleDetection(categories, category?.id, values.parentId);
-            if (checkCycle) {
-                alert("Please change parent category name. Here create a cycle!");
+
+            // Must recheck this issue
+            if (values.parentId === "None") {
+                values.parentId = ""
+            }
+
+            if (category?.name === values.name) {
+                const checkCycle = await cycleDetection(categories, category?.id, values.parentId);
+                if (checkCycle) {
+                    alert("Please change parent category name. Here create a cycle!");
+                }
+                else {
+                    const categoryId = category?.id;
+                    const userId = userInfo?.id;
+                    await axios.put("http://localhost:5000/categories/update", { values, categoryId, userId }, {
+                        headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` }
+                    })
+                        .then(() => {
+                            actions.setSubmitting(false);
+                            actions.resetForm();
+                            setEditOpen(false);
+                            alert("Updated Successfully!");
+                        });
+                }
             }
             else {
-                const categoryId = category?.id;
-                const userId = userInfo?.id;
-                await axios.put("http://localhost:5000/categories/update", { values, categoryId, userId }, {
-                    headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` }
-                })
-                    .then(() => {
-                        actions.setSubmitting(false);
-                        actions.resetForm();
-                        setEditOpen(false);
-                        alert("Updated Successfully!");
-                    });
+                const checkUniqueName = uniqueName(categories, values.name);
+                if (checkUniqueName) {
+                    const checkCycle = await cycleDetection(categories, category?.id, values.parentId);
+                    if (checkCycle) {
+                        alert("Please change parent category name. Here create a cycle!");
+                    }
+                    else {
+                        const categoryId = category?.id;
+                        const userId = userInfo?.id;
+                        await axios.put("http://localhost:5000/categories/update", { values, categoryId, userId }, {
+                            headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` }
+                        })
+                            .then(() => {
+                                actions.setSubmitting(false);
+                                actions.resetForm();
+                                setEditOpen(false);
+                                alert("Updated Successfully!");
+                            });
+                    }
+                }
+                else {
+                    alert("This category already exist! Please change category name.");
+                }
             }
         }
     });
@@ -83,6 +116,7 @@ const Categories = () => {
     const handleViewClose = () => {
         setViewOpen(false);
     };
+
     const handleEditClose = () => {
         setEditOpen(false);
     };
@@ -94,25 +128,40 @@ const Categories = () => {
             .then((res) => {
                 setCategories(res?.data);
             });
-    }, [open, active, editOpen]);
+    }, [open, editOpen, active]);
 
     const handleActive = async (e, categoryId, userId) => {
-        await axios.put("http://localhost:5000/categories/activate-deactivate", { categoryId, userId, activateDeactivate: e.target.value }, {
-            headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` }
-        })
-            .then((res) => {
-                setActive(e.target.value);
-            });
+        if (e.target.value === "0") {
+            const proceed = window.confirm("If you deactivated this category the child category of this category is not shown in client side! Are you confirm to deactivated?");
+            if (proceed) {
+                await axios.put("http://localhost:5000/categories/activate-deactivate", { categoryId, userId, activateDeactivate: e.target.value }, {
+                    headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` }
+                })
+                    .then(() => {
+                        setActive(e.target.value);
+                    });
+            }
+        } else {
+            const proceed = window.confirm("Are you sure to activated?");
+            if (proceed) {
+                await axios.put("http://localhost:5000/categories/activate-deactivate", { categoryId, userId, activateDeactivate: e.target.value }, {
+                    headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` }
+                })
+                    .then(() => {
+                        setActive(e.target.value);
+                    });
+            }
+        }
     };
 
     return (
         <>
-            <AddCategory
+            <CreateCategory
                 open={open}
                 setOpen={setOpen}
                 editOpen={editOpen}
                 active={active}
-            ></AddCategory>
+            ></CreateCategory>
 
             <TableContainer component={Paper}>
                 <Table sx={{ width: 1200 }} aria-label="categories table">
@@ -144,46 +193,54 @@ const Categories = () => {
                             </TableRow>
                         ))}
                     </TableBody>
+
                 </Table>
             </TableContainer>
 
             {viewOpen && <Dialog maxWidth='md' fullWidth={true} open={viewOpen} onClose={handleViewClose}>
-                <DialogTitle>DETAILS OF {category?.name}</DialogTitle>
+
+                <DialogTitle style={{ textDecoration: 'underline', textAlign: 'center', fontSize: '26px', color: '#002884' }}>Details of {category?.name}</DialogTitle>
                 <DialogContent>
-                    <h4 style={{ textDecoration: 'underline' }}>DESCRIPTION</h4>
+
+                    <h4 style={{ textDecoration: 'underline', color: '#002884' }}>DESCRIPTION</h4>
                     <p>{category?.description}</p>
 
-                    <h4 style={{ textDecoration: 'underline' }}>PARENT CATEGORY</h4>
+                    <h4 style={{ textDecoration: 'underline', color: '#002884' }}>PARENT CATEGORY</h4>
                     <p>{category?.Parent?.name}</p>
 
-                    <h4 style={{ textDecoration: 'underline' }}>CHILD CATEGORIES</h4>
+                    <h4 style={{ textDecoration: 'underline', color: '#002884' }}>CHILD CATEGORIES</h4>
                     {categoryChild?.map((child) => (
                         <p key={child?.name} style={{ display: "inline", paddingRight: '20px' }}>{child?.name}   </p>
                     ))}
-                    <h4 style={{ textDecoration: 'underline' }}>CREATED BY</h4>
+
+                    <h4 style={{ textDecoration: 'underline', color: '#002884' }}>CREATED BY</h4>
                     <p>{category?.createdByUser?.username}</p>
 
-                    <h4 style={{ textDecoration: 'underline' }}>UPDATED BY</h4>
+                    <h4 style={{ textDecoration: 'underline', color: '#002884' }}>UPDATED BY</h4>
                     <p>{category?.updatedByUser?.username}</p>
 
-                    <h4 style={{ textDecoration: 'underline' }}>CREATED AT</h4>
+                    <h4 style={{ textDecoration: 'underline', color: '#002884' }}>CREATED AT</h4>
                     <p>{dateFormat(new Date(category?.createdAt).toString())}</p>
 
-                    <h4 style={{ textDecoration: 'underline' }}>UPDATED AT</h4>
+                    <h4 style={{ textDecoration: 'underline', color: '#002884' }}>UPDATED AT</h4>
                     <p>{dateFormat(new Date(category?.updatedAt).toString())}</p>
+
                 </DialogContent>
 
                 <DialogActions>
                     <Button onClick={handleViewClose}>Close</Button>
                 </DialogActions>
+
             </Dialog>}
 
             {editOpen && <Dialog maxWidth='sm' fullWidth={true} open={editOpen} onClose={handleEditClose}>
-                <DialogTitle>PLEASE EDIT CATEGORY {category?.name}</DialogTitle>
+
+                <DialogTitle style={{ textDecoration: 'underline', textAlign: 'center', fontSize: '22px', color: '#002884' }}>Edit Category {category?.name}</DialogTitle>
                 <DialogContent>
 
                     <FormControl>
-                        <FormLabel style={{ color: 'blue' }} >THIS CATEGORY IS </FormLabel>
+                        <FormLabel style={{ color: '#002884' }} >THIS CATEGORY IS </FormLabel>
+
                         <RadioGroup
                             row
                             name="active"
@@ -193,9 +250,11 @@ const Categories = () => {
                             <FormControlLabel value="1" control={<Radio />} label="Activate" />
                             <FormControlLabel value="0" control={<Radio />} label="Deactivate" />
                         </RadioGroup>
+
                     </FormControl>
 
                     {active === "1" && <form onSubmit={formik.handleSubmit}>
+
                         <TextField
                             required
                             name="name"
@@ -207,6 +266,7 @@ const Categories = () => {
                             variant="standard"
                             sx={{ width: '100%', fontsize: '18px', color: 'black', mt: 2.5 }}
                         />
+
                         <Textarea
                             name="description"
                             placeholder="Change Description"
@@ -218,13 +278,11 @@ const Categories = () => {
                             sx={{ fontsize: '18px', mt: 4, mb: 4 }}
                         />
 
-                        <FormLabel style={{ color: 'blue' }} >PARENT CATEGORY : {category?.Parent?.name ? category?.Parent?.name : 'NONE'}</FormLabel>
-
                         <FormControl variant="standard" sx={{ fontsize: '18px', mt: 2, mb: 2.5, width: "100%" }}>
 
-                            <Typography variant="button" display="block" gutterBottom>
-                                Change Parent Category? If Yes Then Select
-                            </Typography>
+                            <InputLabel variant="standard" htmlFor="uncontrolled-native">
+                                Change Parent Category
+                            </InputLabel>
 
                             <NativeSelect
                                 name="parentId"
@@ -232,7 +290,7 @@ const Categories = () => {
                                 error={formik.touched.parentId && Boolean(formik.errors.parentId)}
                                 helperText={formik.touched.parentId && formik.errors.parentId}
                             >
-                                <option value={""}>None</option>
+                                <option value={null} selected={category?.Parent?.id === null}>None</option>
                                 {categories?.map(cate => (
                                     <option
                                         key={cate?.id}
@@ -243,10 +301,13 @@ const Categories = () => {
                                     </option>
                                 ))};
                             </NativeSelect>
+
                         </FormControl>
+
                         <Button color="primary" variant="contained" type="submit">
                             Submit
                         </Button>
+
                     </form>}
 
                 </DialogContent>
@@ -254,6 +315,7 @@ const Categories = () => {
                 <DialogActions>
                     <Button onClick={handleEditClose}>Close</Button>
                 </DialogActions>
+
             </Dialog>}
         </>
     );
