@@ -19,6 +19,18 @@ const EditProduct = () => {
     const [active, setActive] = React.useState("");
     const { userInfo } = React.useContext(AuthContext);
 
+    const validationSchema = yup.object({
+        name: yup.string(),
+        categoryId: yup.string(),
+        title: yup.string(),
+        subtitle: yup.string(),
+        description: yup.string().required("Required!"),
+        tags: yup.array().of(yup.string()),
+        images: yup.array()
+            // .min(product?.productDetails?.length === 0 ? 1 : 0, "Minimum One Images Required!")
+            .max(product?.productDetails?.length === 5 ? 0 : 5 - product?.productDetails?.length, "Maximum Five Images Over!")
+    });
+
     React.useEffect(() => {
         axios.get(`http://localhost:5000/products/viewproduct/${id}`, {
             headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` }
@@ -69,6 +81,34 @@ const EditProduct = () => {
         }
     };
 
+    const handleImageDeleted = async (imageId, userId) => {
+        if (product.productDetails.length > 1) {
+            const proceed = window.confirm("Are you sure to deleted?");
+            if (proceed) {
+                await axios.put("http://localhost:5000/products/image-deleted", { imageId, userId }, {
+                    headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` }
+                })
+                    .then(() => {
+                        alert("Image Deleted Successfully.");
+                        axios.get(`http://localhost:5000/products/viewproduct/${id}`, {
+                            headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` }
+                        })
+                            .then((res) => {
+                                setProduct(res.data);
+                                setActive(res?.data.active);
+                                if (res?.data?.tags?.length !== 0) {
+                                    const tagsArray = res?.data?.tags.split(",");
+                                    setTags(tagsArray);
+                                }
+                            });
+                    });
+            }
+        }
+        else {
+            alert("Minimum One Images Required!");
+        }
+    }
+
     return (
         <Box >
             <Typography sx={{ mt: 5, mb: 2 }} variant="h6" gutterBottom>
@@ -101,36 +141,46 @@ const EditProduct = () => {
                     subtitle: product.subTitle,
                     description: product.description,
                     tags: tags,
-                    // images: []
+                    images: []
                 }}
                 validationSchema={validationSchema}
                 onSubmit={async (values, actions) => {
 
-                    console.log(values);
+                    const formData = new FormData();
+                    formData.append('id', id);
+                    formData.append('name', values?.name);
+                    formData.append('categoryId', values?.categoryId);
+                    formData.append('title', values?.title);
+                    formData.append('subtitle', values?.subtitle);
+                    formData.append('description', values?.description);
+                    formData.append('tags', values?.tags);
+                    formData.append('userId', userInfo.id);
+                    for (const file of values?.images) {
+                        formData.append('images', file?.file);
+                    }
 
-                    // const formData = new FormData();
-                    // formData.append('name', values?.name);
-                    // formData.append('categoryId', values?.categoryId);
-                    // formData.append('title', values?.title);
-                    // formData.append('subtitle', values?.subtitle);
-                    // formData.append('description', values?.description);
-                    // formData.append('tags', values?.tags);
-                    // formData.append('id', id);
-                    // for (const file of values?.images) {
-                    //     formData.append('images', file?.file);
-                    // }
-
-                    // axios.post("http://localhost:5000/products/create", formData, {
-                    //     headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` }
-                    // })
-                    //     .then((res) => {
-                    //         actions.setSubmitting(false);
-                    //         actions.resetForm();
-                    //         alert(res.data);
-                    //     })
-                    //     .catch((err) => {
-                    //         alert(err?.response?.data);
-                    //     });
+                    axios.put("http://localhost:5000/products/update", formData, {
+                        headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` }
+                    })
+                        .then((res) => {
+                            actions.setSubmitting(false);
+                            actions.resetForm();
+                            alert(res.data);
+                            axios.get(`http://localhost:5000/products/viewproduct/${id}`, {
+                                headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` }
+                            })
+                                .then((res) => {
+                                    setProduct(res.data);
+                                    setActive(res?.data.active);
+                                    if (res?.data?.tags?.length !== 0) {
+                                        const tagsArray = res?.data?.tags.split(",");
+                                        setTags(tagsArray);
+                                    }
+                                });
+                        })
+                        .catch((err) => {
+                            alert(err?.response?.data);
+                        });
                 }}
             >
                 {({ values,
@@ -303,7 +353,41 @@ const EditProduct = () => {
 
                             <br />
 
+                            <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mb: 1 }}>
+                                <Box sx={{ textAlign: 'start', width: '60%' }}>
+                                    <Typography variant='button'>
+                                        Images
+                                    </Typography>
+                                </Box>
+                            </Box>
+
                             <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                                <Box sx={{ width: '60%' }}>
+                                    <Box
+                                        sx={{ display: 'flex', justifyContent: 'start', py: 1 }}
+                                    >
+                                        {product?.productDetails?.map((image, index) => (
+                                            <Box
+                                                sx={{ pr: 2 }}
+                                                key={index}
+                                            >
+                                                <img
+                                                    src={`http://localhost:5000/images/${image.image}`}
+                                                    alt=""
+                                                    width="100"
+                                                    height="75"
+                                                />
+                                                <CancelOutlinedIcon
+                                                    onClick={() => { handleImageDeleted(image.id, userInfo.id) }}
+                                                    style={{ position: 'absolute', marginTop: '-2px', marginLeft: '-23px', color: 'red' }}
+                                                />
+                                            </Box>
+                                        ))}
+                                    </Box>
+                                </Box>
+                            </Box>
+
+                            <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mt: 1 }}>
                                 <Box sx={{ width: '60%' }}>
                                     <Field name="images">
                                         {({ field }) => (
@@ -340,7 +424,7 @@ const EditProduct = () => {
                                                                     variant="outlined"
                                                                     onClick={onImageUpload}
                                                                 >
-                                                                    Upload Images
+                                                                    Upload New Images
                                                                 </Button>
                                                             </Box>
 
@@ -352,7 +436,7 @@ const EditProduct = () => {
                                                             <Box
                                                                 sx={{ display: 'flex', justifyContent: 'start', py: 1 }}
                                                             >
-                                                                {imageList.map((image, index) => (
+                                                                {imageList?.map((image, index) => (
                                                                     <Box
                                                                         sx={{ display: 'flex', justifyContent: 'start', pr: 2 }}
                                                                         key={index}
@@ -411,15 +495,5 @@ const EditProduct = () => {
         </Box >
     );
 };
-
-const validationSchema = yup.object({
-    name: yup.string(),
-    categoryId: yup.string(),
-    title: yup.string(),
-    subtitle: yup.string(),
-    description: yup.string().required("Required!"),
-    tags: yup.array().of(yup.string()),
-    // images: yup.array().min(1, "Minimum One Images Required!").max(5, "Maximum Five Images Over!")
-});
 
 export default EditProduct;

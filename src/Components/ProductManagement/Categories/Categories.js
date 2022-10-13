@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Table, Paper, TableRow, TableBody, TableHead, TableContainer, TableCell, Button, Dialog, DialogActions, DialogContent, DialogTitle, FormControl, TextField, FormLabel, RadioGroup, FormControlLabel, Radio, NativeSelect, InputLabel } from '@mui/material';
+import { Box, Table, Paper, TableRow, TableBody, TableHead, TableContainer, TableCell, Button, Dialog, DialogActions, DialogContent, DialogTitle, FormControl, TextField, FormLabel, RadioGroup, FormControlLabel, Radio, NativeSelect, InputLabel } from '@mui/material';
 import { Textarea } from '@mui/joy';
 import axios from 'axios';
 import { useFormik } from "formik";
@@ -197,39 +197,48 @@ const Categories = () => {
                 </Table>
             </TableContainer>
 
-            {viewOpen && <Dialog maxWidth='md' fullWidth={true} open={viewOpen} onClose={handleViewClose}>
+            {viewOpen && <Dialog
+                maxWidth='md'
+                fullWidth={true}
+                open={viewOpen}
+                onClose={handleViewClose}
+            >
 
-                <DialogTitle style={{ textDecoration: 'underline', textAlign: 'center', fontSize: '26px', color: '#002884' }}>Details of {category?.name}</DialogTitle>
-                <DialogContent>
+                <Box
+                    sx={{ backgroundColor: 'lightblue', px: 2.5 }}
+                >
+                    <DialogTitle style={{ textDecoration: 'underline', textAlign: 'center', fontSize: '26px', color: '#002884' }}>Details of {category?.name}</DialogTitle>
+                    <DialogContent>
 
-                    <h4 style={{ textDecoration: 'underline', color: '#002884' }}>DESCRIPTION</h4>
-                    <p>{category?.description}</p>
+                        <h4 style={{ textDecoration: 'underline', color: '#002884' }}>DESCRIPTION</h4>
+                        <p>{category?.description}</p>
 
-                    <h4 style={{ textDecoration: 'underline', color: '#002884' }}>PARENT CATEGORY</h4>
-                    <p>{category?.Parent?.name}</p>
+                        <h4 style={{ textDecoration: 'underline', color: '#002884' }}>PARENT CATEGORY</h4>
+                        <p>{category?.Parent?.name}</p>
 
-                    <h4 style={{ textDecoration: 'underline', color: '#002884' }}>CHILD CATEGORIES</h4>
-                    {categoryChild?.map((child) => (
-                        <p key={child?.name} style={{ display: "inline", paddingRight: '20px' }}>{child?.name}   </p>
-                    ))}
+                        <h4 style={{ textDecoration: 'underline', color: '#002884' }}>CHILD CATEGORIES</h4>
+                        {categoryChild?.map((child) => (
+                            <p key={child?.name} style={{ display: "inline", paddingRight: '20px' }}>{child?.name}   </p>
+                        ))}
 
-                    <h4 style={{ textDecoration: 'underline', color: '#002884' }}>CREATED BY</h4>
-                    <p>{category?.createdByUser?.username}</p>
+                        <h4 style={{ textDecoration: 'underline', color: '#002884' }}>CREATED BY</h4>
+                        <p>{category?.createdByUser?.username}</p>
 
-                    <h4 style={{ textDecoration: 'underline', color: '#002884' }}>UPDATED BY</h4>
-                    <p>{category?.updatedByUser?.username}</p>
+                        <h4 style={{ textDecoration: 'underline', color: '#002884' }}>UPDATED BY</h4>
+                        <p>{category?.updatedByUser?.username}</p>
 
-                    <h4 style={{ textDecoration: 'underline', color: '#002884' }}>CREATED AT</h4>
-                    <p>{dateFormat(new Date(category?.createdAt).toString())}</p>
+                        <h4 style={{ textDecoration: 'underline', color: '#002884' }}>CREATED AT</h4>
+                        <p>{dateFormat(new Date(category?.createdAt).toString())}</p>
 
-                    <h4 style={{ textDecoration: 'underline', color: '#002884' }}>UPDATED AT</h4>
-                    <p>{dateFormat(new Date(category?.updatedAt).toString())}</p>
+                        <h4 style={{ textDecoration: 'underline', color: '#002884' }}>UPDATED AT</h4>
+                        <p>{dateFormat(new Date(category?.updatedAt).toString())}</p>
 
-                </DialogContent>
+                    </DialogContent>
 
-                <DialogActions>
-                    <Button onClick={handleViewClose}>Close</Button>
-                </DialogActions>
+                    <DialogActions>
+                        <Button onClick={handleViewClose}>Close</Button>
+                    </DialogActions>
+                </Box>
 
             </Dialog>}
 
