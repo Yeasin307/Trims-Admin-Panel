@@ -1,5 +1,6 @@
 import React from "react";
 import { Quill } from "react-quill";
+import "./TextEditor.css";
 
 // Custom Undo button icon component for Quill editor. You can import it directly
 // from 'quill/assets/icons/undo.svg' but I found that a number of loaders do not
@@ -138,7 +139,7 @@ export const QuillToolbar = (props) => {
                     <button className="ql-script" value="super" />
                     <button className="ql-script" value="sub" />
                     <button className="ql-blockquote" />
-                    <button className="ql-direction" />
+                    {/* <button className="ql-direction" /> */}
                 </span>
                 <span className="ql-formats">
                     <select className="ql-align" />
@@ -147,12 +148,12 @@ export const QuillToolbar = (props) => {
                 </span>
                 <span className="ql-formats">
                     <button className="ql-link" />
-                    <button className="ql-image" />
-                    <button className="ql-video" />
+                    {/* <button className="ql-image" /> */}
+                    {/* <button className="ql-video" /> */}
                 </span>
                 <span className="ql-formats">
-                    <button className="ql-formula" />
-                    <button className="ql-code-block" />
+                    {/* <button className="ql-formula" /> */}
+                    {/* <button className="ql-code-block" /> */}
                     <button className="ql-clean" />
                 </span>
                 <span className="ql-formats">

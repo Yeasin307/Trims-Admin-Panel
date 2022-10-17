@@ -19,6 +19,8 @@ const Categories = () => {
     const [active, setActive] = React.useState("");
     const { userInfo, uniqueName, cycleDetection } = React.useContext(AuthContext);
 
+    console.log(category?.Parent?.id ? category?.Parent?.id : "aaa");
+
     const formik = useFormik({
         enableReinitialize: true,
         initialValues: {
