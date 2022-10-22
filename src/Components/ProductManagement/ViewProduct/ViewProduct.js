@@ -42,7 +42,7 @@ const ViewProduct = () => {
                 {product?.productDetails?.map((productImage) => (
                     <img
                         key={productImage?.id}
-                        src={`http://localhost:5000/images/${productImage?.image}`}
+                        src={`http://localhost:5000/static/productimages/${productImage?.image}`}
                         alt="ProductImage"
                         width={280}
                         height={200}

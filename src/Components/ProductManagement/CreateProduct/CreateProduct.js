@@ -27,6 +27,16 @@ const CreateProduct = () => {
             });
     }, []);
 
+    const validationSchema = yup.object({
+        name: yup.string(),
+        categoryId: yup.string(),
+        title: yup.string(),
+        subtitle: yup.string(),
+        description: yup.string().required("Required!"),
+        tags: yup.array().of(yup.string()),
+        images: yup.array().min(1, "Minimum One Images Required!").max(5, "Maximum Five Images Over!")
+    });
+
     return (
         <Box >
             <Typography sx={{ mt: 5, mb: 2 }} variant="h6" gutterBottom>
@@ -339,15 +349,5 @@ const CreateProduct = () => {
         </Box >
     );
 };
-
-const validationSchema = yup.object({
-    name: yup.string(),
-    categoryId: yup.string(),
-    title: yup.string(),
-    subtitle: yup.string(),
-    description: yup.string().required("Required!"),
-    tags: yup.array().of(yup.string()),
-    images: yup.array().min(1, "Minimum One Images Required!").max(5, "Maximum Five Images Over!")
-});
 
 export default CreateProduct;

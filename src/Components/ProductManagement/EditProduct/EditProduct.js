@@ -372,7 +372,7 @@ const EditProduct = () => {
                                                 key={index}
                                             >
                                                 <img
-                                                    src={`http://localhost:5000/images/${image.image}`}
+                                                    src={`http://localhost:5000/static/productimages/${image.image}`}
                                                     alt=""
                                                     width="100"
                                                     height="75"

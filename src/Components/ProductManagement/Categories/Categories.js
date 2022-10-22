@@ -9,7 +9,7 @@ import CreateCategory from '../CreateCategory/CreateCategory';
 import { AuthContext } from '../../../Context/AuthProvider';
 
 const Categories = () => {
-    // const [preCategories, setPreCategories] = React.useState([]);
+    // const [activeCategories, setActiveCategories] = React.useState([]);
     const [categories, setCategories] = React.useState([]);
     const [category, setCategory] = React.useState({});
     const [categoryChild, setCategoryChild] = React.useState([]);
@@ -19,21 +19,35 @@ const Categories = () => {
     const [active, setActive] = React.useState("");
     const { userInfo, uniqueName, cycleDetection } = React.useContext(AuthContext);
 
-    console.log(category?.Parent?.id ? category?.Parent?.id : "aaa");
+    React.useEffect(() => {
+        axios.get("http://localhost:5000/categories", {
+            headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` }
+        })
+            .then((res) => {
+                setCategories(res?.data);
+            });
+    }, [open, editOpen, active]);
+
+    const validationSchema = yup.object({
+        name: yup.string()
+            .min(3, "Minimum length is 3.")
+            .max(45, "Maximum length is 45."),
+        description: yup.string(),
+        parentId: yup.string()
+    });
 
     const formik = useFormik({
         enableReinitialize: true,
         initialValues: {
             name: category?.name,
             description: category?.description,
-            parentId: category?.Parent?.id ? category?.Parent?.id : ""
+            parentId: category?.Parent?.id ? category?.Parent?.id : " "
         },
         validationSchema: validationSchema,
         onSubmit: async (values, actions) => {
 
-            // Must recheck this issue
-            if (values.parentId === "None") {
-                values.parentId = ""
+            if (values.parentId === " ") {
+                values.parentId = "";
             }
 
             if (category?.name === values.name) {
@@ -100,7 +114,7 @@ const Categories = () => {
         //     headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` }
         // })
         //     .then((res) => {
-        //         setPreCategories(res.data);
+        //         setActiveCategories(res.data);
         //     });
 
         await axios.post("http://localhost:5000/categories/category-details", { id }, {
@@ -122,15 +136,6 @@ const Categories = () => {
     const handleEditClose = () => {
         setEditOpen(false);
     };
-
-    React.useEffect(() => {
-        axios.get("http://localhost:5000/categories", {
-            headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` }
-        })
-            .then((res) => {
-                setCategories(res?.data);
-            });
-    }, [open, editOpen, active]);
 
     const handleActive = async (e, categoryId, userId) => {
         if (e.target.value === "0") {
@@ -223,6 +228,15 @@ const Categories = () => {
                             <p key={child?.name} style={{ display: "inline", paddingRight: '20px' }}>{child?.name}   </p>
                         ))}
 
+                        <h4 style={{ textDecoration: 'underline', color: '#002884' }}>Image</h4>
+                        <img
+                            src={`http://localhost:5000/static/categoryimages/${category?.image}`}
+                            alt="CategoryImage"
+                            width={280}
+                            height={200}
+                            style={{ borderRadius: '5px' }}
+                        />
+
                         <h4 style={{ textDecoration: 'underline', color: '#002884' }}>CREATED BY</h4>
                         <p>{category?.createdByUser?.username}</p>
 
@@ -301,15 +315,22 @@ const Categories = () => {
                                 error={formik.touched.parentId && Boolean(formik.errors.parentId)}
                                 helperText={formik.touched.parentId && formik.errors.parentId}
                             >
-                                <option value={null} selected={category?.Parent?.id === null}>None</option>
-                                {categories?.map(cate => (
+                                <option
+                                    value={" "}
+                                    selected={category?.Parent?.id === null}
+                                >
+                                    None
+                                </option>
+
+                                {categories?.map(Category => (
                                     <option
-                                        key={cate?.id}
-                                        value={cate?.id}
-                                        selected={cate?.id === category?.Parent?.id}
+                                        key={Category?.id}
+                                        value={Category?.id}
+                                        selected={Category?.id === category?.Parent?.id}
                                     >
-                                        {cate?.name}
+                                        {Category?.name}
                                     </option>
+
                                 ))};
                             </NativeSelect>
 
@@ -331,13 +352,5 @@ const Categories = () => {
         </>
     );
 };
-
-const validationSchema = yup.object({
-    name: yup.string()
-        .min(3, "Minimum length is 3.")
-        .max(45, "Maximum length is 45."),
-    description: yup.string(),
-    parentId: yup.string()
-});
 
 export default Categories;

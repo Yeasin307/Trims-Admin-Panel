@@ -1,40 +1,24 @@
 import * as React from 'react';
 import Textarea from '@mui/joy/Textarea';
 import { Box, Button, TextField, Dialog, DialogTitle, DialogActions, DialogContent, FormControl, InputLabel, MenuItem, Select } from '@mui/material';
+import ImageUploading from "react-images-uploading";
 import axios from 'axios';
-import { useFormik } from "formik";
+import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as yup from "yup";
+import CancelOutlinedIcon from '@mui/icons-material/CancelOutlined';
 import { AuthContext } from '../../../Context/AuthProvider';
 
 const CreateCategory = ({ open, setOpen, editOpen, active }) => {
-    const [previousCategories, setPreviousCategories] = React.useState([]);
+    const [categories, setCategories] = React.useState([]);
     const { userInfo, uniqueName } = React.useContext(AuthContext);
-    const { id } = userInfo;
 
-    const formik = useFormik({
-        initialValues: {
-            name: "",
-            description: "",
-            parentId: ""
-        },
-        validationSchema: validationSchema,
-        onSubmit: async (values, actions) => {
-            const checkUniqueName = await uniqueName(previousCategories, values.name);
-            if (checkUniqueName) {
-                axios.post("http://localhost:5000/categories/create", { values, id }, {
-                    headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` }
-                })
-                    .then(() => {
-                        actions.setSubmitting(false);
-                        actions.resetForm();
-                        setOpen(false);
-                        alert("New Category Created Successfully.");
-                    });
-            }
-            else {
-                alert("This category already exist! Please change category name.");
-            }
-        }
+    const validationSchema = yup.object({
+        name: yup.string()
+            .min(3, "Minimum length is 3.")
+            .max(45, "Maximum length is 45."),
+        description: yup.string(),
+        parentId: yup.string(),
+        image: yup.array().min(1, "Image Required!")
     });
 
     React.useEffect(() => {
@@ -42,7 +26,7 @@ const CreateCategory = ({ open, setOpen, editOpen, active }) => {
             headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` }
         })
             .then((res) => {
-                setPreviousCategories(res.data);
+                setCategories(res.data);
             });
 
     }, [open, editOpen, active])
@@ -52,9 +36,6 @@ const CreateCategory = ({ open, setOpen, editOpen, active }) => {
     };
 
     const handleClose = () => {
-        formik.values.name = "";
-        formik.values.description = "";
-        formik.values.parentId = "";
         setOpen(false);
     };
 
@@ -68,47 +49,231 @@ const CreateCategory = ({ open, setOpen, editOpen, active }) => {
                 <DialogTitle>PLEASE CREATE A NEW CATEGORY</DialogTitle>
                 <DialogContent>
 
-                    <form onSubmit={formik.handleSubmit}>
-                        <TextField
-                            required
-                            name="name"
-                            label="Enter Category Name"
-                            value={formik.values.name}
-                            onChange={formik.handleChange}
-                            error={formik.touched.name && Boolean(formik.errors.name)}
-                            helperText={formik.touched.name && formik.errors.name}
-                            variant="standard"
-                            sx={{ width: '100%', fontsize: '18px', color: 'black' }}
-                        />
-                        <Textarea
-                            name="description"
-                            placeholder="Enter Description"
-                            value={formik.values.description}
-                            onChange={formik.handleChange}
-                            error={formik.touched.description && Boolean(formik.errors.description)}
-                            helperText={formik.touched.description && formik.errors.description}
-                            minRows={4}
-                            sx={{ fontsize: '18px', mt: 4, mb: 2.5 }}
-                        />
-                        <FormControl variant="standard" sx={{ fontsize: '18px', mb: 5, width: "100%" }}>
-                            <InputLabel>Parent Category</InputLabel>
-                            <Select
-                                name="parentId"
-                                value={formik.values.parentId}
-                                onChange={formik.handleChange}
-                                error={formik.touched.parentId && Boolean(formik.errors.parentId)}
-                                helperText={formik.touched.parentId && formik.errors.parentId}
-                            >
-                                {previousCategories?.map(Category => (
-                                    <MenuItem key={Category?.id} value={Category?.id}>{Category?.name}</MenuItem>
-                                ))};
+                    <Formik
+                        initialValues={{
+                            name: "",
+                            description: "",
+                            parentId: "",
+                            image: []
+                        }}
+                        validationSchema={validationSchema}
+                        onSubmit={async (values, actions) => {
 
-                            </Select>
-                        </FormControl>
-                        <Button color="primary" variant="contained" type="submit">
-                            Submit
-                        </Button>
-                    </form>
+                            const checkUniqueName = await uniqueName(categories, values.name);
+                            if (checkUniqueName) {
+                                const formData = new FormData();
+                                formData.append('name', values?.name);
+                                formData.append('description', values?.description);
+                                formData.append('parentId', values?.parentId);
+                                formData.append('image', values?.image[0]?.file);
+                                formData.append('userId', userInfo?.id);
+
+                                axios.post("http://localhost:5000/categories/create", formData, {
+                                    headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` }
+                                })
+                                    .then(() => {
+                                        actions.setSubmitting(false);
+                                        actions.resetForm();
+                                        setOpen(false);
+                                        alert("New Category Created Successfully.");
+                                    });
+                            }
+                            else {
+                                alert("This category already exist! Please change category name.");
+                            }
+                        }}
+                    >
+                        {({ values,
+                            errors,
+                            touched,
+                            status,
+                            dirty,
+                            handleChange,
+                            handleBlur,
+                            handleSubmit,
+                            isSubmitting,
+                            isValid,
+                            handleReset,
+                            setTouched,
+                            setFieldValue,
+                            submitForm }) => {
+                            return (
+                                <Form>
+
+                                    <Field name="name">
+                                        {({ field }) => (
+                                            < >
+                                                <TextField
+                                                    required
+                                                    label="Enter Category Name"
+                                                    value={field.value}
+                                                    onChange={field.onChange(field.name)}
+                                                    variant="standard"
+                                                    sx={{ width: '100%', fontsize: '18px', color: 'black' }}
+                                                />
+                                                <ErrorMessage
+                                                    name="name"
+                                                    component="div"
+                                                    style={{ textAlign: 'start', color: 'red' }}
+                                                />
+                                            </>
+                                        )}
+                                    </Field>
+
+                                    <br /><br />
+
+                                    <Field name="description">
+                                        {({ field }) => (
+                                            < >
+                                                <Textarea
+                                                    minRows={4}
+                                                    value={field.value}
+                                                    onChange={field.onChange(field.name)}
+                                                    placeholder="Enter Description"
+                                                    color="neutral"
+                                                    size="lg"
+                                                    variant="outlined"
+                                                    sx={{ width: '100%', fontsize: '18px', color: 'black' }}
+                                                />
+                                                <ErrorMessage
+                                                    name="description"
+                                                    component="div"
+                                                    style={{ textAlign: 'start', color: 'red' }}
+                                                />
+                                            </>
+                                        )}
+                                    </Field>
+
+                                    <br />
+
+                                    <Field name="parentId">
+                                        {({ field }) => (
+                                            < >
+                                                <FormControl variant="standard" sx={{ width: "100%", fontsize: '18px' }}>
+                                                    <InputLabel>Parent Category</InputLabel>
+                                                    <Select
+                                                        value={field.value}
+                                                        onChange={field.onChange(field.name)}
+                                                    >
+
+                                                        {categories?.map(category => (
+                                                            <MenuItem
+                                                                key={category?.id}
+                                                                value={category?.id}
+                                                            >
+                                                                {category?.name}
+                                                            </MenuItem>
+                                                        ))};
+
+                                                    </Select>
+                                                    <ErrorMessage
+                                                        name="parentId"
+                                                        component="div"
+                                                        style={{ textAlign: 'start', color: 'red' }}
+                                                    />
+                                                </FormControl>
+                                            </>
+                                        )}
+                                    </Field>
+
+                                    <br /><br />
+
+                                    <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                                        <Box sx={{ width: '100%' }}>
+                                            <Field name="image">
+                                                {({ field }) => (
+                                                    < >
+                                                        <ImageUploading
+                                                            value={field.value}
+                                                            onChange={images => {
+                                                                setFieldValue("image", images);
+                                                            }}
+                                                            maxFileSize={5000000}
+                                                            dataURLKey="data_url"
+                                                            acceptType={['jpg', 'jpeg', 'gif', 'png']}
+                                                            resolutionType={'absolute'}
+                                                            resolutionWidth={600}
+                                                            resolutionHeight={600}
+                                                        >
+                                                            {({
+                                                                imageList,
+                                                                onImageUpload,
+                                                                onImageRemoveAll,
+                                                                onImageUpdate,
+                                                                onImageRemove,
+                                                                isDragging,
+                                                                dragProps,
+                                                                errors
+                                                            }) => (
+                                                                <Box
+                                                                    style={{ textAlign: 'start' }}
+                                                                >
+                                                                    <Box
+                                                                        sx={{ borderBottom: '1.5px solid gray', pb: 1 }}
+                                                                    >
+                                                                        <Button
+                                                                            color="primary"
+                                                                            variant="outlined"
+                                                                            onClick={onImageUpload}
+                                                                        >
+                                                                            Upload Image
+                                                                        </Button>
+                                                                        <span style={{ padding: '5px 15px' }}>Image Resolution 600 X 600</span>
+                                                                    </Box>
+
+                                                                    {errors && <div style={{ color: 'red', margin: '5px 0px' }}>
+                                                                        {errors.maxFileSize && <span>Selected file size exceed maxFileSize</span>}
+                                                                        {errors.acceptType && <span>Your selected file type is not allow</span>}
+                                                                        {errors.resolution && <span>Selected file is not match desired resolution</span>}
+                                                                    </div>}
+
+                                                                    <Box
+                                                                        sx={{ display: 'flex', justifyContent: 'start', py: 1 }}
+                                                                    >
+                                                                        {imageList.map((image, index) => (
+                                                                            <Box
+                                                                                sx={{ display: 'flex', justifyContent: 'start', pr: 2 }}
+                                                                                key={index}
+                                                                            >
+                                                                                <Box style={{ position: 'relative' }}>
+                                                                                    <img src={image.data_url} alt="" width="100" height="75" />
+                                                                                    <CancelOutlinedIcon
+                                                                                        onClick={() => onImageRemove(index)}
+                                                                                        style={{ position: 'absolute', marginTop: '-1px', marginLeft: '-23px', color: 'red' }}
+                                                                                    />
+                                                                                </Box>
+                                                                            </Box>
+                                                                        ))}
+                                                                    </Box>
+                                                                </Box>
+                                                            )}
+                                                        </ImageUploading>
+                                                        <ErrorMessage
+                                                            name="image"
+                                                            component="div"
+                                                            style={{ textAlign: 'start', color: 'red', marginBottom: '10px' }}
+                                                        />
+                                                    </>
+                                                )}
+                                            </Field>
+                                        </Box>
+                                    </Box>
+
+                                    <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                                        <Box sx={{ width: '100%', textAlign: 'start' }}>
+                                            <Button
+                                                type="submit"
+                                                color="primary"
+                                                variant="contained"
+                                            >
+                                                Submit
+                                            </Button>
+                                        </Box>
+                                    </Box>
+                                </Form>
+                            );
+                        }}
+                    </Formik >
 
                 </DialogContent>
                 <DialogActions>
@@ -118,13 +283,5 @@ const CreateCategory = ({ open, setOpen, editOpen, active }) => {
         </Box>
     );
 };
-
-const validationSchema = yup.object({
-    name: yup.string()
-        .min(3, "Minimum length is 3.")
-        .max(45, "Maximum length is 45."),
-    description: yup.string(),
-    parentId: yup.string()
-});
 
 export default CreateCategory;
