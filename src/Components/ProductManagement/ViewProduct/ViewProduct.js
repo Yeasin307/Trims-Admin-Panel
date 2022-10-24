@@ -20,7 +20,7 @@ const ViewProduct = () => {
     }, [id]);
 
     return (
-        <Box sx={{ textAlign: 'start', backgroundColor: 'lightblue', p: 5, borderRadius: 5 }}>
+        <Box sx={{ textAlign: 'start', backgroundColor: '#e6e4e1', p: 5, borderRadius: 5 }}>
             <Box style={{ textDecoration: 'underline', textAlign: 'center', fontSize: '26px', color: '#002884' }}>
                 Details of {product?.productName}
             </Box>

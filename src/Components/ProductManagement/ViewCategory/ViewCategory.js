@@ -18,7 +18,7 @@ const ViewCategory = ({ viewOpen, setViewOpen, category, categoryChild }) => {
             >
 
                 <Box
-                    sx={{ backgroundColor: 'lightblue', px: 2.5 }}
+                    sx={{ backgroundColor: '#e6e4e1', px: 2.5 }}
                 >
                     <DialogTitle style={{ textDecoration: 'underline', textAlign: 'center', fontSize: '26px', color: '#002884' }}>Details of {category?.name}</DialogTitle>
                     <DialogContent>

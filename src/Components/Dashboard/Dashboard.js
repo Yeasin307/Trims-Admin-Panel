@@ -30,13 +30,18 @@ function Dashboard(props) {
                     <Button sx={{ width: '95%' }} variant='contained'>Users</Button>
                 </Link>
 
-                <Link style={{ textDecoration: 'none' }} to="/productmanagement">
+                <Link style={{ textDecoration: 'none', marginBottom: '10px' }} to="/productmanagement">
                     <Button sx={{ width: '95%' }} variant='contained'>Product Management</Button>
+                </Link>
+
+                <Link style={{ textDecoration: 'none' }} to="/leads">
+                    <Button sx={{ width: '95%' }} variant='contained'>Leads</Button>
                 </Link>
 
                 <div>
                     <Button sx={{ width: '95%', marginTop: '10px' }} onClick={logout} variant='contained'>Logout</Button>
                 </div>
+
             </Box>
         </div>
     );
