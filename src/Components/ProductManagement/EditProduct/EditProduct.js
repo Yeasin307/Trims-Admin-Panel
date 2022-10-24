@@ -4,12 +4,12 @@ import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import * as yup from "yup";
 import { Formik, Field, Form, ErrorMessage } from "formik";
-import RichTextEditor from '../../RichTextEditor/RichTextEditor';
 import { TagsInput } from "react-tag-input-component";
 import ImageUploading from "react-images-uploading";
 import CancelOutlinedIcon from '@mui/icons-material/CancelOutlined';
-import "../CreateProduct/CreateProduct.css";
+import RichTextEditor from '../../../Utility/RichTextEditor/RichTextEditor';
 import { AuthContext } from '../../../Context/AuthProvider';
+import "./EditProduct.css";
 
 const EditProduct = () => {
     const { id } = useParams();
@@ -229,9 +229,11 @@ const EditProduct = () => {
 
                                             {/* <InputLabel
                                                 required
-                                                variant="standard">
+                                                variant="standard"
+                                            >
                                                 Change Category
                                             </InputLabel> */}
+
                                             <label style={{ textAlign: 'start', fontSize: ".75rem", color: "#a29ca9" }}>Change Category<span> *</span></label>
 
                                             <NativeSelect
@@ -250,11 +252,13 @@ const EditProduct = () => {
                                                     </option>
                                                 ))};
                                             </NativeSelect>
+
                                             <ErrorMessage
                                                 name="categoryId"
                                                 component="div"
                                                 style={{ textAlign: 'start', color: 'red' }}
                                             />
+
                                         </FormControl>
                                     </>
                                 )}

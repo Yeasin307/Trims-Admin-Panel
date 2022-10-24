@@ -3,12 +3,12 @@ import { Box, Button, FormControl, InputLabel, MenuItem, Select, TextField, Typo
 import axios from 'axios';
 import * as yup from "yup";
 import { Formik, Field, Form, ErrorMessage } from "formik";
-import RichTextEditor from '../../RichTextEditor/RichTextEditor';
 import { TagsInput } from "react-tag-input-component";
 import ImageUploading from "react-images-uploading";
 import CancelOutlinedIcon from '@mui/icons-material/CancelOutlined';
-import "./CreateProduct.css";
+import RichTextEditor from "../../../Utility/RichTextEditor/RichTextEditor";
 import { AuthContext } from '../../../Context/AuthProvider';
+import "./CreateProduct.css";
 
 const CreateProduct = () => {
     const [categories, setCategories] = React.useState([]);

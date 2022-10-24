@@ -8,7 +8,7 @@ import * as yup from "yup";
 import CancelOutlinedIcon from '@mui/icons-material/CancelOutlined';
 import { AuthContext } from '../../../Context/AuthProvider';
 
-const CreateCategory = ({ open, setOpen, editOpen, active }) => {
+const CreateCategory = ({ createOpen, setCreateOpen, editOpen, active }) => {
     const [categories, setCategories] = React.useState([]);
     const { userInfo, uniqueName } = React.useContext(AuthContext);
 
@@ -29,14 +29,14 @@ const CreateCategory = ({ open, setOpen, editOpen, active }) => {
                 setCategories(res.data);
             });
 
-    }, [open, editOpen, active])
+    }, [createOpen, editOpen, active])
 
     const handleOpen = () => {
-        setOpen(true);
+        setCreateOpen(true);
     };
 
     const handleClose = () => {
-        setOpen(false);
+        setCreateOpen(false);
     };
 
     return (
@@ -45,7 +45,7 @@ const CreateCategory = ({ open, setOpen, editOpen, active }) => {
                 <Button variant="outlined" onClick={handleOpen}>CREATE NEW CATEGORY</Button>
             </Box>
 
-            <Dialog maxWidth="sm" fullWidth={true} open={open} onClose={handleClose}>
+            <Dialog maxWidth="sm" fullWidth={true} open={createOpen} onClose={handleClose}>
                 <DialogTitle>PLEASE CREATE A NEW CATEGORY</DialogTitle>
                 <DialogContent>
 
@@ -74,7 +74,7 @@ const CreateCategory = ({ open, setOpen, editOpen, active }) => {
                                     .then(() => {
                                         actions.setSubmitting(false);
                                         actions.resetForm();
-                                        setOpen(false);
+                                        setCreateOpen(false);
                                         alert("New Category Created Successfully.");
                                     });
                             }
@@ -185,8 +185,8 @@ const CreateCategory = ({ open, setOpen, editOpen, active }) => {
                                                     < >
                                                         <ImageUploading
                                                             value={field.value}
-                                                            onChange={images => {
-                                                                setFieldValue("image", images);
+                                                            onChange={image => {
+                                                                setFieldValue("image", image);
                                                             }}
                                                             maxFileSize={5000000}
                                                             dataURLKey="data_url"

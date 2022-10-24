@@ -1,7 +1,7 @@
 import * as React from 'react';
-import EditorToolbar, { modules, formats } from "./EditorToolbar";
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
+import EditorToolbar, { modules, formats } from "./EditorToolbar";
 
 const RichTextEditor = ({ field }) => {
 

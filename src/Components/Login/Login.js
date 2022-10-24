@@ -1,10 +1,10 @@
-import { Container, Typography, TextField, Button, Alert } from '@mui/material';
 import React, { useContext, useState } from 'react';
+import { Container, Typography, TextField, Button, Alert } from '@mui/material';
 import { Grid } from '@mui/material';
 import CircularProgress from '@mui/material/CircularProgress';
-import { AuthContext } from '../../Context/AuthProvider';
 import { useLocation, useNavigate } from 'react-router-dom';
-import login from '../../Images/login.jpg';
+import login from '../../Utility/Images/login.jpg';
+import { AuthContext } from '../../Context/AuthProvider';
 
 const Login = () => {
     const [loginData, setLoginData] = useState({});
