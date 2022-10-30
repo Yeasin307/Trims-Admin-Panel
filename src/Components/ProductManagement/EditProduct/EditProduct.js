@@ -27,7 +27,7 @@ const EditProduct = () => {
         description: yup.string().required("Required!"),
         tags: yup.array().of(yup.string()),
         images: yup.array()
-            // .min(product?.productDetails?.length === 0 ? 1 : 0, "Minimum One Images Required!")
+            // .min(product?.productDetails?.length === 0 ? 1 : 0, "Minimum One Image Required!")
             .max(product?.productDetails?.length === 5 ? 0 : 5 - product?.productDetails?.length, "Maximum Five Images Over!")
     });
 

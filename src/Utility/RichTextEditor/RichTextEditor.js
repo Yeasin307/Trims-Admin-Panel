@@ -14,7 +14,7 @@ const RichTextEditor = ({ field }) => {
                 theme="snow"
                 value={field.value}
                 onChange={field.onChange(field.name)}
-                placeholder={"Enter Product Description"}
+                placeholder={"Enter Description"}
                 modules={modules('t1')}
                 formats={formats}
             />

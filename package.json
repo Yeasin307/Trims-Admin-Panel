@@ -19,6 +19,7 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-images-uploading": "^3.1.7",
+    "react-pdf": "^5.7.2",
     "react-quill": "^2.0.0",
     "react-router-dom": "6",
     "react-scripts": "5.0.1",

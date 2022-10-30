@@ -11,6 +11,10 @@ import Products from './Components/ProductManagement/Products/Products';
 import CreateProduct from './Components/ProductManagement/CreateProduct/CreateProduct';
 import ViewProduct from './Components/ProductManagement/ViewProduct/ViewProduct';
 import EditProduct from './Components/ProductManagement/EditProduct/EditProduct';
+import Components from "./Components/Components/Components";
+import CreateComponent from "./Components/Components/CreateComponent";
+import ViewComponent from "./Components/Components/ViewComponent";
+import EditComponent from "./Components/Components/EditComponent";
 import Leads from "./Components/Leads/Leads";
 
 function App() {
@@ -29,6 +33,10 @@ function App() {
                 <Route path="/productmanagement/viewproduct/:id" element={<ViewProduct />} />
                 <Route path="/productmanagement/editproduct/:id" element={<EditProduct />} />
               </Route>
+              <Route path="/components" element={<Components />} />
+              <Route path="/createcomponent" element={<CreateComponent />} />
+              <Route path="/viewcomponent/:id" element={<ViewComponent />} />
+              <Route path="/editcomponent/:id" element={<EditComponent />} />
               <Route path="/leads" element={<Leads />} />
             </Route>
             <Route path="/login" element={< Login />} />

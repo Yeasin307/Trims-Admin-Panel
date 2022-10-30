@@ -8,8 +8,6 @@ const ViewProduct = () => {
     const [product, setProduct] = React.useState({});
     const { id } = useParams();
 
-    console.log(product);
-
     React.useEffect(() => {
         axios.get(`http://localhost:5000/products/viewproduct/${id}`, {
             headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` }
