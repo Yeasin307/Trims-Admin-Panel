@@ -34,8 +34,8 @@ const CreateComponent = () => {
             const validationSchema = yup.object({
                 name: yup.string(),
                 images: yup.array()
-                    .min(1, `Minimum One Image Required!`)
-                    .max(5, `Maximum Five Images Over!`),
+                    .min(1, "Minimum One Image Required!")
+                    .max(5, "Maximum Five Images Over!")
             });
             setValidationSchema(validationSchema);
         }
@@ -44,8 +44,8 @@ const CreateComponent = () => {
             const validationSchema = yup.object({
                 name: yup.string(),
                 files: yup.array()
-                    .min(1, `Minimum One File Required!`)
-                    .max(5, `Maximum Five Files Over!`),
+                    .min(1, "Minimum One File Required!")
+                    .max(5, "Maximum Five Files Over!")
             });
             setValidationSchema(validationSchema);
         }

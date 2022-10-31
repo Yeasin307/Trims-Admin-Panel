@@ -1,8 +1,12 @@
 import * as React from 'react';
-import { Box, FormControl, FormControlLabel, FormLabel, Radio, RadioGroup, Typography } from '@mui/material';
+import { Box, FormControl, FormControlLabel, FormLabel, Radio, RadioGroup, TextField, Typography } from '@mui/material';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import { AuthContext } from '../../Context/AuthProvider';
+import TextEdit from './EditComponentPages/TextEdit';
+import ImagesEdit from './EditComponentPages/ImagesEdit';
+import FilesEdit from './EditComponentPages/FilesEdit';
+import VideoEdit from './EditComponentPages/VideoEdit';
 
 const EditComponent = () => {
     const [type, setType] = React.useState("");
@@ -10,7 +14,6 @@ const EditComponent = () => {
     const [active, setActive] = React.useState("");
     const { id } = useParams();
     const { userInfo } = React.useContext(AuthContext);
-    console.log(type, component);
 
     React.useEffect(() => {
         axios.get(`http://localhost:5000/components/viewcomponent/${id}`, {
@@ -49,9 +52,11 @@ const EditComponent = () => {
 
     return (
         <Box >
+
             <Typography sx={{ mt: 5, mb: 2 }} variant="h6" gutterBottom>
                 PLEASE EDIT COMPONENT INFORMATION
             </Typography>
+
             <Box sx={{ display: 'flex', justifyContent: 'center', my: 3 }}>
                 <Box sx={{ textAlign: 'start', width: '60%' }}>
                     <FormControl >
@@ -68,6 +73,36 @@ const EditComponent = () => {
                     </FormControl>
                 </Box>
             </Box>
+
+            {active === "1" &&
+                <>
+                    <Box sx={{ display: 'flex', justifyContent: 'center', my: 3 }} >
+                        <TextField
+                            disabled
+                            label="Component Type"
+                            value={type}
+                            variant="standard"
+                            sx={{ textAlign: 'start', width: '60%', borderBottomStyle: 'solid' }}
+                        />
+                    </Box>
+
+                    {type === "TEXT" && <TextEdit component={component} />}
+                    {type === "IMAGE" && <ImagesEdit
+                        component={component}
+                        setComponent={setComponent}
+                        setType={setType}
+                        setActive={setActive}
+                    />}
+                    {type === "FILE" && <FilesEdit
+                        component={component}
+                        setComponent={setComponent}
+                        setType={setType}
+                        setActive={setActive}
+                    />}
+                    {type === "VIDEO" && <VideoEdit component={component} />}
+                </>
+            }
+
         </Box>
     );
 };

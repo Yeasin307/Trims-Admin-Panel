@@ -69,8 +69,9 @@ const ViewComponent = () => {
                                             border: '1px solid #000066',
                                             borderRadius: '2.5px',
                                             fontSize: '14px',
-                                            color: '#000066',
-                                            padding: '2.5px'
+                                            color: 'black',
+                                            padding: '2.5px',
+                                            backgroundColor: 'gray'
                                         }}
                                     >
                                         {contentFile.toUpperCase()}
