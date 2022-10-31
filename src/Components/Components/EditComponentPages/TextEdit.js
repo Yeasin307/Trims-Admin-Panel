@@ -22,12 +22,6 @@ const TextEdit = ({ component }) => {
                 text: yup.string().required("Required!")
             })}
             onSubmit={async (values, actions) => {
-
-                // const formData = new FormData();
-                // formData.append('componentId', component?.id);
-                // formData.append('name', values?.name);
-                // formData.append('content', values?.text);
-                // formData.append('userId', userInfo?.id);
                 const data = {
                     componentId: component?.id,
                     name: values?.name,

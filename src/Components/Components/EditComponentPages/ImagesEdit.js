@@ -3,12 +3,14 @@ import { Box, Button, TextField, Typography } from '@mui/material';
 import { ErrorMessage, Field, Form, Formik } from 'formik';
 import axios from 'axios';
 import * as yup from "yup";
+import { useNavigate } from "react-router-dom";
 import ImageUploading from "react-images-uploading";
 import CancelOutlinedIcon from '@mui/icons-material/CancelOutlined';
 import { AuthContext } from '../../../Context/AuthProvider';
 
 const ImagesEdit = ({ component, setComponent, setType, setActive }) => {
     const { userInfo } = React.useContext(AuthContext);
+    const navigate = useNavigate();
 
     const handleImageDeleted = async (image, userId) => {
         if (component?.content?.images?.length > 1) {
@@ -50,24 +52,28 @@ const ImagesEdit = ({ component, setComponent, setType, setActive }) => {
             })}
             onSubmit={async (values, actions) => {
 
-                // const formData = new FormData();
-                // formData.append('name', values?.name);
-                // formData.append('type', type);
-                // formData.append('text', values?.text);
-                // formData.append('id', userInfo?.id);
+                const formData = new FormData();
+                formData.append('componentId', component?.id);
+                formData.append('name', values?.name);
+                formData.append('type', component?.type);
+                formData.append('id', userInfo?.id);
+                formData.append('previousImages', component?.content?.images);
+                for (const file of values?.images) {
+                    formData.append('images', file?.file);
+                }
 
-                // axios.post("http://localhost:5000/components/create", formData, {
-                //     headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` }
-                // })
-                //     .then((res) => {
-                //         actions.setSubmitting(false);
-                //         actions.resetForm();
-                //         alert(res.data);
-                //         navigate("/components");
-                //     })
-                //     .catch((err) => {
-                //         alert(err?.response?.data);
-                //     });
+                axios.put("http://localhost:5000/components/update-with-image-file", formData, {
+                    headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` }
+                })
+                    .then((res) => {
+                        actions.setSubmitting(false);
+                        actions.resetForm();
+                        alert(res.data);
+                        navigate("/components");
+                    })
+                    .catch((err) => {
+                        alert(err?.response?.data);
+                    });
             }}
         >
             {({ values, setFieldValue }) => {
