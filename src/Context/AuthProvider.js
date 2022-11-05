@@ -1,11 +1,11 @@
+import React, { createContext, useEffect, useState } from 'react';
 import axios from 'axios';
-import React, { createContext, useState } from 'react';
 
 export const AuthContext = createContext();
 
 const AuthProvider = ({ children }) => {
     const [userInfo, setUserInfo] = useState({});
-    const [isLoading, setIsLoading] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
 
     const loginUser = (email, password, location, navigate) => {
         setIsLoading(true);
@@ -15,20 +15,31 @@ const AuthProvider = ({ children }) => {
             password,
         })
             .then(res => {
-                let userInfo = res.data.user;
+                const userInfo = res.data.user;
                 localStorage.setItem("access_token", res.data.access_token);
+                localStorage.setItem("id", res.data.user.id);
                 setUserInfo(userInfo);
-                setIsLoading(false);
                 const destination = location?.state?.from || '/';
                 navigate(destination);
             })
-            .catch(e => {
-                setIsLoading(false);
-            });
+            .finally(() => setIsLoading(false));
     };
+
+    useEffect(() => {
+        setIsLoading(true);
+        const id = localStorage.getItem("id");
+        axios.post("http://localhost:5000/auth/check-login", { id }, {
+            headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` }
+        })
+            .then((res) => {
+                setUserInfo(res.data);
+            })
+            .finally(() => setIsLoading(false));
+    }, []);
 
     const logout = () => {
         localStorage.removeItem("access_token");
+        localStorage.removeItem("id");
         setUserInfo({});
     }
 

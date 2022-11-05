@@ -11,9 +11,10 @@ const PrivateRoute = ({ children, ...rest }) => {
         return <CircularProgress />
     }
 
-    if (userInfo?.role_id === "admin") {
+    if (userInfo?.role_id === 'admin') {
         return children;
     }
+
     return <Navigate to="/login" state={{ from: location }} />
 };
 

@@ -37,12 +37,6 @@ const Users = () => {
             headerName: 'Role',
             sortable: false,
             width: 150
-        },
-        {
-            field: 'password',
-            headerName: 'Password',
-            sortable: false,
-            width: 250
         }
     ];
 
