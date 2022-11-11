@@ -406,6 +406,9 @@ const EditProduct = () => {
                                                     maxFileSize={5000000}
                                                     dataURLKey="data_url"
                                                     acceptType={['jpg', 'jpeg', 'gif', 'png']}
+                                                    resolutionType={'absolute'}
+                                                    resolutionWidth={600}
+                                                    resolutionHeight={800}
                                                 >
                                                     {({
                                                         imageList,
@@ -430,11 +433,13 @@ const EditProduct = () => {
                                                                 >
                                                                     Upload New Images
                                                                 </Button>
+                                                                <span style={{ padding: '5px 15px' }}>Image Resolution 600 X 800</span>
                                                             </Box>
 
                                                             {errors && <div style={{ color: 'red', margin: '5px 0px' }}>
                                                                 {errors.maxFileSize && <span>Selected file size exceed maxFileSize</span>}
                                                                 {errors.acceptType && <span>Your selected file type is not allow</span>}
+                                                                {errors.resolution && <span>Selected file is not match desired resolution</span>}
                                                             </div>}
 
                                                             <Box
