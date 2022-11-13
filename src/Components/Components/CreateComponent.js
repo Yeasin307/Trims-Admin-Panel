@@ -106,7 +106,7 @@ const CreateComponent = () => {
                     }
                     formData.append('id', userInfo?.id);
 
-                    axios.post("http://localhost:5000/components/create", formData, {
+                    axios.post("https://server.asdfashionbd.com/components/create", formData, {
                         headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` }
                     })
                         .then((res) => {

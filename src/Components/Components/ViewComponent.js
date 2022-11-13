@@ -9,7 +9,7 @@ const ViewComponent = () => {
     const { id } = useParams();
 
     React.useEffect(() => {
-        axios.get(`http://localhost:5000/components/viewcomponent/${id}`, {
+        axios.get(`https://server.asdfashionbd.com/components/viewcomponent/${id}`, {
             headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` }
         })
             .then((res) => {
@@ -37,7 +37,7 @@ const ViewComponent = () => {
                     {component?.content?.images?.map((contentImage, index) => (
                         <img
                             key={index}
-                            src={`http://localhost:5000/static/components/${contentImage}`}
+                            src={`https://server.asdfashionbd.com/static/components/${contentImage}`}
                             alt="contentImage"
                             width={280}
                             height={200}
@@ -54,7 +54,7 @@ const ViewComponent = () => {
                             style={{ marginBottom: '5px' }}
                         >
                             <a
-                                href={`http://localhost:5000/static/components/${contentFile}`}
+                                href={`https://server.asdfashionbd.com/static/components/${contentFile}`}
                                 target="_blank"
                                 rel="noreferrer"
                                 style={{ textDecoration: 'none' }}
