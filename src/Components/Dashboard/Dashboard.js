@@ -18,9 +18,13 @@ function Dashboard(props) {
 
     const drawer = (
         <div>
-            <Toolbar />
+            <Toolbar sx={{ display: "flex", justifyContent: 'center', alignItems: 'center', backgroundColor: '#1976D2' }}>
+                <Typography color="#fff600ff" variant="h4" noWrap component="div">
+                    Trims
+                </Typography>
+            </Toolbar>
             <Divider />
-            <Box sx={{ display: 'flex', flexDirection: 'column', my: 3 }}>
+            <Box sx={{ display: 'flex', flexDirection: 'column', my: 1 }}>
 
                 <Link style={{ textDecoration: 'none', marginBottom: '10px' }} to="/">
                     <Button sx={{ width: '95%' }} variant='contained'>Dashboard</Button>

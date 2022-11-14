@@ -29,7 +29,7 @@ const TextEdit = ({ component }) => {
                     userId: userInfo?.id
                 }
 
-                axios.put("https://server.asdfashionbd.com/components/update", data, {
+                axios.put("http://localhost:5000/components/update", data, {
                     headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` }
                 })
                     .then((res) => {

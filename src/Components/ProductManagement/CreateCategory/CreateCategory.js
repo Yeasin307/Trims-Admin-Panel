@@ -22,7 +22,7 @@ const CreateCategory = ({ createOpen, setCreateOpen, editOpen, active }) => {
     });
 
     React.useEffect(() => {
-        axios.get("https://server.asdfashionbd.com/categories/active", {
+        axios.get("http://localhost:5000/categories/active", {
             headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` }
         })
             .then((res) => {
@@ -68,7 +68,7 @@ const CreateCategory = ({ createOpen, setCreateOpen, editOpen, active }) => {
                                 formData.append('image', values?.image[0]?.file);
                                 formData.append('userId', userInfo?.id);
 
-                                axios.post("https://server.asdfashionbd.com/categories/create", formData, {
+                                axios.post("http://localhost:5000/categories/create", formData, {
                                     headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` }
                                 })
                                     .then(() => {

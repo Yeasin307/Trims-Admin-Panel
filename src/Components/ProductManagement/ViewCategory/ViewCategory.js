@@ -36,7 +36,7 @@ const ViewCategory = ({ viewOpen, setViewOpen, category, categoryChild }) => {
 
                         <h4 style={{ textDecoration: 'underline', color: '#002884' }}>Image</h4>
                         <img
-                            src={`https://server.asdfashionbd.com/static/categoryimages/${category?.image}`}
+                            src={`http://localhost:5000/static/categoryimages/${category?.image}`}
                             alt="CategoryImage"
                             width={280}
                             height={200}

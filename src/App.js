@@ -25,6 +25,7 @@ function App() {
           <Routes>
 
             <Route path="/" element={<PrivateRoute><Dashboard /></PrivateRoute>}>
+              <Route path="/" element={<Products />} />
               <Route path="/users" element={<Users />} />
               <Route path="/productmanagement" element={<ProductManagementMenu />}>
                 <Route path="/productmanagement/categories" element={<Categories />} />

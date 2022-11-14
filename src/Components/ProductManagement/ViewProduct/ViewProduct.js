@@ -9,7 +9,7 @@ const ViewProduct = () => {
     const { id } = useParams();
 
     React.useEffect(() => {
-        axios.get(`https://server.asdfashionbd.com/products/viewproduct/${id}`, {
+        axios.get(`http://localhost:5000/products/viewproduct/${id}`, {
             headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` }
         })
             .then((res) => {
@@ -40,7 +40,7 @@ const ViewProduct = () => {
                 {product?.productDetails?.map((productImage) => (
                     <img
                         key={productImage?.id}
-                        src={`https://server.asdfashionbd.com/static/productimages/${productImage?.image}`}
+                        src={`http://localhost:5000/static/productimages/${productImage?.image}`}
                         alt="ProductImage"
                         width={280}
                         height={200}

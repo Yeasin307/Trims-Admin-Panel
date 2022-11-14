@@ -16,7 +16,7 @@ const EditComponent = () => {
     const { userInfo } = React.useContext(AuthContext);
 
     React.useEffect(() => {
-        axios.get(`https://server.asdfashionbd.com/components/viewcomponent/${id}`, {
+        axios.get(`http://localhost:5000/components/viewcomponent/${id}`, {
             headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` }
         })
             .then((res) => {
@@ -30,7 +30,7 @@ const EditComponent = () => {
         if (e.target.value === "0") {
             const proceed = window.confirm("Are you sure to deactivated?");
             if (proceed) {
-                await axios.put("https://server.asdfashionbd.com/components/activate-deactivate", { componentId, userId, activateDeactivate: e.target.value }, {
+                await axios.put("http://localhost:5000/components/activate-deactivate", { componentId, userId, activateDeactivate: e.target.value }, {
                     headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` }
                 })
                     .then(() => {
@@ -40,7 +40,7 @@ const EditComponent = () => {
         } else {
             const proceed = window.confirm("Are you sure to activated?");
             if (proceed) {
-                await axios.put("https://server.asdfashionbd.com/components/activate-deactivate", { componentId, userId, activateDeactivate: e.target.value }, {
+                await axios.put("http://localhost:5000/components/activate-deactivate", { componentId, userId, activateDeactivate: e.target.value }, {
                     headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` }
                 })
                     .then(() => {
