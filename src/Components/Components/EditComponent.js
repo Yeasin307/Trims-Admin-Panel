@@ -3,10 +3,9 @@ import { Box, FormControl, FormControlLabel, FormLabel, Radio, RadioGroup, TextF
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import { AuthContext } from '../../Context/AuthProvider';
-import TextEdit from './EditComponentPages/TextEdit';
-import ImagesEdit from './EditComponentPages/ImagesEdit';
-import FilesEdit from './EditComponentPages/FilesEdit';
-import VideoEdit from './EditComponentPages/VideoEdit';
+import AUVMGEdit from './EditComponentPages/AUVMGEdit';
+import CEPEdit from './EditComponentPages/CEPEdit';
+import HomeSliderEdit from './EditComponentPages/HomeSliderEdit';
 
 const EditComponent = () => {
     const [type, setType] = React.useState("");
@@ -86,20 +85,27 @@ const EditComponent = () => {
                         />
                     </Box>
 
-                    {type === "TEXT" && <TextEdit component={component} />}
-                    {type === "IMAGE" && <ImagesEdit
+                    {(type === "ABOUT_US" || type === "VISION" || type === "MISSION" || type === "GOAL") &&
+                        <AUVMGEdit
+                            type={type}
+                            component={component}
+                        />
+                    }
+
+                    {(type === "CLIENT" || type === "EVENT" || type === "POST") && <CEPEdit
+                        type={type}
                         component={component}
                         setComponent={setComponent}
                         setType={setType}
                         setActive={setActive}
                     />}
-                    {type === "FILE" && <FilesEdit
-                        component={component}
-                        setComponent={setComponent}
-                        setType={setType}
-                        setActive={setActive}
-                    />}
-                    {type === "VIDEO" && <VideoEdit component={component} />}
+
+                    {type === "HOME_SLIDER" &&
+                        <HomeSliderEdit
+                            type={type}
+                            component={component}
+                        />
+                    }
                 </>
             }
 

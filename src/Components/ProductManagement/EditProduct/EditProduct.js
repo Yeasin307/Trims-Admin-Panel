@@ -318,6 +318,8 @@ const EditProduct = () => {
                                             < >
                                                 <RichTextEditor
                                                     field={field}
+                                                    placeholder="Change Product Description"
+                                                    id="t2"
                                                 />
                                                 <ErrorMessage
                                                     name="description"

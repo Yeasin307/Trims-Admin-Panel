@@ -26,8 +26,8 @@ const Components = () => {
 
                     <TableHead>
                         <TableRow>
-                            <TableCell align="center">Component NAME</TableCell>
                             <TableCell align="center">Type</TableCell>
+                            <TableCell align="center">Component Title</TableCell>
                             <TableCell align="center">VIEW / EDIT</TableCell>
                         </TableRow>
                     </TableHead>
@@ -39,9 +39,11 @@ const Components = () => {
                                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                             >
                                 <TableCell align="center" component="th" scope="row">
-                                    {component?.name}
+                                    {component?.type}
                                 </TableCell>
-                                <TableCell align="center">{component?.type}</TableCell>
+                                <TableCell align="center">
+                                    <div dangerouslySetInnerHTML={{ __html: component?.title }} />
+                                </TableCell>
                                 <TableCell align="center">
 
                                     <Link style={{ textDecoration: 'none' }} to={`/viewcomponent/${component?.id}`}>

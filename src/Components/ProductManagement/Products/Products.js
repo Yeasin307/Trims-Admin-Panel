@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
 import axios from 'axios';
 
-const Products = () => {
+const Products = ({ createProduct }) => {
     const [products, setProducts] = React.useState([]);
 
     React.useEffect(() => {
@@ -17,9 +17,9 @@ const Products = () => {
 
     return (
         <>
-            <Link style={{ marginTop: '-56px', marginBottom: '24px', display: 'flex', justifyContent: 'end', textDecoration: 'none' }} to="/productmanagement/createproduct">
+            {createProduct !== "0" && <Link style={{ marginTop: '-56px', marginBottom: '24px', display: 'flex', justifyContent: 'end', textDecoration: 'none' }} to="/productmanagement/createproduct">
                 <Button variant='outlined'>CREATE NEW PRODUCT</Button>
-            </Link>
+            </Link>}
 
             <TableContainer component={Paper}>
                 <Table sx={{ width: 1200 }} aria-label="categories table">

@@ -202,6 +202,8 @@ const CreateProduct = () => {
                                             < >
                                                 <RichTextEditor
                                                     field={field}
+                                                    placeholder="Enter Product Description"
+                                                    id="t1"
                                                 />
                                                 <ErrorMessage
                                                     name="description"

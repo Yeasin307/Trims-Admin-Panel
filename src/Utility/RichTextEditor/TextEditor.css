@@ -56,11 +56,11 @@
 }
 
 .ql-editor {
-    min-height: 50vh;
+    min-height: 16vh;
     font-size: 16px;
 }
 
-.App .ql-snow .ql-tooltip.ql-flip {
+.App .ql-snow .ql-tooltip .ql-flip {
     width: auto;
     left: 17px !important;
     white-space: normal;
@@ -84,7 +84,7 @@
         align-self: flex-start;
     }
 
-    .container .ql-toolbar.ql-snow {
+    .container .ql-toolbar .ql-snow {
         display: none;
     }
 }

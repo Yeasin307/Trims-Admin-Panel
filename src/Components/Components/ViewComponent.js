@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Box, Button, Tooltip } from '@mui/material';
+import { Box, Button } from '@mui/material';
 import { useParams, Link } from 'react-router-dom';
 import axios from 'axios';
 import dateFormat from "dateformat";
@@ -7,6 +7,7 @@ import dateFormat from "dateformat";
 const ViewComponent = () => {
     const [component, setComponent] = React.useState({});
     const { id } = useParams();
+    console.log(component);
 
     React.useEffect(() => {
         axios.get(`http://localhost:5000/components/viewcomponent/${id}`, {
@@ -19,26 +20,51 @@ const ViewComponent = () => {
 
     return (
         <Box sx={{ textAlign: 'start', backgroundColor: '#e6e4e1', p: 5, borderRadius: 5 }}>
-            <Box style={{ textDecoration: 'underline', textAlign: 'center', fontSize: '26px', color: '#002884' }}>
-                Details of {component?.name}
+            <Box style={{ fontSize: '26px', color: '#002884', display: "flex", justifyContent: 'center', alignItems: 'center' }}>
+                <div style={{ paddingRight: '5px' }}>Details of</div>
+                <div dangerouslySetInnerHTML={{ __html: component?.title }} />
             </Box>
+
+            <hr style={{
+                marginTop: '0px',
+                borderTop: "2px solid gray",
+                borderRadius: "2px"
+            }} />
+
             <Box >
 
                 <h4 style={{ textDecoration: 'underline', color: '#002884' }}>TYPE</h4>
                 <p>{component?.type}</p>
 
-                {component?.type === "TEXT" && <div>
+                <h4 style={{ textDecoration: 'underline', color: '#002884' }}>TITLE</h4>
+                <div dangerouslySetInnerHTML={{ __html: component?.title }} />
+
+                <h4 style={{ textDecoration: 'underline', color: '#002884' }}>SUBTITLE</h4>
+                <div dangerouslySetInnerHTML={{ __html: component?.subtitle }} />
+
+                {component?.type !== "HOME_SLIDE" && <div>
                     <h4 style={{ textDecoration: 'underline', color: '#002884' }}>DESCRIPTION</h4>
-                    <div dangerouslySetInnerHTML={{ __html: component?.content }} />
+                    <div dangerouslySetInnerHTML={{ __html: component?.description }} />
                 </div>}
 
-                {component?.type === "IMAGE" && <div>
+                {component?.type === "HOME_SLIDER" && <div>
+                    <h4 style={{ textDecoration: 'underline', color: '#002884' }}>IMAGE</h4>
+                    <img
+                        src={`http://localhost:5000/static/components/${component?.image}`}
+                        alt="img"
+                        width={280}
+                        height={200}
+                        style={{ borderRadius: '5px' }}
+                    />
+                </div>}
+
+                {(component?.type === "CLIENT" || component?.type === "EVENT" || component?.type === "POST") && <div>
                     <h4 style={{ textDecoration: 'underline', color: '#002884' }}>IMAGES</h4>
-                    {component?.content?.images?.map((contentImage, index) => (
+                    {component?.image?.map((contentImage, index) => (
                         <img
                             key={index}
                             src={`http://localhost:5000/static/components/${contentImage}`}
-                            alt="contentImage"
+                            alt="img"
                             width={280}
                             height={200}
                             style={{ marginRight: '20px', borderRadius: '5px' }}
@@ -46,45 +72,9 @@ const ViewComponent = () => {
                     ))}
                 </div>}
 
-                {component?.type === "FILE" && <div>
-                    <h4 style={{ textDecoration: 'underline', color: '#002884' }}>FILES</h4>
-                    {component?.content?.files?.map((contentFile, index) => (
-                        <div
-                            key={index}
-                            style={{ marginBottom: '5px' }}
-                        >
-                            <a
-                                href={`http://localhost:5000/static/components/${contentFile}`}
-                                target="_blank"
-                                rel="noreferrer"
-                                style={{ textDecoration: 'none' }}
-                            >
-                                <Tooltip title={contentFile.toUpperCase()}>
-                                    <div
-                                        style={{
-                                            width: '300px',
-                                            whiteSpace: 'nowrap',
-                                            overflow: 'hidden',
-                                            textOverflow: 'ellipsis',
-                                            border: '1px solid #000066',
-                                            borderRadius: '2.5px',
-                                            fontSize: '14px',
-                                            color: 'black',
-                                            padding: '2.5px',
-                                            backgroundColor: 'gray'
-                                        }}
-                                    >
-                                        {contentFile.toUpperCase()}
-                                    </div>
-                                </Tooltip>
-                            </a>
-                        </div>
-                    ))}
-                </div>}
-
-                {component?.type === "VIDEO" && <div>
+                {(component?.type === "CLIENT" || component?.type === "EVENT" || component?.type === "POST") && <div>
                     <h4 style={{ textDecoration: 'underline', color: '#002884' }}>VIDEO</h4>
-                    <div dangerouslySetInnerHTML={{ __html: component?.content }} />
+                    <div dangerouslySetInnerHTML={{ __html: component?.video }} />
                 </div>}
 
                 <h4 style={{ textDecoration: 'underline', color: '#002884' }}>CREATED BY</h4>

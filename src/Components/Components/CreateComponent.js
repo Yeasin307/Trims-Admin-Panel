@@ -11,49 +11,150 @@ import { AuthContext } from '../../Context/AuthProvider';
 import "../ProductManagement/CreateProduct/CreateProduct.css";
 
 const CreateComponent = () => {
-    const [type, setType] = React.useState("TEXT");
-    const [initialValues, setInitialValues] = React.useState({ name: '', text: '' });
+    const [type, setType] = React.useState("HOME_SLIDER");
+    const [initialValues, setInitialValues] = React.useState({ title: '', subtitle: '', images: [] });
     const [validationSchema, setValidationSchema] = React.useState(yup.object({
-        name: yup.string(),
-        text: yup.string().required("Required!")
+        title: yup.string()
+            .required("Required!")
+            .min(12, 'Minimum 5 character')
+            .max(57, 'Maximum 50 character'),
+        subtitle: yup.string(),
+        images: yup.array()
+            .min(1, "Minimum One Image Required!")
+            .max(1, "Maximum One Image Over!")
     }));
     const navigate = useNavigate();
     const { userInfo } = React.useContext(AuthContext);
 
     React.useEffect(() => {
-        if (type === "TEXT") {
-            setInitialValues({ name: '', text: '' });
+        if (type === "HOME_SLIDER") {
+            setInitialValues({ title: '', subtitle: '', images: [] });
             const validationSchema = yup.object({
-                name: yup.string(),
-                text: yup.string().required("Required!")
-            });
-            setValidationSchema(validationSchema);
-        }
-        else if (type === "IMAGE") {
-            setInitialValues({ name: '', images: [] });
-            const validationSchema = yup.object({
-                name: yup.string(),
+                title: yup.string()
+                    .required("Required!")
+                    .min(12, 'Minimum 5 character')
+                    .max(57, 'Maximum 50 character'),
+                subtitle: yup.string(),
                 images: yup.array()
                     .min(1, "Minimum One Image Required!")
-                    .max(5, "Maximum Five Images Over!")
+                    .max(1, "Maximum One Image Over!")
             });
             setValidationSchema(validationSchema);
         }
-        else if (type === "FILE") {
-            setInitialValues({ name: '', files: [] });
+        else if (type === "ABOUT_US") {
+            setInitialValues({ title: '', subtitle: '', description: '' });
             const validationSchema = yup.object({
-                name: yup.string(),
-                files: yup.array()
-                    .min(1, "Minimum One File Required!")
-                    .max(5, "Maximum Five Files Over!")
+                title: yup.string()
+                    .required("Required!")
+                    .min(12, 'Minimum 5 character')
+                    .max(57, 'Maximum 50 character'),
+                subtitle: yup.string(),
+                description: yup.string()
+                    .required("Required!")
+                    .min(57, 'Minimum 50 character')
+                    .max(1007, 'Maximum 1000 character')
             });
             setValidationSchema(validationSchema);
         }
-        else if (type === "VIDEO") {
-            setInitialValues({ name: '', video: '' });
+        else if (type === "VISION") {
+            setInitialValues({ title: '', subtitle: '', description: '' });
             const validationSchema = yup.object({
-                name: yup.string(),
-                video: yup.string().required("Required!")
+                title: yup.string()
+                    .required("Required!")
+                    .min(12, 'Minimum 5 character')
+                    .max(57, 'Maximum 50 character'),
+                subtitle: yup.string(),
+                description: yup.string()
+                    .required("Required!")
+                    .min(57, 'Minimum 50 character')
+                    .max(1007, 'Maximum 1000 character')
+            });
+            setValidationSchema(validationSchema);
+        }
+        else if (type === "MISSION") {
+            setInitialValues({ title: '', subtitle: '', description: '' });
+            const validationSchema = yup.object({
+                title: yup.string()
+                    .required("Required!")
+                    .min(12, 'Minimum 5 character')
+                    .max(57, 'Maximum 50 character'),
+                subtitle: yup.string(),
+                description: yup.string()
+                    .required("Required!")
+                    .min(57, 'Minimum 50 character')
+                    .max(1007, 'Maximum 1000 character')
+            });
+            setValidationSchema(validationSchema);
+        }
+        else if (type === "GOAL") {
+            setInitialValues({ title: '', subtitle: '', description: '' });
+            const validationSchema = yup.object({
+                title: yup.string()
+                    .required("Required!")
+                    .min(12, 'Minimum 5 character')
+                    .max(57, 'Maximum 50 character'),
+                subtitle: yup.string(),
+                description: yup.string()
+                    .required("Required!")
+                    .min(57, 'Minimum 50 character')
+                    .max(1007, 'Maximum 1000 character')
+            });
+            setValidationSchema(validationSchema);
+        }
+        else if (type === "CLIENT") {
+            setInitialValues({ title: '', subtitle: '', description: '', images: [], video: '' });
+            const validationSchema = yup.object({
+                title: yup.string()
+                    .required("Required!")
+                    .min(12, 'Minimum 5 character')
+                    .max(57, 'Maximum 50 character'),
+                subtitle: yup.string(),
+                description: yup.string()
+                    .required("Required!")
+                    .min(57, 'Minimum 50 character')
+                    .max(1007, 'Maximum 1000 character'),
+                images: yup.array()
+                    .min(1, "Minimum One Image Required!")
+                    .max(10, "Maximum Ten Images Over!"),
+                video: yup.string()
+            });
+            setValidationSchema(validationSchema);
+        }
+        else if (type === "EVENT") {
+            setInitialValues({ title: '', subtitle: '', description: '', images: [], video: '' });
+            const validationSchema = yup.object({
+                title: yup.string()
+                    .required("Required!")
+                    .min(12, 'Minimum 5 character')
+                    .max(57, 'Maximum 50 character'),
+                subtitle: yup.string(),
+                description: yup.string()
+                    .required("Required!")
+                    .min(57, 'Minimum 50 character')
+                    .max(1007, 'Maximum 1000 character'),
+                images: yup.array()
+                    .min(1, "Minimum One Image Required!")
+                    .max(5, "Maximum Five Images Over!"),
+                video: yup.string()
+            });
+            setValidationSchema(validationSchema);
+        }
+        else if (type === "POST") {
+            setInitialValues({ title: '', subtitle: '', description: '', images: [], video: '' });
+            const validationSchema = yup.object({
+                title: yup.string()
+                    .required("Required!")
+                    .min(12, 'Minimum 5 character')
+                    .max(57, 'Maximum 50 character'),
+                subtitle: yup.string(),
+                description: yup.string()
+                    .required("Required!")
+                    .min(57, 'Minimum 50 character')
+                    .max(1007, 'Maximum 1000 character'),
+                images: yup.array()
+                    .min(1, "Minimum One Image Required!")
+                    .max(5, "Maximum Five Images Over!"),
+                video: yup.string()
             });
             setValidationSchema(validationSchema);
         }
@@ -66,16 +167,20 @@ const CreateComponent = () => {
             </Typography>
 
             <FormControl variant="standard" sx={{ fontsize: '18px', width: "60%", mb: 2.5 }}>
-                <InputLabel>Select Content Type</InputLabel>
+                <InputLabel>Select Component Type</InputLabel>
                 <Select
                     value={type}
                     onChange={(e) => { setType(e.target.value) }}
                     sx={{ textAlign: 'start' }}
                 >
-                    <MenuItem value="TEXT">TEXT</MenuItem>
-                    <MenuItem value="IMAGE">IMAGE</MenuItem>
-                    <MenuItem value="FILE">FILE</MenuItem>
-                    <MenuItem value="VIDEO">VIDEO</MenuItem>
+                    <MenuItem value="HOME_SLIDER">HOME_SLIDER</MenuItem>
+                    <MenuItem value="ABOUT_US">ABOUT_US</MenuItem>
+                    <MenuItem value="VISION">VISION</MenuItem>
+                    <MenuItem value="MISSION">MISSION</MenuItem>
+                    <MenuItem value="GOAL">GOAL</MenuItem>
+                    <MenuItem value="CLIENT">CLIENT</MenuItem>
+                    <MenuItem value="EVENT">EVENT</MenuItem>
+                    <MenuItem value="POST">POST</MenuItem>
                 </Select>
             </FormControl>
 
@@ -86,22 +191,19 @@ const CreateComponent = () => {
                 onSubmit={async (values, actions) => {
 
                     const formData = new FormData();
-                    formData.append('name', values?.name);
                     formData.append('type', type);
-                    if (type === "TEXT") {
-                        formData.append('text', values?.text);
+                    formData.append('title', values?.title);
+                    formData.append('subtitle', values?.subtitle);
+                    if (type !== "HOME_SLIDER") {
+                        formData.append('description', values?.description);
                     }
-                    else if (type === "IMAGE") {
-                        for (const file of values?.images) {
-                            formData.append('images', file?.file);
+                    if (type === "HOME_SLIDER") {
+                        formData.append('images', values?.images[0]?.file);
+                    }
+                    if (type === "CLIENT" || type === "EVENT" || type === "POST") {
+                        for (const image of values?.images) {
+                            formData.append('images', image?.file);
                         }
-                    }
-                    else if (type === "FILE") {
-                        for (const file of values?.files) {
-                            formData.append('files', file);
-                        }
-                    }
-                    else if (type === "VIDEO") {
                         formData.append('video', values?.video);
                     }
                     formData.append('id', userInfo?.id);
@@ -136,38 +238,64 @@ const CreateComponent = () => {
                     submitForm }) => {
                     return (
                         <Form>
-                            <Field name="name">
-                                {({ field }) => (
-                                    < >
-                                        <TextField
-                                            required
-                                            label="Enter Content Name"
-                                            value={field.value}
-                                            onChange={field.onChange(field.name)}
-                                            variant="standard"
-                                            sx={{ width: '60%', fontsize: '18px', color: 'black' }}
-                                        />
-                                        <ErrorMessage
-                                            name="name"
-                                            component="div"
-                                            style={{ textAlign: 'start', color: 'red' }}
-                                        />
-                                    </>
-                                )}
-                            </Field>
-
-                            <br /><br />
-
-                            {type === "TEXT" && <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginBottom: 2.5 }}>
+                            <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                                 <Box sx={{ width: '60%' }}>
-                                    <Field name="text">
+                                    <Field name="title">
                                         {({ field }) => (
                                             < >
                                                 <RichTextEditor
                                                     field={field}
+                                                    placeholder="Enter Component Title"
+                                                    id="t3"
                                                 />
                                                 <ErrorMessage
-                                                    name="text"
+                                                    name="title"
+                                                    component="div"
+                                                    style={{ textAlign: 'start', color: 'red' }}
+                                                />
+                                            </>
+                                        )}
+                                    </Field>
+                                </Box>
+                            </Box>
+
+                            <br />
+
+                            <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                                <Box sx={{ width: '60%' }}>
+                                    <Field name="subtitle">
+                                        {({ field }) => (
+                                            < >
+                                                <RichTextEditor
+                                                    field={field}
+                                                    placeholder="Enter Component Subtitle"
+                                                    id="t4"
+                                                />
+                                                <ErrorMessage
+                                                    name="subtitle"
+                                                    component="div"
+                                                    style={{ textAlign: 'start', color: 'red' }}
+                                                />
+                                            </>
+                                        )}
+                                    </Field>
+                                </Box>
+                            </Box>
+
+                            <br />
+
+                            {type !== "HOME_SLIDER" && <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mb: 2.5 }}>
+                                <Box sx={{ width: '60%' }}>
+                                    <Field name="description">
+                                        {({ field }) => (
+                                            < >
+                                                <RichTextEditor
+                                                    field={field}
+                                                    placeholder="Enter Component Description"
+                                                    id="t5"
+                                                />
+                                                <ErrorMessage
+                                                    name="description"
                                                     component="div"
                                                     style={{ textAlign: 'start', color: 'red' }}
                                                 />
@@ -177,7 +305,7 @@ const CreateComponent = () => {
                                 </Box>
                             </Box>}
 
-                            {type === "IMAGE" && <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                            {(type === "HOME_SLIDER" || type === "CLIENT" || type === "EVENT" || type === "POST") && <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                                 <Box sx={{ width: '60%' }}>
                                     <Field name="images">
                                         {({ field }) => (
@@ -189,8 +317,12 @@ const CreateComponent = () => {
                                                         setFieldValue("images", images);
                                                     }}
                                                     maxFileSize={5000000}
+                                                    maxNumber={type === "HOME_SLIDER" ? 1 : type === "CLIENT" ? 10 : 5}
                                                     dataURLKey="data_url"
                                                     acceptType={['jpg', 'jpeg', 'gif', 'png']}
+                                                    resolutionType={'absolute'}
+                                                    resolutionWidth={type === "HOME_SLIDER" ? 740 : 600}
+                                                    resolutionHeight={type === "HOME_SLIDER" ? 724 : 600}
                                                 >
                                                     {({
                                                         imageList,
@@ -215,11 +347,14 @@ const CreateComponent = () => {
                                                                 >
                                                                     Upload Images
                                                                 </Button>
+                                                                <span style={{ padding: '5px 15px' }}>Image Resolution {type === "HOME_SLIDER" ? "740 X 724" : "600 X 600"}</span>
                                                             </Box>
 
                                                             {errors && <div style={{ color: 'red', margin: '5px 0px' }}>
                                                                 {errors.maxFileSize && <span>Selected file size exceed maxFileSize</span>}
+                                                                {errors.maxNumber && <span>Exceed maxNumber of file</span>}
                                                                 {errors.acceptType && <span>Your selected file type is not allow</span>}
+                                                                {errors.resolution && <span>Selected file is not match desired resolution</span>}
                                                             </div>}
 
                                                             <Box
@@ -264,41 +399,11 @@ const CreateComponent = () => {
                                 </Box>
                             </Box>}
 
-                            {type === "FILE" && <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mb: 2.5 }}>
-                                <Box sx={{ width: '60%' }}>
-                                    <Field name="files">
-                                        {({ field }) => (
-                                            < >
-                                                <input
-                                                    // required
-                                                    // value={field.value}
-                                                    multiple
-                                                    type="file"
-                                                    accept=".pdf,.doc,.docx"
-                                                    onChange={(e) => {
-                                                        const files = Array.from(e.target.files);
-                                                        // const files = [...e.target.files];
-                                                        setFieldValue("files", files);
-                                                    }}
-                                                    style={{ fontSize: '18px', borderBottom: '2px solid gray', paddingBottom: '5px', width: '100%' }}
-                                                />
-                                                <ErrorMessage
-                                                    name="files"
-                                                    component="div"
-                                                    style={{ textAlign: 'start', color: 'red', marginTop: '10px' }}
-                                                />
-                                            </>
-                                        )}
-                                    </Field>
-                                </Box>
-                            </Box>}
-
-                            {type === "VIDEO" && <Box sx={{ marginBottom: 2.5 }}>
+                            {(type === "CLIENT" || type === "EVENT" || type === "POST") && <Box sx={{ marginBottom: 2.5 }}>
                                 <Field name="video">
                                     {({ field }) => (
                                         < >
                                             <TextField
-                                                required
                                                 label="Enter Video URL"
                                                 value={field.value}
                                                 onChange={field.onChange(field.name)}

@@ -7,19 +7,20 @@ import { useNavigate } from "react-router-dom";
 import ImageUploading from "react-images-uploading";
 import CancelOutlinedIcon from '@mui/icons-material/CancelOutlined';
 import { AuthContext } from '../../../Context/AuthProvider';
+import RichTextEditor from '../../../Utility/RichTextEditor/RichTextEditor';
 
-const ImagesEdit = ({ component, setComponent, setType, setActive }) => {
+const CEPEdit = ({ type, component, setComponent, setType, setActive }) => {
     const { userInfo } = React.useContext(AuthContext);
     const navigate = useNavigate();
 
     const handleImageDeleted = async (image, userId) => {
-        if (component?.content?.images?.length > 1) {
+        if (component?.image?.length > 1) {
             const proceed = window.confirm("Are you sure to deleted?");
             if (proceed) {
-                const images = component?.content?.images.filter((img) => {
+                const images = component?.image.filter((img) => {
                     return img !== image
                 })
-                await axios.put("http://localhost:5000/components/delete-image-file", { type: component?.type, componentId: component?.id, content: images, userId }, {
+                await axios.put("http://localhost:5000/components/delete-image", { type, componentId: component?.id, image: images, userId }, {
                     headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` }
                 })
                     .then(() => {
@@ -44,25 +45,39 @@ const ImagesEdit = ({ component, setComponent, setType, setActive }) => {
         <Formik
 
             enableReinitialize={true}
-            initialValues={{ name: component?.name, images: [] }}
+            initialValues={{ title: component?.title, subtitle: component?.subtitle, description: component?.description, images: [], video: component?.video }}
             validationSchema={yup.object({
-                name: yup.string(),
+                title: yup.string()
+                    .required("Required!")
+                    .min(12, 'Minimum 5 character')
+                    .max(57, 'Maximum 50 character'),
+                subtitle: yup.string(),
+                description: yup.string()
+                    .required("Required!")
+                    .min(57, 'Minimum 50 character')
+                    .max(1007, 'Maximum 1000 character'),
                 images: yup.array()
-                    .max(component?.content?.images?.length === 5 ? 0 : 5 - component?.content?.images?.length, "Maximum Five Images Over!")
+                    .max(type === "CLIENT" ? 10 - component?.image?.length : 5 - component?.image?.length, "Maximum number of images over!"),
+                video: yup.string()
             })}
             onSubmit={async (values, actions) => {
 
                 const formData = new FormData();
+                formData.append('type', type);
                 formData.append('componentId', component?.id);
-                formData.append('name', values?.name);
-                formData.append('type', component?.type);
-                formData.append('id', userInfo?.id);
-                formData.append('previousImages', component?.content?.images);
-                for (const file of values?.images) {
-                    formData.append('images', file?.file);
+                formData.append('title', values?.title);
+                formData.append('subtitle', values?.subtitle);
+                formData.append('description', values?.description);
+                formData.append('previousImages', component?.image);
+                if (values?.images?.length > 0) {
+                    for (const image of values?.images) {
+                        formData.append('images', image?.file);
+                    }
                 }
+                formData.append('video', values?.video);
+                formData.append('userId', userInfo?.id);
 
-                axios.put("http://localhost:5000/components/update-with-image-file", formData, {
+                axios.put("http://localhost:5000/components/update", formData, {
                     headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` }
                 })
                     .then((res) => {
@@ -79,27 +94,68 @@ const ImagesEdit = ({ component, setComponent, setType, setActive }) => {
             {({ values, setFieldValue }) => {
                 return (
                     <Form>
-                        <Field name="name">
-                            {({ field }) => (
-                                < >
-                                    <TextField
-                                        required
-                                        label="Enter Content Name"
-                                        value={field.value}
-                                        onChange={field.onChange(field.name)}
-                                        variant="standard"
-                                        sx={{ width: '60%', fontsize: '18px', color: 'black' }}
-                                    />
-                                    <ErrorMessage
-                                        name="name"
-                                        component="div"
-                                        style={{ textAlign: 'start', color: 'red' }}
-                                    />
-                                </>
-                            )}
-                        </Field>
+                        <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginBottom: 2.5 }}>
+                            <Box sx={{ width: '60%' }}>
+                                <Field name="title">
+                                    {({ field }) => (
+                                        < >
+                                            <RichTextEditor
+                                                field={field}
+                                                placeholder="Change Component Title"
+                                                id="t11"
+                                            />
+                                            <ErrorMessage
+                                                name="title"
+                                                component="div"
+                                                style={{ textAlign: 'start', color: 'red' }}
+                                            />
+                                        </>
+                                    )}
+                                </Field>
+                            </Box>
+                        </Box>
 
-                        <br /><br />
+                        <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginBottom: 2.5 }}>
+                            <Box sx={{ width: '60%' }}>
+                                <Field name="subtitle">
+                                    {({ field }) => (
+                                        < >
+                                            <RichTextEditor
+                                                field={field}
+                                                placeholder="Change Component Subtitle"
+                                                id="t12"
+                                            />
+                                            <ErrorMessage
+                                                name="subtitle"
+                                                component="div"
+                                                style={{ textAlign: 'start', color: 'red' }}
+                                            />
+                                        </>
+                                    )}
+                                </Field>
+                            </Box>
+                        </Box>
+
+                        <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginBottom: 2.5 }}>
+                            <Box sx={{ width: '60%' }}>
+                                <Field name="description">
+                                    {({ field }) => (
+                                        < >
+                                            <RichTextEditor
+                                                field={field}
+                                                placeholder="Change Component Description"
+                                                id="t13"
+                                            />
+                                            <ErrorMessage
+                                                name="description"
+                                                component="div"
+                                                style={{ textAlign: 'start', color: 'red' }}
+                                            />
+                                        </>
+                                    )}
+                                </Field>
+                            </Box>
+                        </Box>
 
                         <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mb: 1 }}>
                             <Box sx={{ textAlign: 'start', width: '60%' }}>
@@ -114,7 +170,7 @@ const ImagesEdit = ({ component, setComponent, setType, setActive }) => {
                                 <Box
                                     sx={{ display: 'flex', justifyContent: 'start', py: 1 }}
                                 >
-                                    {component?.content?.images?.map((image, index) => (
+                                    {component?.image?.map((image, index) => (
                                         <Box
                                             sx={{ pr: 2 }}
                                             key={index}
@@ -149,6 +205,9 @@ const ImagesEdit = ({ component, setComponent, setType, setActive }) => {
                                                 maxFileSize={5000000}
                                                 dataURLKey="data_url"
                                                 acceptType={['jpg', 'jpeg', 'gif', 'png']}
+                                                resolutionType={'absolute'}
+                                                resolutionWidth={600}
+                                                resolutionHeight={600}
                                             >
                                                 {({
                                                     imageList,
@@ -173,11 +232,13 @@ const ImagesEdit = ({ component, setComponent, setType, setActive }) => {
                                                             >
                                                                 Upload New Images
                                                             </Button>
+                                                            <span style={{ padding: '5px 15px' }}>Image Resolution 600 X 600</span>
                                                         </Box>
 
                                                         {errors && <div style={{ color: 'red', margin: '5px 0px' }}>
                                                             {errors.maxFileSize && <span>Selected file size exceed maxFileSize</span>}
                                                             {errors.acceptType && <span>Your selected file type is not allow</span>}
+                                                            {errors.resolution && <span>Selected file is not match desired resolution</span>}
                                                         </div>}
 
                                                         <Box
@@ -222,6 +283,27 @@ const ImagesEdit = ({ component, setComponent, setType, setActive }) => {
                             </Box>
                         </Box>
 
+                        <Box sx={{ marginBottom: 2.5 }}>
+                            <Field name="video">
+                                {({ field }) => (
+                                    < >
+                                        <TextField
+                                            label="Change Video URL"
+                                            value={field.value}
+                                            onChange={field.onChange(field.name)}
+                                            variant="standard"
+                                            sx={{ width: '60%', fontsize: '18px', color: 'black' }}
+                                        />
+                                        <ErrorMessage
+                                            name="video"
+                                            component="div"
+                                            style={{ textAlign: 'start', color: 'red' }}
+                                        />
+                                    </>
+                                )}
+                            </Field>
+                        </Box>
+
                         <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                             <Box sx={{ width: '60%', textAlign: 'start' }}>
                                 <Button
@@ -240,4 +322,4 @@ const ImagesEdit = ({ component, setComponent, setType, setActive }) => {
     );
 };
 
-export default ImagesEdit;
+export default CEPEdit;
