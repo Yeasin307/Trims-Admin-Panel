@@ -16,7 +16,7 @@ const Categories = () => {
     const [active, setActive] = React.useState("");
 
     React.useEffect(() => {
-        axios.get("http://localhost:5000/categories", {
+        axios.get("https://server.asdfashionbd.com/categories", {
             headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` }
         })
             .then((res) => {
@@ -25,7 +25,7 @@ const Categories = () => {
     }, [createOpen, editOpen, active]);
 
     const handleViewOpen = async (id) => {
-        await axios.post("http://localhost:5000/categories/category-details", { id }, {
+        await axios.post("https://server.asdfashionbd.com/categories/category-details", { id }, {
             headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` }
         })
             .then((res) => {
@@ -37,14 +37,14 @@ const Categories = () => {
     };
 
     const handleEditOpen = async (id) => {
-        // await axios.get("http://localhost:5000/categories/active", {
+        // await axios.get("https://server.asdfashionbd.com/categories/active", {
         //     headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` }
         // })
         //     .then((res) => {
         //         setActiveCategories(res.data);
         //     });
 
-        await axios.post("http://localhost:5000/categories/category-details", { id }, {
+        await axios.post("https://server.asdfashionbd.com/categories/category-details", { id }, {
             headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` }
         })
             .then((res) => {

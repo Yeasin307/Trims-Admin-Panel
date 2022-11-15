@@ -23,7 +23,7 @@ const EditCategory = ({ editOpen, setEditOpen, active, setActive, categories, ca
         if (e.target.value === "0") {
             const proceed = window.confirm("If you deactivated this category the child category of this category is not shown in client side! Are you confirm to deactivated?");
             if (proceed) {
-                await axios.put("http://localhost:5000/categories/activate-deactivate", { categoryId, userId, activateDeactivate: e.target.value }, {
+                await axios.put("https://server.asdfashionbd.com/categories/activate-deactivate", { categoryId, userId, activateDeactivate: e.target.value }, {
                     headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` }
                 })
                     .then(() => {
@@ -33,7 +33,7 @@ const EditCategory = ({ editOpen, setEditOpen, active, setActive, categories, ca
         } else {
             const proceed = window.confirm("Are you sure to activated?");
             if (proceed) {
-                await axios.put("http://localhost:5000/categories/activate-deactivate", { categoryId, userId, activateDeactivate: e.target.value }, {
+                await axios.put("https://server.asdfashionbd.com/categories/activate-deactivate", { categoryId, userId, activateDeactivate: e.target.value }, {
                     headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` }
                 })
                     .then(() => {
@@ -94,7 +94,7 @@ const EditCategory = ({ editOpen, setEditOpen, active, setActive, categories, ca
                                     else {
                                         const categoryId = category?.id;
                                         const userId = userInfo?.id;
-                                        await axios.put("http://localhost:5000/categories/update-without-image", { values, categoryId, userId }, {
+                                        await axios.put("https://server.asdfashionbd.com/categories/update-without-image", { values, categoryId, userId }, {
                                             headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` }
                                         })
                                             .then(() => {
@@ -115,7 +115,7 @@ const EditCategory = ({ editOpen, setEditOpen, active, setActive, categories, ca
                                         else {
                                             const categoryId = category?.id;
                                             const userId = userInfo?.id;
-                                            await axios.put("http://localhost:5000/categories/update-without-image", { values, categoryId, userId }, {
+                                            await axios.put("https://server.asdfashionbd.com/categories/update-without-image", { values, categoryId, userId }, {
                                                 headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` }
                                             })
                                                 .then(() => {
@@ -151,7 +151,7 @@ const EditCategory = ({ editOpen, setEditOpen, active, setActive, categories, ca
                                         formData.append('categoryId', category?.id);
                                         formData.append('userId', userInfo?.id);
 
-                                        await axios.put("http://localhost:5000/categories/update-with-image", formData, {
+                                        await axios.put("https://server.asdfashionbd.com/categories/update-with-image", formData, {
                                             headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` }
                                         })
                                             .then(() => {
@@ -178,7 +178,7 @@ const EditCategory = ({ editOpen, setEditOpen, active, setActive, categories, ca
                                             formData.append('categoryId', category?.id);
                                             formData.append('userId', userInfo?.id);
 
-                                            await axios.put("http://localhost:5000/categories/update-with-image", formData, {
+                                            await axios.put("https://server.asdfashionbd.com/categories/update-with-image", formData, {
                                                 headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` }
                                             })
                                                 .then(() => {
@@ -358,7 +358,7 @@ const EditCategory = ({ editOpen, setEditOpen, active, setActive, categories, ca
                                                                             :
                                                                             <Box >
                                                                                 <img
-                                                                                    src={`http://localhost:5000/static/categoryimages/${category?.image}`}
+                                                                                    src={`https://server.asdfashionbd.com/static/categoryimages/${category?.image}`}
                                                                                     alt=""
                                                                                     width="100"
                                                                                     height="75" />

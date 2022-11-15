@@ -18,12 +18,12 @@ const FilesEdit = ({ component, setComponent, setType, setActive }) => {
                 const files = component?.content?.files.filter((fil) => {
                     return fil !== file
                 })
-                await axios.put("http://localhost:5000/components/delete-image-file", { type: component?.type, componentId: component?.id, content: files, userId }, {
+                await axios.put("https://server.asdfashionbd.com/components/delete-image-file", { type: component?.type, componentId: component?.id, content: files, userId }, {
                     headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` }
                 })
                     .then(() => {
                         alert("File Deleted Successfully.");
-                        axios.get(`http://localhost:5000/components/viewcomponent/${component?.id}`, {
+                        axios.get(`https://server.asdfashionbd.com/components/viewcomponent/${component?.id}`, {
                             headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` }
                         })
                             .then((res) => {
@@ -61,7 +61,7 @@ const FilesEdit = ({ component, setComponent, setType, setActive }) => {
                     formData.append('files', file);
                 }
 
-                axios.put("http://localhost:5000/components/update-with-image-file", formData, {
+                axios.put("https://server.asdfashionbd.com/components/update-with-image-file", formData, {
                     headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` }
                 })
                     .then((res) => {
@@ -110,7 +110,7 @@ const FilesEdit = ({ component, setComponent, setType, setActive }) => {
                                             style={{ marginBottom: '5px' }}
                                         >
                                             <a
-                                                href={`http://localhost:5000/static/components/${file}`}
+                                                href={`https://server.asdfashionbd.com/static/components/${file}`}
                                                 target="_blank"
                                                 rel="noreferrer"
                                                 style={{ textDecoration: 'none' }}

@@ -10,7 +10,7 @@ const ViewComponent = () => {
     console.log(component);
 
     React.useEffect(() => {
-        axios.get(`http://localhost:5000/components/viewcomponent/${id}`, {
+        axios.get(`https://server.asdfashionbd.com/components/viewcomponent/${id}`, {
             headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` }
         })
             .then((res) => {
@@ -50,7 +50,7 @@ const ViewComponent = () => {
                 {component?.type === "HOME_SLIDER" && <div>
                     <h4 style={{ textDecoration: 'underline', color: '#002884' }}>IMAGE</h4>
                     <img
-                        src={`http://localhost:5000/static/components/${component?.image}`}
+                        src={`https://server.asdfashionbd.com/static/components/${component?.image}`}
                         alt="img"
                         width={280}
                         height={200}
@@ -63,7 +63,7 @@ const ViewComponent = () => {
                     {component?.image?.map((contentImage, index) => (
                         <img
                             key={index}
-                            src={`http://localhost:5000/static/components/${contentImage}`}
+                            src={`https://server.asdfashionbd.com/static/components/${contentImage}`}
                             alt="img"
                             width={280}
                             height={200}
