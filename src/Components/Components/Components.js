@@ -27,7 +27,7 @@ const Components = () => {
                     <TableHead>
                         <TableRow>
                             <TableCell align="center">Type</TableCell>
-                            <TableCell align="center">Component Title</TableCell>
+                            <TableCell align="center">Active / Inactive</TableCell>
                             <TableCell align="center">VIEW / EDIT</TableCell>
                         </TableRow>
                     </TableHead>
@@ -42,7 +42,7 @@ const Components = () => {
                                     {component?.type}
                                 </TableCell>
                                 <TableCell align="center">
-                                    <div dangerouslySetInnerHTML={{ __html: component?.title }} />
+                                    {component?.active === "1" ? "Active" : "Inactive"}
                                 </TableCell>
                                 <TableCell align="center">
 

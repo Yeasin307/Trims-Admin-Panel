@@ -2,8 +2,11 @@ import * as React from 'react';
 import Box from '@mui/material/Box';
 import { DataGrid } from '@mui/x-data-grid';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
+import { Button } from '@mui/material';
 
 const Users = () => {
+    const [isLoading, setIsLoading] = React.useState(true);
     const [users, setUsers] = React.useState([]);
     const [pageSize, setPageSize] = React.useState(10);
 
@@ -12,7 +15,7 @@ const Users = () => {
             field: 'username',
             headerName: 'User Name',
             sortable: false,
-            width: 200
+            width: 300
         },
         {
             field: 'email',
@@ -24,35 +27,35 @@ const Users = () => {
             field: 'firstName',
             headerName: 'First Name',
             sortable: false,
-            width: 250
+            width: 300
         },
         {
             field: 'lastName',
             headerName: 'Last Name',
             sortable: false,
-            width: 250
-        },
-        {
-            field: 'role_id',
-            headerName: 'Role',
-            sortable: false,
-            width: 150
+            width: 300
         }
     ];
 
     React.useEffect(() => {
+        setIsLoading(true);
         axios.get("https://server.asdfashionbd.com/users", {
             headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` }
         })
             .then((res) => {
                 setUsers(res.data);
+                setIsLoading(false);
             });
 
     }, [])
 
     return (
         <Box sx={{ height: 650, width: '100%' }}>
-            <DataGrid
+            <Link style={{ display: 'flex', justifyContent: 'end', textDecoration: 'none', marginBottom: '10px' }} to="/createuser">
+                <Button variant='outlined'>CREATE NEW USER</Button>
+            </Link>
+            {isLoading && <p>Loading...</p>}
+            {!isLoading && <DataGrid
                 rows={users}
                 columns={columns}
                 pageSize={pageSize}
@@ -60,7 +63,7 @@ const Users = () => {
                 rowsPerPageOptions={[5, 10, 20]}
                 pagination
                 disableSelectionOnClick
-            />
+            />}
         </Box>
     );
 };

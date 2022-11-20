@@ -321,8 +321,8 @@ const CreateComponent = () => {
                                                     dataURLKey="data_url"
                                                     acceptType={['jpg', 'jpeg', 'gif', 'png']}
                                                     resolutionType={'absolute'}
-                                                    resolutionWidth={type === "HOME_SLIDER" ? 740 : 600}
-                                                    resolutionHeight={type === "HOME_SLIDER" ? 724 : 600}
+                                                    resolutionWidth={type === "HOME_SLIDER" ? 740 : type === "CLIENT" ? 100 : 600}
+                                                    resolutionHeight={type === "HOME_SLIDER" ? 724 : type === "CLIENT" ? 80 : 600}
                                                 >
                                                     {({
                                                         imageList,
@@ -347,7 +347,7 @@ const CreateComponent = () => {
                                                                 >
                                                                     Upload Images
                                                                 </Button>
-                                                                <span style={{ padding: '5px 15px' }}>Image Resolution {type === "HOME_SLIDER" ? "740 X 724" : "600 X 600"}</span>
+                                                                <span style={{ padding: '5px 15px' }}>Image Resolution {type === "HOME_SLIDER" ? "740 X 724" : type === "CLIENT" ? "100 X 80" : "600 X 600"}</span>
                                                             </Box>
 
                                                             {errors && <div style={{ color: 'red', margin: '5px 0px' }}>

@@ -16,6 +16,7 @@ import CreateComponent from "./Components/Components/CreateComponent";
 import ViewComponent from "./Components/Components/ViewComponent";
 import EditComponent from "./Components/Components/EditComponent";
 import Leads from "./Components/Leads/Leads";
+import CreateUser from "./Components/Users/CreateUser";
 
 function App() {
   return (
@@ -27,6 +28,7 @@ function App() {
             <Route path="/" element={<PrivateRoute><Dashboard /></PrivateRoute>}>
               <Route path="/" element={<Products createProduct="0" />} />
               <Route path="/users" element={<Users />} />
+              <Route path="/createuser" element={<CreateUser />} />
               <Route path="/productmanagement" element={<ProductManagementMenu />}>
                 <Route path="/productmanagement/categories" element={<Categories />} />
                 <Route path="/productmanagement/products" element={<Products />} />

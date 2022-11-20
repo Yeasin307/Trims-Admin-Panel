@@ -206,8 +206,8 @@ const CEPEdit = ({ type, component, setComponent, setType, setActive }) => {
                                                 dataURLKey="data_url"
                                                 acceptType={['jpg', 'jpeg', 'gif', 'png']}
                                                 resolutionType={'absolute'}
-                                                resolutionWidth={600}
-                                                resolutionHeight={600}
+                                                resolutionWidth={type === "CLIENT" ? 100 : 600}
+                                                resolutionHeight={type === "CLIENT" ? 80 : 600}
                                             >
                                                 {({
                                                     imageList,
@@ -232,7 +232,7 @@ const CEPEdit = ({ type, component, setComponent, setType, setActive }) => {
                                                             >
                                                                 Upload New Images
                                                             </Button>
-                                                            <span style={{ padding: '5px 15px' }}>Image Resolution 600 X 600</span>
+                                                            <span style={{ padding: '5px 15px' }}>Image Resolution {type === "CLIENT" ? "100 X 80" : "600 X 600"}</span>
                                                         </Box>
 
                                                         {errors && <div style={{ color: 'red', margin: '5px 0px' }}>

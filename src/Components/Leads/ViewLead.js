@@ -35,6 +35,9 @@ const ViewLead = ({ viewOpen, setViewOpen, lead }) => {
                         <h4 style={{ textDecoration: 'underline', color: '#002884' }}>ADDRESS</h4>
                         <p>{lead?.address}</p>
 
+                        <h4 style={{ textDecoration: 'underline', color: '#002884' }}>SUBJECT</h4>
+                        <p>{lead?.subject}</p>
+
                         <h4 style={{ textDecoration: 'underline', color: '#002884' }}>MESSAGE</h4>
                         <p>{lead?.message}</p>
 

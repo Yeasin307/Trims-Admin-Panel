@@ -48,7 +48,7 @@ const Leads = () => {
                             <TableCell align="center">Lead Number</TableCell>
                             <TableCell align="center">Name</TableCell>
                             <TableCell align="center">Email</TableCell>
-                            <TableCell align="center">Phone</TableCell>
+                            <TableCell align="center">Subject</TableCell>
                             <TableCell align="center">View</TableCell>
                         </TableRow>
                     </TableHead>
@@ -64,7 +64,7 @@ const Leads = () => {
                                 </TableCell>
                                 <TableCell align="center">{lead?.fullName}</TableCell>
                                 <TableCell align="center">{lead?.email}</TableCell>
-                                <TableCell align="center">{lead?.phone}</TableCell>
+                                <TableCell align="center">{lead?.subject}</TableCell>
                                 <TableCell align="center">
                                     <Button onClick={() => { handleViewOpen(lead?.id) }} sx={{ mr: 1 }} variant="outlined" color="success">VIEW</Button>
                                 </TableCell>
