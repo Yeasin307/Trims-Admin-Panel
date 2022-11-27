@@ -39,7 +39,7 @@ const Users = () => {
 
     React.useEffect(() => {
         setIsLoading(true);
-        axios.get("https://server.asdfashionbd.com/users", {
+        axios.get("http://localhost:5000/users", {
             headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` }
         })
             .then((res) => {

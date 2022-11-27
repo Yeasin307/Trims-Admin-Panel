@@ -1,4 +1,5 @@
 import React, { createContext, useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
 import axios from 'axios';
 
 export const AuthContext = createContext();
@@ -10,7 +11,7 @@ const AuthProvider = ({ children }) => {
     const loginUser = (email, password, location, navigate) => {
         setIsLoading(true);
 
-        axios.post("https://server.asdfashionbd.com/auth/login", {
+        axios.post("http://localhost:5000/auth/login", {
             email,
             password,
         })
@@ -21,6 +22,16 @@ const AuthProvider = ({ children }) => {
                 setUserInfo(userInfo);
                 const destination = location?.state?.from || '/';
                 navigate(destination);
+                toast.success('Login Successfully!', {
+                    position: "bottom-left",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "dark",
+                });
             })
             .finally(() => setIsLoading(false));
     };
@@ -28,7 +39,7 @@ const AuthProvider = ({ children }) => {
     useEffect(() => {
         setIsLoading(true);
         const id = localStorage.getItem("id");
-        axios.post("https://server.asdfashionbd.com/auth/check-login", { id }, {
+        axios.post("http://localhost:5000/auth/check-login", { id }, {
             headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` }
         })
             .then((res) => {

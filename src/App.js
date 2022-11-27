@@ -1,4 +1,6 @@
 import { BrowserRouter as Routers, Routes, Route } from "react-router-dom";
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import './App.css';
 import Login from './Components/Login/Login';
 import AuthProvider from './Context/AuthProvider';
@@ -21,6 +23,7 @@ import CreateUser from "./Components/Users/CreateUser";
 function App() {
   return (
     <div className="App">
+      <ToastContainer />
       <AuthProvider>
         <Routers>
           <Routes>
