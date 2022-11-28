@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
+import { Box, Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
 import axios from 'axios';
 
 const Components = () => {
@@ -17,9 +17,11 @@ const Components = () => {
 
     return (
         <>
-            <Link style={{ display: 'flex', justifyContent: 'end', textDecoration: 'none' }} to="/createcomponent">
-                <Button variant='outlined'>CREATE NEW COMPONENT</Button>
-            </Link>
+            <Box sx={{ display: 'flex', justifyContent: 'end' }}>
+                <Link style={{ textDecoration: 'none' }} to="/createcomponent">
+                    <Button variant='outlined'>CREATE NEW COMPONENT</Button>
+                </Link>
+            </Box>
 
             <TableContainer component={Paper}>
                 <Table sx={{ width: 1200 }} aria-label="categories table">

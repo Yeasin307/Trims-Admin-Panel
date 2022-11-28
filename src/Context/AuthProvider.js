@@ -91,6 +91,7 @@ const AuthProvider = ({ children }) => {
             value={{
                 isLoading,
                 userInfo,
+                setUserInfo,
                 loginUser,
                 logout,
                 uniqueName,

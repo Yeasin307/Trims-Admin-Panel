@@ -19,6 +19,8 @@ import ViewComponent from "./Components/Components/ViewComponent";
 import EditComponent from "./Components/Components/EditComponent";
 import Leads from "./Components/Leads/Leads";
 import CreateUser from "./Components/Users/CreateUser";
+import NotFound from "./Components/NotFound/NotFound";
+import Profile from "./Components/Users/Profile";
 
 function App() {
   return (
@@ -44,8 +46,10 @@ function App() {
               <Route path="/viewcomponent/:id" element={<ViewComponent />} />
               <Route path="/editcomponent/:id" element={<EditComponent />} />
               <Route path="/leads" element={<Leads />} />
+              <Route path="/profile" element={<Profile />} />
             </Route>
             <Route path="/login" element={< Login />} />
+            <Route path="*" element={< NotFound />} />
 
           </Routes>
         </Routers>

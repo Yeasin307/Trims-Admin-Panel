@@ -42,8 +42,12 @@ function Dashboard(props) {
                     <Button sx={{ width: '95%' }} variant='contained'>Components</Button>
                 </Link>
 
-                <Link style={{ textDecoration: 'none' }} to="/leads">
+                <Link style={{ textDecoration: 'none', marginBottom: '10px' }} to="/leads">
                     <Button sx={{ width: '95%' }} variant='contained'>Leads</Button>
+                </Link>
+
+                <Link style={{ textDecoration: 'none' }} to="/profile">
+                    <Button sx={{ width: '95%' }} variant='contained'>My Profile</Button>
                 </Link>
 
                 <div>
