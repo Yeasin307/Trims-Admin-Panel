@@ -15,9 +15,7 @@ const CreateComponent = () => {
     const [initialValues, setInitialValues] = React.useState({ title: '', subtitle: '', images: [] });
     const [validationSchema, setValidationSchema] = React.useState(yup.object({
         title: yup.string()
-            .required("Required!")
-            .min(12, 'Minimum 5 character')
-            .max(57, 'Maximum 50 character'),
+            .required("Required!"),
         subtitle: yup.string(),
         images: yup.array()
             .min(1, "Minimum One Image Required!")
@@ -31,9 +29,7 @@ const CreateComponent = () => {
             setInitialValues({ title: '', subtitle: '', images: [] });
             const validationSchema = yup.object({
                 title: yup.string()
-                    .required("Required!")
-                    .min(12, 'Minimum 5 character')
-                    .max(57, 'Maximum 50 character'),
+                    .required("Required!"),
                 subtitle: yup.string(),
                 images: yup.array()
                     .min(1, "Minimum One Image Required!")
@@ -41,63 +37,14 @@ const CreateComponent = () => {
             });
             setValidationSchema(validationSchema);
         }
-        else if (type === "ABOUT_US") {
+        else if (type === "ABOUT_US" || type === "VISION" || type === "MISSION" || type === "GOAL") {
             setInitialValues({ title: '', subtitle: '', description: '' });
             const validationSchema = yup.object({
                 title: yup.string()
-                    .required("Required!")
-                    .min(12, 'Minimum 5 character')
-                    .max(57, 'Maximum 50 character'),
+                    .required("Required!"),
                 subtitle: yup.string(),
                 description: yup.string()
                     .required("Required!")
-                    .min(57, 'Minimum 50 character')
-                    .max(1007, 'Maximum 1000 character')
-            });
-            setValidationSchema(validationSchema);
-        }
-        else if (type === "VISION") {
-            setInitialValues({ title: '', subtitle: '', description: '' });
-            const validationSchema = yup.object({
-                title: yup.string()
-                    .required("Required!")
-                    .min(12, 'Minimum 5 character')
-                    .max(57, 'Maximum 50 character'),
-                subtitle: yup.string(),
-                description: yup.string()
-                    .required("Required!")
-                    .min(57, 'Minimum 50 character')
-                    .max(1007, 'Maximum 1000 character')
-            });
-            setValidationSchema(validationSchema);
-        }
-        else if (type === "MISSION") {
-            setInitialValues({ title: '', subtitle: '', description: '' });
-            const validationSchema = yup.object({
-                title: yup.string()
-                    .required("Required!")
-                    .min(12, 'Minimum 5 character')
-                    .max(57, 'Maximum 50 character'),
-                subtitle: yup.string(),
-                description: yup.string()
-                    .required("Required!")
-                    .min(57, 'Minimum 50 character')
-                    .max(1007, 'Maximum 1000 character')
-            });
-            setValidationSchema(validationSchema);
-        }
-        else if (type === "GOAL") {
-            setInitialValues({ title: '', subtitle: '', description: '' });
-            const validationSchema = yup.object({
-                title: yup.string()
-                    .required("Required!")
-                    .min(12, 'Minimum 5 character')
-                    .max(57, 'Maximum 50 character'),
-                subtitle: yup.string(),
-                description: yup.string()
-                    .required("Required!")
-                    .min(57, 'Minimum 50 character')
-                    .max(1007, 'Maximum 1000 character')
             });
             setValidationSchema(validationSchema);
         }
@@ -105,14 +52,10 @@ const CreateComponent = () => {
             setInitialValues({ title: '', subtitle: '', description: '', images: [], video: '' });
             const validationSchema = yup.object({
                 title: yup.string()
-                    .required("Required!")
-                    .min(12, 'Minimum 5 character')
-                    .max(57, 'Maximum 50 character'),
+                    .required("Required!"),
                 subtitle: yup.string(),
                 description: yup.string()
-                    .required("Required!")
-                    .min(57, 'Minimum 50 character')
-                    .max(1007, 'Maximum 1000 character'),
+                    .required("Required!"),
                 images: yup.array()
                     .min(1, "Minimum One Image Required!")
                     .max(10, "Maximum Ten Images Over!"),
@@ -120,37 +63,14 @@ const CreateComponent = () => {
             });
             setValidationSchema(validationSchema);
         }
-        else if (type === "EVENT") {
+        else if (type === "EVENT" || type === "POST") {
             setInitialValues({ title: '', subtitle: '', description: '', images: [], video: '' });
             const validationSchema = yup.object({
                 title: yup.string()
-                    .required("Required!")
-                    .min(12, 'Minimum 5 character')
-                    .max(57, 'Maximum 50 character'),
+                    .required("Required!"),
                 subtitle: yup.string(),
                 description: yup.string()
-                    .required("Required!")
-                    .min(57, 'Minimum 50 character')
-                    .max(1007, 'Maximum 1000 character'),
-                images: yup.array()
-                    .min(1, "Minimum One Image Required!")
-                    .max(5, "Maximum Five Images Over!"),
-                video: yup.string()
-            });
-            setValidationSchema(validationSchema);
-        }
-        else if (type === "POST") {
-            setInitialValues({ title: '', subtitle: '', description: '', images: [], video: '' });
-            const validationSchema = yup.object({
-                title: yup.string()
-                    .required("Required!")
-                    .min(12, 'Minimum 5 character')
-                    .max(57, 'Maximum 50 character'),
-                subtitle: yup.string(),
-                description: yup.string()
-                    .required("Required!")
-                    .min(57, 'Minimum 50 character')
-                    .max(1007, 'Maximum 1000 character'),
+                    .required("Required!"),
                 images: yup.array()
                     .min(1, "Minimum One Image Required!")
                     .max(5, "Maximum Five Images Over!"),
@@ -222,20 +142,7 @@ const CreateComponent = () => {
                         });
                 }}
             >
-                {({ values,
-                    errors,
-                    touched,
-                    status,
-                    dirty,
-                    handleChange,
-                    handleBlur,
-                    handleSubmit,
-                    isSubmitting,
-                    isValid,
-                    handleReset,
-                    setTouched,
-                    setFieldValue,
-                    submitForm }) => {
+                {({ values, setFieldValue }) => {
                     return (
                         <Form>
                             <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>

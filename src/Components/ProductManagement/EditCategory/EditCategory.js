@@ -196,20 +196,7 @@ const EditCategory = ({ editOpen, setEditOpen, active, setActive, categories, ca
                             }
                         }}
                     >
-                        {({ values,
-                            errors,
-                            touched,
-                            status,
-                            dirty,
-                            handleChange,
-                            handleBlur,
-                            handleSubmit,
-                            isSubmitting,
-                            isValid,
-                            handleReset,
-                            setTouched,
-                            setFieldValue,
-                            submitForm }) => {
+                        {({ values, setFieldValue }) => {
                             return (
                                 <Form>
 

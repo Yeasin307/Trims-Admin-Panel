@@ -20,9 +20,7 @@ const HomeSliderEdit = ({ type, component }) => {
             initialValues={{ title: component?.title, subtitle: component?.subtitle, image: [] }}
             validationSchema={yup.object({
                 title: yup.string()
-                    .required("Required!")
-                    .min(12, 'Minimum 5 character')
-                    .max(57, 'Maximum 50 character'),
+                    .required("Required!"),
                 subtitle: yup.string()
             })}
             onSubmit={async (values, actions) => {

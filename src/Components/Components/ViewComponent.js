@@ -7,7 +7,6 @@ import dateFormat from "dateformat";
 const ViewComponent = () => {
     const [component, setComponent] = React.useState({});
     const { id } = useParams();
-    console.log(component);
 
     React.useEffect(() => {
         axios.get(`https://server.asdfashionbd.com/components/viewcomponent/${id}`, {

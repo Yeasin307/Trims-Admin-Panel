@@ -85,20 +85,7 @@ const CreateProduct = () => {
                         });
                 }}
             >
-                {({ values,
-                    errors,
-                    touched,
-                    status,
-                    dirty,
-                    handleChange,
-                    handleBlur,
-                    handleSubmit,
-                    isSubmitting,
-                    isValid,
-                    handleReset,
-                    setTouched,
-                    setFieldValue,
-                    submitForm }) => {
+                {({ values, setFieldValue }) => {
                     return (
                         <Form>
                             <Field name="name">

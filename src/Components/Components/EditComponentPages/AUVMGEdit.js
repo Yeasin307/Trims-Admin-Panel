@@ -18,14 +18,10 @@ const AUVMGEdit = ({ type, component }) => {
             initialValues={{ title: component?.title, subtitle: component?.subtitle, description: component?.description }}
             validationSchema={yup.object({
                 title: yup.string()
-                    .required("Required!")
-                    .min(12, 'Minimum 5 character')
-                    .max(57, 'Maximum 50 character'),
+                    .required("Required!"),
                 subtitle: yup.string(),
                 description: yup.string()
                     .required("Required!")
-                    .min(57, 'Minimum 50 character')
-                    .max(1007, 'Maximum 1000 character')
             })}
             onSubmit={async (values, actions) => {
 

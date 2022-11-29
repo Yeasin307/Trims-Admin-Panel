@@ -48,14 +48,10 @@ const CEPEdit = ({ type, component, setComponent, setType, setActive }) => {
             initialValues={{ title: component?.title, subtitle: component?.subtitle, description: component?.description, images: [], video: component?.video }}
             validationSchema={yup.object({
                 title: yup.string()
-                    .required("Required!")
-                    .min(12, 'Minimum 5 character')
-                    .max(57, 'Maximum 50 character'),
+                    .required("Required!"),
                 subtitle: yup.string(),
                 description: yup.string()
-                    .required("Required!")
-                    .min(57, 'Minimum 50 character')
-                    .max(1007, 'Maximum 1000 character'),
+                    .required("Required!"),
                 images: yup.array()
                     .max(type === "CLIENT" ? 10 - component?.image?.length : 5 - component?.image?.length, "Maximum number of images over!"),
                 video: yup.string()

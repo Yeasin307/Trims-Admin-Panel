@@ -83,20 +83,7 @@ const CreateCategory = ({ createOpen, setCreateOpen, editOpen, active }) => {
                             }
                         }}
                     >
-                        {({ values,
-                            errors,
-                            touched,
-                            status,
-                            dirty,
-                            handleChange,
-                            handleBlur,
-                            handleSubmit,
-                            isSubmitting,
-                            isValid,
-                            handleReset,
-                            setTouched,
-                            setFieldValue,
-                            submitForm }) => {
+                        {({ values, setFieldValue }) => {
                             return (
                                 <Form>
 

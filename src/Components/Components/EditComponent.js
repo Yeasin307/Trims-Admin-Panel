@@ -92,13 +92,14 @@ const EditComponent = () => {
                         />
                     }
 
-                    {(type === "CLIENT" || type === "EVENT" || type === "POST") && <CEPEdit
-                        type={type}
-                        component={component}
-                        setComponent={setComponent}
-                        setType={setType}
-                        setActive={setActive}
-                    />}
+                    {(type === "CLIENT" || type === "EVENT" || type === "POST") &&
+                        <CEPEdit
+                            type={type}
+                            component={component}
+                            setComponent={setComponent}
+                            setType={setType}
+                            setActive={setActive}
+                        />}
 
                     {type === "HOME_SLIDER" &&
                         <HomeSliderEdit
