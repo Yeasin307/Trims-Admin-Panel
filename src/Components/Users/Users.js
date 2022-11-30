@@ -104,7 +104,7 @@ const Users = () => {
             {isLoading && <p>Loading...</p>}
 
             {!isLoading && <TableContainer component={Paper}>
-                <Table sx={{ width: '100%' }} aria-label="categories table">
+                <Table sx={{ width: 1200 }} aria-label="categories table">
 
                     <TableHead>
                         <TableRow>
