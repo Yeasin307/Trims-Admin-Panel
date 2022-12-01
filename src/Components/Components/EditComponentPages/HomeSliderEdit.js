@@ -107,8 +107,8 @@ const HomeSliderEdit = ({ type, component }) => {
                                                 dataURLKey="data_url"
                                                 acceptType={['jpg', 'jpeg', 'gif', 'png']}
                                                 resolutionType={'absolute'}
-                                                resolutionWidth={740}
-                                                resolutionHeight={724}
+                                                resolutionWidth={1920}
+                                                resolutionHeight={775}
                                             >
                                                 {({
                                                     imageList,
@@ -162,7 +162,7 @@ const HomeSliderEdit = ({ type, component }) => {
                                                             >
                                                                 Update Image
                                                             </Button>
-                                                            <span style={{ padding: '5px 15px' }}>Image Resolution 740 X 724</span>
+                                                            <span style={{ padding: '5px 15px' }}>Image Resolution 1920 X 775</span>
                                                         </Box>
 
                                                         {errors && <div style={{ color: 'red', margin: '5px 0px' }}>
