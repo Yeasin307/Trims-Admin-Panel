@@ -29,7 +29,7 @@ const ProfileEdit = ({ type, component }) => {
                 }
                 formData.append('userId', userInfo?.id);
 
-                axios.put("http://localhost:5000/components/update", formData, {
+                axios.put("https://server.asdfashionbd.com/components/update", formData, {
                     headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` }
                 })
                     .then((res) => {
@@ -50,7 +50,7 @@ const ProfileEdit = ({ type, component }) => {
                             <Box sx={{ textAlign: 'start', width: '60%' }}>
                                 <h4 style={{ textDecoration: 'underline', color: '#002884' }}>FILE</h4>
                                 <a
-                                    href={`http://localhost:5000/static/components/${component?.file}`}
+                                    href={`https://server.asdfashionbd.com/static/components/${component?.file}`}
                                     target="_blank"
                                     rel="noreferrer"
                                     style={{ textDecoration: 'none' }}

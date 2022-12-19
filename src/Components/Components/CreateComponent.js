@@ -168,7 +168,7 @@ const CreateComponent = () => {
                         formData.append('files', values?.files[0]);
                     }
 
-                    axios.post("http://localhost:5000/components/create", formData, {
+                    axios.post("https://server.asdfashionbd.com/components/create", formData, {
                         headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` }
                     })
                         .then((res) => {

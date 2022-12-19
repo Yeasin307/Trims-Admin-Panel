@@ -31,7 +31,7 @@ const VMGEdit = ({ type, component }) => {
                 formData.append('description', values?.description);
                 formData.append('userId', userInfo?.id);
 
-                axios.put("http://localhost:5000/components/update", formData, {
+                axios.put("https://server.asdfashionbd.com/components/update", formData, {
                     headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` }
                 })
                     .then((res) => {

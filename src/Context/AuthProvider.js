@@ -11,7 +11,7 @@ const AuthProvider = ({ children }) => {
     const loginUser = (email, password, location, navigate) => {
         setIsLoading(true);
 
-        axios.post("http://localhost:5000/auth/login", {
+        axios.post("https://server.asdfashionbd.com/auth/login", {
             email,
             password,
         })
@@ -39,7 +39,7 @@ const AuthProvider = ({ children }) => {
     useEffect(() => {
         setIsLoading(true);
         const id = localStorage.getItem("id");
-        axios.post("http://localhost:5000/auth/check-login", { id }, {
+        axios.post("https://server.asdfashionbd.com/auth/check-login", { id }, {
             headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` }
         })
             .then((res) => {

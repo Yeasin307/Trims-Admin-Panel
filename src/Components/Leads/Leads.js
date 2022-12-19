@@ -9,7 +9,7 @@ const Leads = () => {
     const [viewOpen, setViewOpen] = React.useState(false);
 
     React.useEffect(() => {
-        axios.get("http://localhost:5000/leads", {
+        axios.get("https://server.asdfashionbd.com/leads", {
             headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` }
         })
             .then((res) => {
@@ -18,13 +18,13 @@ const Leads = () => {
     }, [viewOpen]);
 
     const handleViewOpen = async (id) => {
-        await axios.post("http://localhost:5000/leads/lead-details", { id }, {
+        await axios.post("https://server.asdfashionbd.com/leads/lead-details", { id }, {
             headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` }
         })
             .then(async (res) => {
                 setLead(res?.data);
                 if (res?.data?.seen === "0") {
-                    await axios.put("http://localhost:5000/leads/seen", { id }, {
+                    await axios.put("https://server.asdfashionbd.com/leads/seen", { id }, {
                         headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` }
                     })
                 }
