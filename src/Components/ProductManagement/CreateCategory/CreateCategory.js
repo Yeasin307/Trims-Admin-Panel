@@ -18,11 +18,12 @@ const CreateCategory = ({ createOpen, setCreateOpen, editOpen, active }) => {
             .max(45, "Maximum length is 45."),
         description: yup.string(),
         parentId: yup.string(),
+        position: yup.number(),
         image: yup.array().min(1, "Image Required!")
     });
 
     React.useEffect(() => {
-        axios.get("https://server.asdfashionbd.com/categories/active", {
+        axios.get("http://localhost:5000/categories/active", {
             headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` }
         })
             .then((res) => {
@@ -54,6 +55,7 @@ const CreateCategory = ({ createOpen, setCreateOpen, editOpen, active }) => {
                             name: "",
                             description: "",
                             parentId: "",
+                            position: "",
                             image: []
                         }}
                         validationSchema={validationSchema}
@@ -65,10 +67,11 @@ const CreateCategory = ({ createOpen, setCreateOpen, editOpen, active }) => {
                                 formData.append('name', values?.name);
                                 formData.append('description', values?.description);
                                 formData.append('parentId', values?.parentId);
+                                formData.append('position', values?.position);
                                 formData.append('image', values?.image[0]?.file);
                                 formData.append('userId', userInfo?.id);
 
-                                axios.post("https://server.asdfashionbd.com/categories/create", formData, {
+                                axios.post("http://localhost:5000/categories/create", formData, {
                                     headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` }
                                 })
                                     .then(() => {
@@ -159,6 +162,28 @@ const CreateCategory = ({ createOpen, setCreateOpen, editOpen, active }) => {
                                                         style={{ textAlign: 'start', color: 'red' }}
                                                     />
                                                 </FormControl>
+                                            </>
+                                        )}
+                                    </Field>
+
+                                    <br /><br />
+
+                                    <Field name="position">
+                                        {({ field }) => (
+                                            < >
+                                                <TextField
+                                                    type="number"
+                                                    label="Enter Category Position"
+                                                    value={field.value}
+                                                    onChange={field.onChange(field.name)}
+                                                    variant="standard"
+                                                    sx={{ width: '100%', fontsize: '18px', color: 'black' }}
+                                                />
+                                                <ErrorMessage
+                                                    name="position"
+                                                    component="div"
+                                                    style={{ textAlign: 'start', color: 'red' }}
+                                                />
                                             </>
                                         )}
                                     </Field>

@@ -16,14 +16,15 @@ const EditCategory = ({ editOpen, setEditOpen, active, setActive, categories, ca
             .min(3, "Minimum length is 3.")
             .max(45, "Maximum length is 45."),
         description: yup.string(),
-        parentId: yup.string()
+        parentId: yup.string(),
+        position: yup.number()
     });
 
     const handleActive = async (e, categoryId, userId) => {
         if (e.target.value === "0") {
             const proceed = window.confirm("If you deactivated this category the child category of this category is not shown in client side! Are you confirm to deactivated?");
             if (proceed) {
-                await axios.put("https://server.asdfashionbd.com/categories/activate-deactivate", { categoryId, userId, activateDeactivate: e.target.value }, {
+                await axios.put("http://localhost:5000/categories/activate-deactivate", { categoryId, userId, activateDeactivate: e.target.value }, {
                     headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` }
                 })
                     .then(() => {
@@ -33,7 +34,7 @@ const EditCategory = ({ editOpen, setEditOpen, active, setActive, categories, ca
         } else {
             const proceed = window.confirm("Are you sure to activated?");
             if (proceed) {
-                await axios.put("https://server.asdfashionbd.com/categories/activate-deactivate", { categoryId, userId, activateDeactivate: e.target.value }, {
+                await axios.put("http://localhost:5000/categories/activate-deactivate", { categoryId, userId, activateDeactivate: e.target.value }, {
                     headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` }
                 })
                     .then(() => {
@@ -75,6 +76,7 @@ const EditCategory = ({ editOpen, setEditOpen, active, setActive, categories, ca
                             name: category?.name,
                             description: category?.description,
                             parentId: category?.Parent?.id ? category?.Parent?.id : " ",
+                            position: category?.position ? category?.position : '',
                             image: []
                         }}
                         validationSchema={validationSchema}
@@ -94,7 +96,7 @@ const EditCategory = ({ editOpen, setEditOpen, active, setActive, categories, ca
                                     else {
                                         const categoryId = category?.id;
                                         const userId = userInfo?.id;
-                                        await axios.put("https://server.asdfashionbd.com/categories/update-without-image", { values, categoryId, userId }, {
+                                        await axios.put("http://localhost:5000/categories/update-without-image", { values, categoryId, userId }, {
                                             headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` }
                                         })
                                             .then(() => {
@@ -115,7 +117,7 @@ const EditCategory = ({ editOpen, setEditOpen, active, setActive, categories, ca
                                         else {
                                             const categoryId = category?.id;
                                             const userId = userInfo?.id;
-                                            await axios.put("https://server.asdfashionbd.com/categories/update-without-image", { values, categoryId, userId }, {
+                                            await axios.put("http://localhost:5000/categories/update-without-image", { values, categoryId, userId }, {
                                                 headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` }
                                             })
                                                 .then(() => {
@@ -147,11 +149,12 @@ const EditCategory = ({ editOpen, setEditOpen, active, setActive, categories, ca
                                         formData.append('name', values?.name);
                                         formData.append('description', values?.description);
                                         formData.append('parentId', values?.parentId);
+                                        formData.append('position', values?.position);
                                         formData.append('image', values?.image[0]?.file);
                                         formData.append('categoryId', category?.id);
                                         formData.append('userId', userInfo?.id);
 
-                                        await axios.put("https://server.asdfashionbd.com/categories/update-with-image", formData, {
+                                        await axios.put("http://localhost:5000/categories/update-with-image", formData, {
                                             headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` }
                                         })
                                             .then(() => {
@@ -174,11 +177,12 @@ const EditCategory = ({ editOpen, setEditOpen, active, setActive, categories, ca
                                             formData.append('name', values?.name);
                                             formData.append('description', values?.description);
                                             formData.append('parentId', values?.parentId);
+                                            formData.append('position', values?.position);
                                             formData.append('image', values?.image[0]?.file);
                                             formData.append('categoryId', category?.id);
                                             formData.append('userId', userInfo?.id);
 
-                                            await axios.put("https://server.asdfashionbd.com/categories/update-with-image", formData, {
+                                            await axios.put("http://localhost:5000/categories/update-with-image", formData, {
                                                 headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` }
                                             })
                                                 .then(() => {
@@ -292,6 +296,28 @@ const EditCategory = ({ editOpen, setEditOpen, active, setActive, categories, ca
 
                                     <br /><br />
 
+                                    <Field name="position">
+                                        {({ field }) => (
+                                            < >
+                                                <TextField
+                                                    type="number"
+                                                    label="Change Category Position"
+                                                    value={field.value}
+                                                    onChange={field.onChange(field.name)}
+                                                    variant="standard"
+                                                    sx={{ width: '100%', fontsize: '18px', color: 'black' }}
+                                                />
+                                                <ErrorMessage
+                                                    name="position"
+                                                    component="div"
+                                                    style={{ textAlign: 'start', color: 'red' }}
+                                                />
+                                            </>
+                                        )}
+                                    </Field>
+
+                                    <br /><br />
+
                                     <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                                         <Box sx={{ width: '100%' }}>
                                             <Field name="image">
@@ -345,7 +371,7 @@ const EditCategory = ({ editOpen, setEditOpen, active, setActive, categories, ca
                                                                             :
                                                                             <Box >
                                                                                 <img
-                                                                                    src={`https://server.asdfashionbd.com/static/categoryimages/${category?.image}`}
+                                                                                    src={`http://localhost:5000/static/categoryimages/${category?.image}`}
                                                                                     alt=""
                                                                                     width="100"
                                                                                     height="75" />

@@ -36,12 +36,15 @@ const ViewCategory = ({ viewOpen, setViewOpen, category, categoryChild }) => {
 
                         <h4 style={{ textDecoration: 'underline', color: '#002884' }}>Image</h4>
                         <img
-                            src={`https://server.asdfashionbd.com/static/categoryimages/${category?.image}`}
+                            src={`http://localhost:5000/static/categoryimages/${category?.image}`}
                             alt="CategoryImage"
                             width={280}
                             height={200}
                             style={{ borderRadius: '5px' }}
                         />
+
+                        <h4 style={{ textDecoration: 'underline', color: '#002884' }}>POSITION</h4>
+                        <p>{category?.position}</p>
 
                         <h4 style={{ textDecoration: 'underline', color: '#002884' }}>CREATED BY</h4>
                         <p>{category?.createdByUser?.username}</p>

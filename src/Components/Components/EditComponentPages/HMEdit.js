@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Button } from '@mui/material';
+import { Box, Button, TextField } from '@mui/material';
 import { ErrorMessage, Field, Form, Formik } from 'formik';
 import axios from 'axios';
 import { useNavigate } from "react-router-dom";
@@ -9,7 +9,7 @@ import CancelOutlinedIcon from '@mui/icons-material/CancelOutlined';
 import { AuthContext } from '../../../Context/AuthProvider';
 import RichTextEditor from '../../../Utility/RichTextEditor/RichTextEditor';
 
-const HomeSliderEdit = ({ type, component }) => {
+const HMEdit = ({ type, component }) => {
     const navigate = useNavigate();
     const { userInfo } = React.useContext(AuthContext);
 
@@ -17,11 +17,12 @@ const HomeSliderEdit = ({ type, component }) => {
         <Formik
 
             enableReinitialize={true}
-            initialValues={{ title: component?.title, subtitle: component?.subtitle, image: [] }}
+            initialValues={{ title: component?.title, subtitle: component?.subtitle, position: component?.position, image: [] }}
             validationSchema={yup.object({
                 title: yup.string()
                     .required("Required!"),
-                subtitle: yup.string()
+                subtitle: yup.string(),
+                position: yup.number()
             })}
             onSubmit={async (values, actions) => {
 
@@ -30,11 +31,12 @@ const HomeSliderEdit = ({ type, component }) => {
                 formData.append('componentId', component?.id);
                 formData.append('title', values?.title);
                 formData.append('subtitle', values?.subtitle);
+                formData.append('position', values?.position);
                 if (values?.image?.length > 0) {
                     formData.append('images', values?.image[0]?.file);
                 }
                 formData.append('userId', userInfo?.id);
-                axios.put("https://server.asdfashionbd.com/components/update", formData, {
+                axios.put("http://localhost:5000/components/update", formData, {
                     headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` }
                 })
                     .then((res) => {
@@ -93,6 +95,30 @@ const HomeSliderEdit = ({ type, component }) => {
                             </Box>
                         </Box>
 
+                        <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mb: 2.5 }}>
+                            <Box sx={{ width: '60%' }}>
+                                <Field name="position">
+                                    {({ field }) => (
+                                        < >
+                                            <TextField
+                                                type="number"
+                                                label="Change Component Position"
+                                                value={field.value}
+                                                onChange={field.onChange(field.name)}
+                                                variant="standard"
+                                                sx={{ width: '100%', fontsize: '18px', color: 'black' }}
+                                            />
+                                            <ErrorMessage
+                                                name="position"
+                                                component="div"
+                                                style={{ textAlign: 'start', color: 'red' }}
+                                            />
+                                        </>
+                                    )}
+                                </Field>
+                            </Box>
+                        </Box>
+
                         <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                             <Box sx={{ width: '60%' }}>
                                 <Field name="image">
@@ -107,8 +133,8 @@ const HomeSliderEdit = ({ type, component }) => {
                                                 dataURLKey="data_url"
                                                 acceptType={['jpg', 'jpeg', 'gif', 'png']}
                                                 resolutionType={'absolute'}
-                                                resolutionWidth={1920}
-                                                resolutionHeight={775}
+                                                resolutionWidth={type === "HOME_SLIDER" ? 1920 : 270}
+                                                resolutionHeight={type === "HOME_SLIDER" ? 775 : 330}
                                             >
                                                 {({
                                                     imageList,
@@ -146,7 +172,7 @@ const HomeSliderEdit = ({ type, component }) => {
                                                                 :
                                                                 <Box >
                                                                     <img
-                                                                        src={`https://server.asdfashionbd.com/static/components/${component?.image}`}
+                                                                        src={`http://localhost:5000/static/components/${component?.image}`}
                                                                         alt=""
                                                                         width="100"
                                                                         height="75" />
@@ -162,7 +188,7 @@ const HomeSliderEdit = ({ type, component }) => {
                                                             >
                                                                 Update Image
                                                             </Button>
-                                                            <span style={{ padding: '5px 15px' }}>Image Resolution 1920 X 775</span>
+                                                            <span style={{ padding: '5px 15px' }}>Image Resolution {type === "HOME_SLIDER" ? "1920 X 775" : "270 X 330"}</span>
                                                         </Box>
 
                                                         {errors && <div style={{ color: 'red', margin: '5px 0px' }}>
@@ -205,4 +231,4 @@ const HomeSliderEdit = ({ type, component }) => {
     );
 };
 
-export default HomeSliderEdit;
+export default HMEdit;

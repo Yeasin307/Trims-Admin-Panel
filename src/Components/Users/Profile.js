@@ -106,13 +106,13 @@ const Profile = () => {
                                 userId: userInfo.id
                             }
 
-                            axios.put("https://server.asdfashionbd.com/users/update", data, {
+                            axios.put("http://localhost:5000/users/update", data, {
                                 headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` }
                             })
                                 .then((response) => {
                                     const id = userInfo?.id;
 
-                                    axios.post("https://server.asdfashionbd.com/auth/check-login", { id }, {
+                                    axios.post("http://localhost:5000/auth/check-login", { id }, {
                                         headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` }
                                     })
                                         .then((res) => {

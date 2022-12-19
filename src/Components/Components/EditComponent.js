@@ -3,9 +3,13 @@ import { Box, FormControl, FormControlLabel, FormLabel, Radio, RadioGroup, TextF
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import { AuthContext } from '../../Context/AuthProvider';
-import AUVMGEdit from './EditComponentPages/AUVMGEdit';
-import CEPEdit from './EditComponentPages/CEPEdit';
-import HomeSliderEdit from './EditComponentPages/HomeSliderEdit';
+import AboutUsEdit from './EditComponentPages/AboutUsEdit';
+import VMGEdit from './EditComponentPages/VMGEdit';
+import ClientEdit from './EditComponentPages/ClientEdit';
+import HMEdit from './EditComponentPages/HMEdit';
+import CEOMessageEdit from './EditComponentPages/CEOMessageEdit';
+import GalleryEdit from './EditComponentPages/GalleryEdit';
+import ProfileEdit from './EditComponentPages/ProfileEdit';
 
 const EditComponent = () => {
     const [type, setType] = React.useState("");
@@ -15,7 +19,7 @@ const EditComponent = () => {
     const { userInfo } = React.useContext(AuthContext);
 
     React.useEffect(() => {
-        axios.get(`https://server.asdfashionbd.com/components/viewcomponent/${id}`, {
+        axios.get(`http://localhost:5000/components/viewcomponent/${id}`, {
             headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` }
         })
             .then((res) => {
@@ -29,7 +33,7 @@ const EditComponent = () => {
         if (e.target.value === "0") {
             const proceed = window.confirm("Are you sure to deactivated?");
             if (proceed) {
-                await axios.put("https://server.asdfashionbd.com/components/activate-deactivate", { componentId, userId, activateDeactivate: e.target.value }, {
+                await axios.put("http://localhost:5000/components/activate-deactivate", { componentId, userId, activateDeactivate: e.target.value }, {
                     headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` }
                 })
                     .then(() => {
@@ -39,7 +43,7 @@ const EditComponent = () => {
         } else {
             const proceed = window.confirm("Are you sure to activated?");
             if (proceed) {
-                await axios.put("https://server.asdfashionbd.com/components/activate-deactivate", { componentId, userId, activateDeactivate: e.target.value }, {
+                await axios.put("http://localhost:5000/components/activate-deactivate", { componentId, userId, activateDeactivate: e.target.value }, {
                     headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` }
                 })
                     .then(() => {
@@ -85,28 +89,58 @@ const EditComponent = () => {
                         />
                     </Box>
 
-                    {(type === "ABOUT_US" || type === "VISION" || type === "MISSION" || type === "GOAL") &&
-                        <AUVMGEdit
+                    {type === "ABOUT_US" &&
+                        <AboutUsEdit
                             type={type}
                             component={component}
                         />
                     }
 
-                    {(type === "CLIENT" || type === "EVENT" || type === "POST") &&
-                        <CEPEdit
+                    {(type === "VISION" || type === "MISSION" || type === "GOAL") &&
+                        <VMGEdit
+                            type={type}
+                            component={component}
+                        />
+                    }
+
+                    {(type === "HOME_SLIDER" || type === "MANAGEMENT") &&
+                        <HMEdit
+                            type={type}
+                            component={component}
+                        />
+                    }
+
+                    {type === "GALLERY" &&
+                        <GalleryEdit
+                            type={type}
+                            component={component}
+                        />
+                    }
+
+                    {type === "CEO_MESSAGE" &&
+                        <CEOMessageEdit
+                            type={type}
+                            component={component}
+                        />
+                    }
+
+                    {type === "COMPANY_PROFILE" &&
+                        <ProfileEdit
+                            type={type}
+                            component={component}
+                        />
+                    }
+
+                    {type === "CLIENT" &&
+                        <ClientEdit
                             type={type}
                             component={component}
                             setComponent={setComponent}
                             setType={setType}
                             setActive={setActive}
-                        />}
-
-                    {type === "HOME_SLIDER" &&
-                        <HomeSliderEdit
-                            type={type}
-                            component={component}
                         />
                     }
+
                 </>
             }
 

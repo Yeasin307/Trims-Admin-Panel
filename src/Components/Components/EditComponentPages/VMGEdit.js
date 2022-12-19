@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { AuthContext } from '../../../Context/AuthProvider';
 import RichTextEditor from '../../../Utility/RichTextEditor/RichTextEditor';
 
-const AUVMGEdit = ({ type, component }) => {
+const VMGEdit = ({ type, component }) => {
     const navigate = useNavigate();
     const { userInfo } = React.useContext(AuthContext);
 
@@ -15,11 +15,10 @@ const AUVMGEdit = ({ type, component }) => {
         <Formik
 
             enableReinitialize={true}
-            initialValues={{ title: component?.title, subtitle: component?.subtitle, description: component?.description }}
+            initialValues={{ title: component?.title, description: component?.description }}
             validationSchema={yup.object({
                 title: yup.string()
                     .required("Required!"),
-                subtitle: yup.string(),
                 description: yup.string()
                     .required("Required!")
             })}
@@ -29,11 +28,10 @@ const AUVMGEdit = ({ type, component }) => {
                 formData.append('type', type);
                 formData.append('componentId', component?.id);
                 formData.append('title', values?.title);
-                formData.append('subtitle', values?.subtitle);
                 formData.append('description', values?.description);
                 formData.append('userId', userInfo?.id);
 
-                axios.put("https://server.asdfashionbd.com/components/update", formData, {
+                axios.put("http://localhost:5000/components/update", formData, {
                     headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` }
                 })
                     .then((res) => {
@@ -63,27 +61,6 @@ const AUVMGEdit = ({ type, component }) => {
                                             />
                                             <ErrorMessage
                                                 name="title"
-                                                component="div"
-                                                style={{ textAlign: 'start', color: 'red' }}
-                                            />
-                                        </>
-                                    )}
-                                </Field>
-                            </Box>
-                        </Box>
-
-                        <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginBottom: 2.5 }}>
-                            <Box sx={{ width: '60%' }}>
-                                <Field name="subtitle">
-                                    {({ field }) => (
-                                        < >
-                                            <RichTextEditor
-                                                field={field}
-                                                placeholder="Change Component Subtitle"
-                                                id="t7"
-                                            />
-                                            <ErrorMessage
-                                                name="subtitle"
                                                 component="div"
                                                 style={{ textAlign: 'start', color: 'red' }}
                                             />
@@ -132,4 +109,4 @@ const AUVMGEdit = ({ type, component }) => {
     );
 };
 
-export default AUVMGEdit;
+export default VMGEdit;

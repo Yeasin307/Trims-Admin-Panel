@@ -12,11 +12,12 @@ import "../ProductManagement/CreateProduct/CreateProduct.css";
 
 const CreateComponent = () => {
     const [type, setType] = React.useState("HOME_SLIDER");
-    const [initialValues, setInitialValues] = React.useState({ title: '', subtitle: '', images: [] });
+    const [initialValues, setInitialValues] = React.useState({ title: '', subtitle: '', position: '', images: [] });
     const [validationSchema, setValidationSchema] = React.useState(yup.object({
         title: yup.string()
             .required("Required!"),
         subtitle: yup.string(),
+        position: yup.number(),
         images: yup.array()
             .min(1, "Minimum One Image Required!")
             .max(1, "Maximum One Image Over!")
@@ -25,55 +26,87 @@ const CreateComponent = () => {
     const { userInfo } = React.useContext(AuthContext);
 
     React.useEffect(() => {
-        if (type === "HOME_SLIDER") {
-            setInitialValues({ title: '', subtitle: '', images: [] });
+        if (type === "HOME_SLIDER" || type === "MANAGEMENT") {
+            setInitialValues({ title: '', subtitle: '', position: '', images: [] });
             const validationSchema = yup.object({
                 title: yup.string()
                     .required("Required!"),
                 subtitle: yup.string(),
+                position: yup.number(),
                 images: yup.array()
                     .min(1, "Minimum One Image Required!")
                     .max(1, "Maximum One Image Over!")
             });
             setValidationSchema(validationSchema);
         }
-        else if (type === "ABOUT_US" || type === "VISION" || type === "MISSION" || type === "GOAL") {
-            setInitialValues({ title: '', subtitle: '', description: '' });
+        else if (type === "VISION" || type === "MISSION" || type === "GOAL") {
+            setInitialValues({ title: '', description: '' });
             const validationSchema = yup.object({
                 title: yup.string()
                     .required("Required!"),
-                subtitle: yup.string(),
                 description: yup.string()
                     .required("Required!")
             });
             setValidationSchema(validationSchema);
         }
         else if (type === "CLIENT") {
-            setInitialValues({ title: '', subtitle: '', description: '', images: [], video: '' });
+            setInitialValues({ title: '', description: '', images: [] });
             const validationSchema = yup.object({
                 title: yup.string()
                     .required("Required!"),
-                subtitle: yup.string(),
                 description: yup.string()
                     .required("Required!"),
                 images: yup.array()
                     .min(1, "Minimum One Image Required!")
-                    .max(10, "Maximum Ten Images Over!"),
-                video: yup.string()
             });
             setValidationSchema(validationSchema);
         }
-        else if (type === "EVENT" || type === "POST") {
-            setInitialValues({ title: '', subtitle: '', description: '', images: [], video: '' });
+        else if (type === "CEO_MESSAGE") {
+            setInitialValues({ title: '', description: '', images: [] });
             const validationSchema = yup.object({
                 title: yup.string()
                     .required("Required!"),
-                subtitle: yup.string(),
                 description: yup.string()
                     .required("Required!"),
                 images: yup.array()
                     .min(1, "Minimum One Image Required!")
-                    .max(5, "Maximum Five Images Over!"),
+                    .max(1, "Maximum One Image Over!")
+            });
+            setValidationSchema(validationSchema);
+        }
+        else if (type === "ABOUT_US") {
+            setInitialValues({ title: '', subtitle: '', description: '', images: [] });
+            const validationSchema = yup.object({
+                title: yup.string()
+                    .required("Required!"),
+                subtitle: yup.string()
+                    .required("Required!"),
+                description: yup.string()
+                    .required("Required!"),
+                images: yup.array()
+                    .min(1, "Minimum One Image Required!")
+                    .max(1, "Maximum One Image Over!")
+            });
+            setValidationSchema(validationSchema);
+        }
+        else if (type === "GALLERY") {
+            setInitialValues({ title: '', position: '', images: [] });
+            const validationSchema = yup.object({
+                title: yup.string()
+                    .required("Required!"),
+                position: yup.number(),
+                images: yup.array()
+                    .min(1, "Minimum One Image Required!")
+                    .max(1, "Maximum One Image Over!")
+            });
+            setValidationSchema(validationSchema);
+        }
+        else if (type === "COMPANY_PROFILE") {
+            setInitialValues({ files: [], video: '' });
+            const validationSchema = yup.object({
+                files: yup.array()
+                    .min(1, "Minimum One File Required!")
+                    .max(1, "Maximum One File Over!"),
                 video: yup.string()
             });
             setValidationSchema(validationSchema);
@@ -99,8 +132,10 @@ const CreateComponent = () => {
                     <MenuItem value="MISSION">MISSION</MenuItem>
                     <MenuItem value="GOAL">GOAL</MenuItem>
                     <MenuItem value="CLIENT">CLIENT</MenuItem>
-                    <MenuItem value="EVENT">EVENT</MenuItem>
-                    <MenuItem value="POST">POST</MenuItem>
+                    <MenuItem value="GALLERY">GALLERY</MenuItem>
+                    <MenuItem value="MANAGEMENT">MANAGEMENT</MenuItem>
+                    <MenuItem value="CEO_MESSAGE">CEO_MESSAGE</MenuItem>
+                    <MenuItem value="COMPANY_PROFILE">COMPANY_PROFILE</MenuItem>
                 </Select>
             </FormControl>
 
@@ -112,23 +147,28 @@ const CreateComponent = () => {
 
                     const formData = new FormData();
                     formData.append('type', type);
-                    formData.append('title', values?.title);
-                    formData.append('subtitle', values?.subtitle);
-                    if (type !== "HOME_SLIDER") {
-                        formData.append('description', values?.description);
-                    }
-                    if (type === "HOME_SLIDER") {
+                    formData.append('id', userInfo?.id);
+                    values.title && formData.append('title', values?.title);
+                    values.subtitle && formData.append('subtitle', values?.subtitle);
+                    values.description && formData.append('description', values?.description);
+                    values.position && formData.append('position', values?.position);
+                    values.video && formData.append('video', values?.video);
+
+                    if (type === "HOME_SLIDER" || type === "ABOUT_US" || type === "GALLERY" || type === "MANAGEMENT" || type === "CEO_MESSAGE") {
                         formData.append('images', values?.images[0]?.file);
                     }
-                    if (type === "CLIENT" || type === "EVENT" || type === "POST") {
+
+                    if (type === "CLIENT") {
                         for (const image of values?.images) {
                             formData.append('images', image?.file);
                         }
-                        formData.append('video', values?.video);
                     }
-                    formData.append('id', userInfo?.id);
 
-                    axios.post("https://server.asdfashionbd.com/components/create", formData, {
+                    if (type === "COMPANY_PROFILE") {
+                        formData.append('files', values?.files[0]);
+                    }
+
+                    axios.post("http://localhost:5000/components/create", formData, {
                         headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` }
                     })
                         .then((res) => {
@@ -145,7 +185,7 @@ const CreateComponent = () => {
                 {({ values, setFieldValue }) => {
                     return (
                         <Form>
-                            <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                            {type !== "COMPANY_PROFILE" && <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                                 <Box sx={{ width: '60%' }}>
                                     <Field name="title">
                                         {({ field }) => (
@@ -164,11 +204,11 @@ const CreateComponent = () => {
                                         )}
                                     </Field>
                                 </Box>
-                            </Box>
+                            </Box>}
 
                             <br />
 
-                            <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                            {(type === "HOME_SLIDER" || type === "ABOUT_US" || type === "MANAGEMENT") && <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                                 <Box sx={{ width: '60%' }}>
                                     <Field name="subtitle">
                                         {({ field }) => (
@@ -187,11 +227,11 @@ const CreateComponent = () => {
                                         )}
                                     </Field>
                                 </Box>
-                            </Box>
+                            </Box>}
 
                             <br />
 
-                            {type !== "HOME_SLIDER" && <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mb: 2.5 }}>
+                            {(type !== "HOME_SLIDER" && type !== "GALLERY" && type !== "MANAGEMENT" && type !== "COMPANY_PROFILE") && <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mb: 2.5 }}>
                                 <Box sx={{ width: '60%' }}>
                                     <Field name="description">
                                         {({ field }) => (
@@ -212,7 +252,31 @@ const CreateComponent = () => {
                                 </Box>
                             </Box>}
 
-                            {(type === "HOME_SLIDER" || type === "CLIENT" || type === "EVENT" || type === "POST") && <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                            {(type === "HOME_SLIDER" || type === "GALLERY" || type === "MANAGEMENT") && <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mb: 2.5 }}>
+                                <Box sx={{ width: '60%' }}>
+                                    <Field name="position">
+                                        {({ field }) => (
+                                            < >
+                                                <TextField
+                                                    type="number"
+                                                    label="Enter Component Position"
+                                                    value={field.value}
+                                                    onChange={field.onChange(field.name)}
+                                                    variant="standard"
+                                                    sx={{ width: '100%', fontsize: '18px', color: 'black' }}
+                                                />
+                                                <ErrorMessage
+                                                    name="position"
+                                                    component="div"
+                                                    style={{ textAlign: 'start', color: 'red' }}
+                                                />
+                                            </>
+                                        )}
+                                    </Field>
+                                </Box>
+                            </Box>}
+
+                            {(type !== "VISION" && type !== "MISSION" && type !== "GOAL" && type !== "COMPANY_PROFILE") && <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                                 <Box sx={{ width: '60%' }}>
                                     <Field name="images">
                                         {({ field }) => (
@@ -224,12 +288,14 @@ const CreateComponent = () => {
                                                         setFieldValue("images", images);
                                                     }}
                                                     maxFileSize={5000000}
-                                                    maxNumber={type === "HOME_SLIDER" ? 1 : type === "CLIENT" ? 10 : 5}
+                                                    maxNumber={type !== "CLIENT" ? 1 : undefined}
                                                     dataURLKey="data_url"
                                                     acceptType={['jpg', 'jpeg', 'gif', 'png']}
                                                     resolutionType={'absolute'}
-                                                    resolutionWidth={type === "HOME_SLIDER" ? 1920 : type === "CLIENT" ? 100 : 600}
-                                                    resolutionHeight={type === "HOME_SLIDER" ? 775 : type === "CLIENT" ? 80 : 600}
+
+                                                    resolutionWidth={type === "HOME_SLIDER" ? 1920 : type === "ABOUT_US" ? 600 : type === "CLIENT" ? 100 : type === "GALLERY" ? 800 : type === "MANAGEMENT" ? 270 : 400}
+
+                                                    resolutionHeight={type === "HOME_SLIDER" ? 775 : type === "ABOUT_US" ? 600 : type === "CLIENT" ? 80 : type === "GALLERY" ? 800 : type === "MANAGEMENT" ? 330 : 400}
                                                 >
                                                     {({
                                                         imageList,
@@ -254,7 +320,7 @@ const CreateComponent = () => {
                                                                 >
                                                                     Upload Images
                                                                 </Button>
-                                                                <span style={{ padding: '5px 15px' }}>Image Resolution {type === "HOME_SLIDER" ? "1920 X 775" : type === "CLIENT" ? "100 X 80" : "600 X 600"}</span>
+                                                                <span style={{ padding: '5px 15px' }}>Image Resolution {type === "HOME_SLIDER" ? "1920 X 775" : type === "ABOUT_US" ? "600 X 600" : type === "CLIENT" ? "100 X 80" : type === "GALLERY" ? "800 X 800" : type === "MANAGEMENT" ? "270 X 330" : "400 X 400"}</span>
                                                             </Box>
 
                                                             {errors && <div style={{ color: 'red', margin: '5px 0px' }}>
@@ -306,7 +372,33 @@ const CreateComponent = () => {
                                 </Box>
                             </Box>}
 
-                            {(type === "CLIENT" || type === "EVENT" || type === "POST") && <Box sx={{ marginBottom: 2.5 }}>
+                            {type === "COMPANY_PROFILE" && <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mb: 2.5 }}>
+                                <Box sx={{ width: '60%' }}>
+                                    <Field name="files">
+                                        {({ field }) => (
+                                            < >
+                                                <input
+                                                    // multiple
+                                                    type="file"
+                                                    accept=".pdf,.doc,.docx"
+                                                    onChange={(e) => {
+                                                        const files = Array.from(e.target.files);
+                                                        setFieldValue("files", files);
+                                                    }}
+                                                    style={{ fontSize: '18px', borderBottom: '2px solid gray', paddingBottom: '5px', width: '100%' }}
+                                                />
+                                                <ErrorMessage
+                                                    name="files"
+                                                    component="div"
+                                                    style={{ textAlign: 'start', color: 'red', marginTop: '10px' }}
+                                                />
+                                            </>
+                                        )}
+                                    </Field>
+                                </Box>
+                            </Box>}
+
+                            {type === "COMPANY_PROFILE" && <Box sx={{ marginBottom: 2.5 }}>
                                 <Field name="video">
                                     {({ field }) => (
                                         < >

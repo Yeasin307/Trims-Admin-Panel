@@ -7,7 +7,7 @@ const Components = () => {
     const [components, setComponents] = React.useState([]);
 
     React.useEffect(() => {
-        axios.get("https://server.asdfashionbd.com/components", {
+        axios.get("http://localhost:5000/components", {
             headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` }
         })
             .then((res) => {

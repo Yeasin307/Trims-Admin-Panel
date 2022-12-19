@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Button, TextField, Typography } from '@mui/material';
+import { Box, Button, Typography } from '@mui/material';
 import { ErrorMessage, Field, Form, Formik } from 'formik';
 import axios from 'axios';
 import * as yup from "yup";
@@ -9,7 +9,7 @@ import CancelOutlinedIcon from '@mui/icons-material/CancelOutlined';
 import { AuthContext } from '../../../Context/AuthProvider';
 import RichTextEditor from '../../../Utility/RichTextEditor/RichTextEditor';
 
-const CEPEdit = ({ type, component, setComponent, setType, setActive }) => {
+const ClientEdit = ({ type, component, setComponent, setType, setActive }) => {
     const { userInfo } = React.useContext(AuthContext);
     const navigate = useNavigate();
 
@@ -20,12 +20,12 @@ const CEPEdit = ({ type, component, setComponent, setType, setActive }) => {
                 const images = component?.image.filter((img) => {
                     return img !== image
                 })
-                await axios.put("https://server.asdfashionbd.com/components/delete-image", { type, componentId: component?.id, image: images, userId }, {
+                await axios.put("http://localhost:5000/components/delete-image", { type, componentId: component?.id, image: images, userId }, {
                     headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` }
                 })
                     .then(() => {
                         alert("Image Deleted Successfully.");
-                        axios.get(`https://server.asdfashionbd.com/components/viewcomponent/${component?.id}`, {
+                        axios.get(`http://localhost:5000/components/viewcomponent/${component?.id}`, {
                             headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` }
                         })
                             .then((res) => {
@@ -45,16 +45,13 @@ const CEPEdit = ({ type, component, setComponent, setType, setActive }) => {
         <Formik
 
             enableReinitialize={true}
-            initialValues={{ title: component?.title, subtitle: component?.subtitle, description: component?.description, images: [], video: component?.video }}
+            initialValues={{ title: component?.title, description: component?.description, images: [] }}
             validationSchema={yup.object({
                 title: yup.string()
                     .required("Required!"),
-                subtitle: yup.string(),
                 description: yup.string()
                     .required("Required!"),
                 images: yup.array()
-                    .max(type === "CLIENT" ? 10 - component?.image?.length : 5 - component?.image?.length, "Maximum number of images over!"),
-                video: yup.string()
             })}
             onSubmit={async (values, actions) => {
 
@@ -62,7 +59,6 @@ const CEPEdit = ({ type, component, setComponent, setType, setActive }) => {
                 formData.append('type', type);
                 formData.append('componentId', component?.id);
                 formData.append('title', values?.title);
-                formData.append('subtitle', values?.subtitle);
                 formData.append('description', values?.description);
                 formData.append('previousImages', component?.image);
                 if (values?.images?.length > 0) {
@@ -70,10 +66,9 @@ const CEPEdit = ({ type, component, setComponent, setType, setActive }) => {
                         formData.append('images', image?.file);
                     }
                 }
-                formData.append('video', values?.video);
                 formData.append('userId', userInfo?.id);
 
-                axios.put("https://server.asdfashionbd.com/components/update", formData, {
+                axios.put("http://localhost:5000/components/update", formData, {
                     headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` }
                 })
                     .then((res) => {
@@ -102,27 +97,6 @@ const CEPEdit = ({ type, component, setComponent, setType, setActive }) => {
                                             />
                                             <ErrorMessage
                                                 name="title"
-                                                component="div"
-                                                style={{ textAlign: 'start', color: 'red' }}
-                                            />
-                                        </>
-                                    )}
-                                </Field>
-                            </Box>
-                        </Box>
-
-                        <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginBottom: 2.5 }}>
-                            <Box sx={{ width: '60%' }}>
-                                <Field name="subtitle">
-                                    {({ field }) => (
-                                        < >
-                                            <RichTextEditor
-                                                field={field}
-                                                placeholder="Change Component Subtitle"
-                                                id="t12"
-                                            />
-                                            <ErrorMessage
-                                                name="subtitle"
                                                 component="div"
                                                 style={{ textAlign: 'start', color: 'red' }}
                                             />
@@ -172,7 +146,7 @@ const CEPEdit = ({ type, component, setComponent, setType, setActive }) => {
                                             key={index}
                                         >
                                             <img
-                                                src={`https://server.asdfashionbd.com/static/components/${image}`}
+                                                src={`http://localhost:5000/static/components/${image}`}
                                                 alt=""
                                                 width="100"
                                                 height="75"
@@ -202,8 +176,8 @@ const CEPEdit = ({ type, component, setComponent, setType, setActive }) => {
                                                 dataURLKey="data_url"
                                                 acceptType={['jpg', 'jpeg', 'gif', 'png']}
                                                 resolutionType={'absolute'}
-                                                resolutionWidth={type === "CLIENT" ? 100 : 600}
-                                                resolutionHeight={type === "CLIENT" ? 80 : 600}
+                                                resolutionWidth={100}
+                                                resolutionHeight={80}
                                             >
                                                 {({
                                                     imageList,
@@ -228,7 +202,7 @@ const CEPEdit = ({ type, component, setComponent, setType, setActive }) => {
                                                             >
                                                                 Upload New Images
                                                             </Button>
-                                                            <span style={{ padding: '5px 15px' }}>Image Resolution {type === "CLIENT" ? "100 X 80" : "600 X 600"}</span>
+                                                            <span style={{ padding: '5px 15px' }}>Image Resolution 100 X 80</span>
                                                         </Box>
 
                                                         {errors && <div style={{ color: 'red', margin: '5px 0px' }}>
@@ -279,27 +253,6 @@ const CEPEdit = ({ type, component, setComponent, setType, setActive }) => {
                             </Box>
                         </Box>
 
-                        <Box sx={{ marginBottom: 2.5 }}>
-                            <Field name="video">
-                                {({ field }) => (
-                                    < >
-                                        <TextField
-                                            label="Change Video URL"
-                                            value={field.value}
-                                            onChange={field.onChange(field.name)}
-                                            variant="standard"
-                                            sx={{ width: '60%', fontsize: '18px', color: 'black' }}
-                                        />
-                                        <ErrorMessage
-                                            name="video"
-                                            component="div"
-                                            style={{ textAlign: 'start', color: 'red' }}
-                                        />
-                                    </>
-                                )}
-                            </Field>
-                        </Box>
-
                         <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                             <Box sx={{ width: '60%', textAlign: 'start' }}>
                                 <Button
@@ -318,4 +271,4 @@ const CEPEdit = ({ type, component, setComponent, setType, setActive }) => {
     );
 };
 
-export default CEPEdit;
+export default ClientEdit;

@@ -41,7 +41,7 @@ const Users = () => {
 
     React.useEffect(() => {
         setIsLoading(true);
-        axios.get("https://server.asdfashionbd.com/users", {
+        axios.get("http://localhost:5000/users", {
             headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` }
         })
             .then((res) => {
@@ -55,12 +55,12 @@ const Users = () => {
         if (value === "0") {
             const proceed = window.confirm("Are you sure to deactivated?");
             if (proceed) {
-                await axios.put("https://server.asdfashionbd.com/users/activate-deactivate", { userId, value }, {
+                await axios.put("http://localhost:5000/users/activate-deactivate", { userId, value }, {
                     headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` }
                 })
                     .then(() => {
                         setIsLoading(true);
-                        axios.get("https://server.asdfashionbd.com/users", {
+                        axios.get("http://localhost:5000/users", {
                             headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` }
                         })
                             .then((res) => {
@@ -75,12 +75,12 @@ const Users = () => {
         } else {
             const proceed = window.confirm("Are you sure to activated?");
             if (proceed) {
-                await axios.put("https://server.asdfashionbd.com/users/activate-deactivate", { userId, value }, {
+                await axios.put("http://localhost:5000/users/activate-deactivate", { userId, value }, {
                     headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` }
                 })
                     .then(() => {
                         setIsLoading(true);
-                        axios.get("https://server.asdfashionbd.com/users", {
+                        axios.get("http://localhost:5000/users", {
                             headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` }
                         })
                             .then((res) => {

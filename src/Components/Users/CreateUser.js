@@ -41,7 +41,7 @@ const CreateUser = () => {
                 })}
                 onSubmit={async (values, actions) => {
 
-                    axios.post("https://server.asdfashionbd.com/users/resendconfirmation", { email: values?.email }, {
+                    axios.post("http://localhost:5000/users/resendconfirmation", { email: values?.email }, {
                         headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` }
                     })
                         .then((res) => {
@@ -122,7 +122,7 @@ const CreateUser = () => {
                             password: values?.password
                         }
 
-                        axios.post("https://server.asdfashionbd.com/users/create", data, {
+                        axios.post("http://localhost:5000/users/create", data, {
                             headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` }
                         })
                             .then((res) => {

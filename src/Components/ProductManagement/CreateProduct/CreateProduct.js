@@ -16,7 +16,7 @@ const CreateProduct = () => {
     const { id } = userInfo;
 
     React.useEffect(() => {
-        axios.get("https://server.asdfashionbd.com/categories", {
+        axios.get("http://localhost:5000/categories", {
             headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` }
         })
             .then((res) => {
@@ -72,7 +72,7 @@ const CreateProduct = () => {
                         formData.append('images', file?.file);
                     }
 
-                    axios.post("https://server.asdfashionbd.com/products/create", formData, {
+                    axios.post("http://localhost:5000/products/create", formData, {
                         headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` }
                     })
                         .then((res) => {
