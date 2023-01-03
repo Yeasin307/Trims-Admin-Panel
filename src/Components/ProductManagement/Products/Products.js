@@ -7,7 +7,7 @@ const Products = ({ createProduct }) => {
     const [products, setProducts] = React.useState([]);
 
     React.useEffect(() => {
-        axios.get("https://server.asdfashionbd.com/products", {
+        axios.get("https://server.trimtex-bd.com/products", {
             headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` }
         })
             .then((res) => {

@@ -9,7 +9,7 @@ const ViewComponent = () => {
     const { id } = useParams();
 
     React.useEffect(() => {
-        axios.get(`https://server.asdfashionbd.com/components/viewcomponent/${id}`, {
+        axios.get(`https://server.trimtex-bd.com/components/viewcomponent/${id}`, {
             headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` }
         })
             .then((res) => {
@@ -54,7 +54,7 @@ const ViewComponent = () => {
                 {(component?.type === "HOME_SLIDER" || component?.type === "ABOUT_US" || component?.type === "GALLERY" || component?.type === "MANAGEMENT" || component?.type === "CEO_MESSAGE") && <>
                     <h4 style={{ textDecoration: 'underline', color: '#002884' }}>IMAGE</h4>
                     <img
-                        src={`https://server.asdfashionbd.com/static/components/${component?.image}`}
+                        src={`https://server.trimtex-bd.com/static/components/${component?.image}`}
                         alt="img"
                         width={280}
                         height={200}
@@ -67,7 +67,7 @@ const ViewComponent = () => {
                     {component?.image?.map((contentImage, index) => (
                         <img
                             key={index}
-                            src={`https://server.asdfashionbd.com/static/components/${contentImage}`}
+                            src={`https://server.trimtex-bd.com/static/components/${contentImage}`}
                             alt="img"
                             width={280}
                             height={200}
@@ -79,7 +79,7 @@ const ViewComponent = () => {
                 {component?.type === "COMPANY_PROFILE" && <>
                     <h4 style={{ textDecoration: 'underline', color: '#002884' }}>FILE</h4>
                     <a
-                        href={`https://server.asdfashionbd.com/static/components/${component?.file}`}
+                        href={`https://server.trimtex-bd.com/static/components/${component?.file}`}
                         target="_blank"
                         rel="noreferrer"
                         style={{ textDecoration: 'none' }}

@@ -32,7 +32,7 @@ const EditProduct = () => {
     });
 
     React.useEffect(() => {
-        axios.get(`https://server.asdfashionbd.com/products/viewproduct/${id}`, {
+        axios.get(`https://server.trimtex-bd.com/products/viewproduct/${id}`, {
             headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` }
         })
             .then((res) => {
@@ -46,7 +46,7 @@ const EditProduct = () => {
     }, [id]);
 
     React.useEffect(() => {
-        axios.get("https://server.asdfashionbd.com/categories", {
+        axios.get("https://server.trimtex-bd.com/categories", {
             headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` }
         })
             .then((res) => {
@@ -61,7 +61,7 @@ const EditProduct = () => {
         if (e.target.value === "0") {
             const proceed = window.confirm("Are you sure to deactivated?");
             if (proceed) {
-                await axios.put("https://server.asdfashionbd.com/products/activate-deactivate", { productId, userId, activateDeactivate: e.target.value }, {
+                await axios.put("https://server.trimtex-bd.com/products/activate-deactivate", { productId, userId, activateDeactivate: e.target.value }, {
                     headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` }
                 })
                     .then(() => {
@@ -71,7 +71,7 @@ const EditProduct = () => {
         } else {
             const proceed = window.confirm("Are you sure to activated?");
             if (proceed) {
-                await axios.put("https://server.asdfashionbd.com/products/activate-deactivate", { productId, userId, activateDeactivate: e.target.value }, {
+                await axios.put("https://server.trimtex-bd.com/products/activate-deactivate", { productId, userId, activateDeactivate: e.target.value }, {
                     headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` }
                 })
                     .then(() => {
@@ -85,12 +85,12 @@ const EditProduct = () => {
         if (product.productDetails.length > 1) {
             const proceed = window.confirm("Are you sure to deleted?");
             if (proceed) {
-                await axios.put("https://server.asdfashionbd.com/products/image-deleted", { imageId, userId }, {
+                await axios.put("https://server.trimtex-bd.com/products/image-deleted", { imageId, userId }, {
                     headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` }
                 })
                     .then(() => {
                         alert("Image Deleted Successfully.");
-                        axios.get(`https://server.asdfashionbd.com/products/viewproduct/${id}`, {
+                        axios.get(`https://server.trimtex-bd.com/products/viewproduct/${id}`, {
                             headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` }
                         })
                             .then((res) => {
@@ -159,14 +159,14 @@ const EditProduct = () => {
                         formData.append('images', file?.file);
                     }
 
-                    axios.put("https://server.asdfashionbd.com/products/update", formData, {
+                    axios.put("https://server.trimtex-bd.com/products/update", formData, {
                         headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` }
                     })
                         .then((res) => {
                             actions.setSubmitting(false);
                             actions.resetForm();
                             alert(res.data);
-                            axios.get(`https://server.asdfashionbd.com/products/viewproduct/${id}`, {
+                            axios.get(`https://server.trimtex-bd.com/products/viewproduct/${id}`, {
                                 headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` }
                             })
                                 .then((res) => {
@@ -378,7 +378,7 @@ const EditProduct = () => {
                                                 key={index}
                                             >
                                                 <img
-                                                    src={`https://server.asdfashionbd.com/static/productimages/${image.image}`}
+                                                    src={`https://server.trimtex-bd.com/static/productimages/${image.image}`}
                                                     alt=""
                                                     width="100"
                                                     height="75"

@@ -14,7 +14,7 @@ const ProfileEdit = ({ type, component }) => {
         <Formik
 
             enableReinitialize={true}
-            initialValues={{ video: component?.video, files: [] }}
+            initialValues={{ video: component?.video ? component?.video : '', files: [] }}
             validationSchema={yup.object({
                 video: yup.string()
             })}
@@ -29,7 +29,7 @@ const ProfileEdit = ({ type, component }) => {
                 }
                 formData.append('userId', userInfo?.id);
 
-                axios.put("https://server.asdfashionbd.com/components/update", formData, {
+                axios.put("https://server.trimtex-bd.com/components/update", formData, {
                     headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` }
                 })
                     .then((res) => {
@@ -50,7 +50,7 @@ const ProfileEdit = ({ type, component }) => {
                             <Box sx={{ textAlign: 'start', width: '60%' }}>
                                 <h4 style={{ textDecoration: 'underline', color: '#002884' }}>FILE</h4>
                                 <a
-                                    href={`https://server.asdfashionbd.com/static/components/${component?.file}`}
+                                    href={`https://server.trimtex-bd.com/static/components/${component?.file}`}
                                     target="_blank"
                                     rel="noreferrer"
                                     style={{ textDecoration: 'none' }}
@@ -102,25 +102,27 @@ const ProfileEdit = ({ type, component }) => {
                             </Box>
                         </Box>
 
-                        <Box sx={{ marginBottom: 2.5 }}>
-                            <Field name="video">
-                                {({ field }) => (
-                                    < >
-                                        <TextField
-                                            label="Change Video URL"
-                                            value={field.value}
-                                            onChange={field.onChange(field.name)}
-                                            variant="standard"
-                                            sx={{ width: '60%', fontsize: '18px', color: 'black' }}
-                                        />
-                                        <ErrorMessage
-                                            name="video"
-                                            component="div"
-                                            style={{ textAlign: 'start', color: 'red' }}
-                                        />
-                                    </>
-                                )}
-                            </Field>
+                        <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mb: 2.5 }}>
+                            <Box sx={{ width: '60%' }}>
+                                <Field name="video">
+                                    {({ field }) => (
+                                        < >
+                                            <TextField
+                                                label="Change Video URL"
+                                                value={field.value}
+                                                onChange={field.onChange(field.name)}
+                                                variant="standard"
+                                                sx={{ width: '100%', fontsize: '18px', color: 'black' }}
+                                            />
+                                            <ErrorMessage
+                                                name="video"
+                                                component="div"
+                                                style={{ textAlign: 'start', color: 'red' }}
+                                            />
+                                        </>
+                                    )}
+                                </Field>
+                            </Box>
                         </Box>
 
                         <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>

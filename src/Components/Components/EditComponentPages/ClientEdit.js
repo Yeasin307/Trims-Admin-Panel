@@ -20,12 +20,12 @@ const ClientEdit = ({ type, component, setComponent, setType, setActive }) => {
                 const images = component?.image.filter((img) => {
                     return img !== image
                 })
-                await axios.put("https://server.asdfashionbd.com/components/delete-image", { type, componentId: component?.id, image: images, userId }, {
+                await axios.put("https://server.trimtex-bd.com/components/delete-image", { type, componentId: component?.id, image: images, userId }, {
                     headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` }
                 })
                     .then(() => {
                         alert("Image Deleted Successfully.");
-                        axios.get(`https://server.asdfashionbd.com/components/viewcomponent/${component?.id}`, {
+                        axios.get(`https://server.trimtex-bd.com/components/viewcomponent/${component?.id}`, {
                             headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` }
                         })
                             .then((res) => {
@@ -68,7 +68,7 @@ const ClientEdit = ({ type, component, setComponent, setType, setActive }) => {
                 }
                 formData.append('userId', userInfo?.id);
 
-                axios.put("https://server.asdfashionbd.com/components/update", formData, {
+                axios.put("https://server.trimtex-bd.com/components/update", formData, {
                     headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` }
                 })
                     .then((res) => {
@@ -146,7 +146,7 @@ const ClientEdit = ({ type, component, setComponent, setType, setActive }) => {
                                             key={index}
                                         >
                                             <img
-                                                src={`https://server.asdfashionbd.com/static/components/${image}`}
+                                                src={`https://server.trimtex-bd.com/static/components/${image}`}
                                                 alt=""
                                                 width="100"
                                                 height="75"

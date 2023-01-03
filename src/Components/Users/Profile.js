@@ -106,13 +106,13 @@ const Profile = () => {
                                 userId: userInfo.id
                             }
 
-                            axios.put("https://server.asdfashionbd.com/users/update", data, {
+                            axios.put("https://server.trimtex-bd.com/users/update", data, {
                                 headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` }
                             })
                                 .then((response) => {
                                     const id = userInfo?.id;
 
-                                    axios.post("https://server.asdfashionbd.com/auth/check-login", { id }, {
+                                    axios.post("https://server.trimtex-bd.com/auth/check-login", { id }, {
                                         headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` }
                                     })
                                         .then((res) => {

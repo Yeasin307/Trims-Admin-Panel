@@ -36,7 +36,7 @@ const HMEdit = ({ type, component }) => {
                     formData.append('images', values?.image[0]?.file);
                 }
                 formData.append('userId', userInfo?.id);
-                axios.put("https://server.asdfashionbd.com/components/update", formData, {
+                axios.put("https://server.trimtex-bd.com/components/update", formData, {
                     headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` }
                 })
                     .then((res) => {
@@ -172,7 +172,7 @@ const HMEdit = ({ type, component }) => {
                                                                 :
                                                                 <Box >
                                                                     <img
-                                                                        src={`https://server.asdfashionbd.com/static/components/${component?.image}`}
+                                                                        src={`https://server.trimtex-bd.com/static/components/${component?.image}`}
                                                                         alt=""
                                                                         width="100"
                                                                         height="75" />

@@ -28,7 +28,7 @@ const Login = () => {
     }
 
     const handleForgotPassword = e => {
-        axios.post("https://server.asdfashionbd.com/users/forgot-password", data)
+        axios.post("https://server.trimtex-bd.com/users/forgot-password", data)
             .then((res) => {
                 alert(res?.data);
                 e.target.reset();

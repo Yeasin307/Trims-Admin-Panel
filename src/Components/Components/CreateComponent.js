@@ -168,7 +168,7 @@ const CreateComponent = () => {
                         formData.append('files', values?.files[0]);
                     }
 
-                    axios.post("https://server.asdfashionbd.com/components/create", formData, {
+                    axios.post("https://server.trimtex-bd.com/components/create", formData, {
                         headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` }
                     })
                         .then((res) => {
@@ -398,25 +398,27 @@ const CreateComponent = () => {
                                 </Box>
                             </Box>}
 
-                            {type === "COMPANY_PROFILE" && <Box sx={{ marginBottom: 2.5 }}>
-                                <Field name="video">
-                                    {({ field }) => (
-                                        < >
-                                            <TextField
-                                                label="Enter Video URL"
-                                                value={field.value}
-                                                onChange={field.onChange(field.name)}
-                                                variant="standard"
-                                                sx={{ width: '60%', fontsize: '18px', color: 'black' }}
-                                            />
-                                            <ErrorMessage
-                                                name="video"
-                                                component="div"
-                                                style={{ textAlign: 'start', color: 'red' }}
-                                            />
-                                        </>
-                                    )}
-                                </Field>
+                            {type === "COMPANY_PROFILE" && <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mb: 2.5 }}>
+                                <Box sx={{ width: '60%' }}>
+                                    <Field name="video">
+                                        {({ field }) => (
+                                            < >
+                                                <TextField
+                                                    label="Enter Video URL"
+                                                    value={field.value}
+                                                    onChange={field.onChange(field.name)}
+                                                    variant="standard"
+                                                    sx={{ width: '100%', fontsize: '18px', color: 'black' }}
+                                                />
+                                                <ErrorMessage
+                                                    name="video"
+                                                    component="div"
+                                                    style={{ textAlign: 'start', color: 'red' }}
+                                                />
+                                            </>
+                                        )}
+                                    </Field>
+                                </Box>
                             </Box>}
 
                             <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
