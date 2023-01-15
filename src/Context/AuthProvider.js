@@ -8,10 +8,22 @@ const AuthProvider = ({ children }) => {
     const [userInfo, setUserInfo] = useState({});
     const [isLoading, setIsLoading] = useState(true);
 
+    useEffect(() => {
+        setIsLoading(true);
+        const id = localStorage.getItem("id");
+        axios.post(`${process.env.REACT_APP_SERVER_API}/auth/check-login`, { id }, {
+            headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` }
+        })
+            .then((res) => {
+                setUserInfo(res.data);
+            })
+            .finally(() => setIsLoading(false));
+    }, []);
+
     const loginUser = (email, password, location, navigate) => {
         setIsLoading(true);
 
-        axios.post("https://server.trimtex-bd.com/auth/login", {
+        axios.post(`${process.env.REACT_APP_SERVER_API}/auth/login`, {
             email,
             password,
         })
@@ -35,18 +47,6 @@ const AuthProvider = ({ children }) => {
             })
             .finally(() => setIsLoading(false));
     };
-
-    useEffect(() => {
-        setIsLoading(true);
-        const id = localStorage.getItem("id");
-        axios.post("https://server.trimtex-bd.com/auth/check-login", { id }, {
-            headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` }
-        })
-            .then((res) => {
-                setUserInfo(res.data);
-            })
-            .finally(() => setIsLoading(false));
-    }, []);
 
     const logout = () => {
         localStorage.removeItem("access_token");

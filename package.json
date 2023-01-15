@@ -1,8 +1,8 @@
 {
-  "name": "trims-frontend",
+  "name": "trims",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://admin.asdfashionbd.com",
+  "homepage": "https://admin.trimtex-bd.com",
   "dependencies": {
     "@emotion/react": "^11.10.4",
     "@emotion/styled": "^11.10.4",

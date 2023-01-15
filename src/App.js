@@ -2,25 +2,25 @@ import { BrowserRouter as Routers, Routes, Route } from "react-router-dom";
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import './App.css';
-import Login from './Components/Login/Login';
-import AuthProvider from './Context/AuthProvider';
-import PrivateRoute from './Components/PrivateRoute/PrivateRoute';
-import Dashboard from './Components/Dashboard/Dashboard';
-import Users from './Components/Users/Users';
-import ProductManagementMenu from './Components/ProductManagement/ProductManagementMenu/ProductManagementMenu';
-import Categories from './Components/ProductManagement/Categories/Categories';
-import Products from './Components/ProductManagement/Products/Products';
-import CreateProduct from './Components/ProductManagement/CreateProduct/CreateProduct';
-import ViewProduct from './Components/ProductManagement/ViewProduct/ViewProduct';
-import EditProduct from './Components/ProductManagement/EditProduct/EditProduct';
-import Components from "./Components/Components/Components";
-import CreateComponent from "./Components/Components/CreateComponent";
-import ViewComponent from "./Components/Components/ViewComponent";
-import EditComponent from "./Components/Components/EditComponent";
-import Leads from "./Components/Leads/Leads";
-import CreateUser from "./Components/Users/CreateUser";
-import NotFound from "./Components/NotFound/NotFound";
-import Profile from "./Components/Users/Profile";
+import AuthProvider from './context/AuthProvider';
+import PrivateRoute from './context/PrivateRoute';
+import Login from './pages/Login';
+import Dashboard from './pages/Dashboard';
+import Users from './pages/Users';
+import ProductsManagement from './pages/ProductsManagement';
+import Categories from './pages/Categories';
+import Products from './pages/Products';
+import Components from "./pages/Components";
+import Leads from "./pages/Leads";
+import Profile from "./pages/Profile";
+import NotFound from "./pages/NotFound";
+import CreateUser from "./components/user/CreateUser";
+import CreateProduct from './components/product/CreateProduct';
+import ViewProduct from './components/product/ViewProduct';
+import EditProduct from './components/product/EditProduct';
+import CreateComponent from "./components/component/CreateComponent";
+import ViewComponent from "./components/component/ViewComponent";
+import EditComponent from "./wrappers/edit-component/EditComponent";
 
 function App() {
   return (
@@ -34,12 +34,12 @@ function App() {
               <Route path="/" element={<Products createProduct="0" />} />
               <Route path="/users" element={<Users />} />
               <Route path="/createuser" element={<CreateUser />} />
-              <Route path="/productmanagement" element={<ProductManagementMenu />}>
-                <Route path="/productmanagement/categories" element={<Categories />} />
-                <Route path="/productmanagement/products" element={<Products />} />
-                <Route path="/productmanagement/createproduct" element={<CreateProduct />} />
-                <Route path="/productmanagement/viewproduct/:id" element={<ViewProduct />} />
-                <Route path="/productmanagement/editproduct/:id" element={<EditProduct />} />
+              <Route path="/productsmanagement" element={<ProductsManagement />}>
+                <Route path="/productsmanagement/categories" element={<Categories />} />
+                <Route path="/productsmanagement/products" element={<Products />} />
+                <Route path="/productsmanagement/createproduct" element={<CreateProduct />} />
+                <Route path="/productsmanagement/viewproduct/:id" element={<ViewProduct />} />
+                <Route path="/productsmanagement/editproduct/:id" element={<EditProduct />} />
               </Route>
               <Route path="/components" element={<Components />} />
               <Route path="/createcomponent" element={<CreateComponent />} />
