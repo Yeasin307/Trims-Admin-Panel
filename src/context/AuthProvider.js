@@ -54,6 +54,7 @@ const AuthProvider = ({ children }) => {
         setUserInfo({});
     }
 
+    // Check unique name for categories
     const uniqueName = (categories, newName) => {
         for (let i = 0; i < categories.length; i++) {
             if (categories[i].name === newName) {
@@ -63,6 +64,7 @@ const AuthProvider = ({ children }) => {
         return true;
     }
 
+    // Check cycle for categories sub-categories
     const cycleDetection = (categories, id, newParentId) => {
         if (newParentId === "") {
             return false;
