@@ -20,6 +20,7 @@ const AuthProvider = ({ children }) => {
             .finally(() => setIsLoading(false));
     }, []);
 
+    // login function
     const loginUser = (email, password, location, navigate) => {
         setIsLoading(true);
 
@@ -48,6 +49,7 @@ const AuthProvider = ({ children }) => {
             .finally(() => setIsLoading(false));
     };
 
+    // logout function
     const logout = () => {
         localStorage.removeItem("access_token");
         localStorage.removeItem("id");
