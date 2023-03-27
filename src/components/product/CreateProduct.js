@@ -242,7 +242,7 @@ const CreateProduct = () => {
                                                     dataURLKey="data_url"
                                                     acceptType={['jpg', 'jpeg', 'gif', 'png']}
                                                     resolutionType={'absolute'}
-                                                    resolutionWidth={600}
+                                                    resolutionWidth={800}
                                                     resolutionHeight={800}
                                                 >
                                                     {({
@@ -265,7 +265,7 @@ const CreateProduct = () => {
                                                                 >
                                                                     Upload Images
                                                                 </Button>
-                                                                <span style={{ padding: '5px 15px' }}>Image Resolution 600 X 800</span>
+                                                                <span style={{ padding: '5px 15px' }}>Image Resolution 800 X 800</span>
                                                             </Box>
 
                                                             {errors && <div style={{ color: 'red', margin: '5px 0px' }}>
