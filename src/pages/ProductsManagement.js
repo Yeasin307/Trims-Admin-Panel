@@ -10,8 +10,12 @@ const ProductsManagement = () => {
                     <Button sx={{ width: '200px' }} variant='contained'>Categories</Button>
                 </Link>
 
-                <Link style={{ textDecoration: 'none', marginLeft: '10px' }} to="/productsmanagement/products">
+                <Link style={{ textDecoration: 'none', marginRight: '10px' }} to="/productsmanagement/products">
                     <Button sx={{ width: '200px' }} variant='contained'>Products</Button>
+                </Link>
+
+                <Link style={{ textDecoration: 'none' }} to="/productsmanagement/featuredproducts">
+                    <Button sx={{ width: '200px' }} variant='contained'>Featured Products</Button>
                 </Link>
             </Box>
             <Outlet />

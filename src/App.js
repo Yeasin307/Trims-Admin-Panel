@@ -12,7 +12,6 @@ import Categories from './pages/Categories';
 import Products from './pages/Products';
 import Components from "./pages/Components";
 import Leads from "./pages/Leads";
-import Profile from "./pages/Profile";
 import NotFound from "./pages/NotFound";
 import CreateUser from "./components/user/CreateUser";
 import CreateProduct from './components/product/CreateProduct';
@@ -21,6 +20,7 @@ import EditProduct from './components/product/EditProduct';
 import CreateComponent from "./components/component/CreateComponent";
 import ViewComponent from "./components/component/ViewComponent";
 import EditComponent from "./wrappers/edit-component/EditComponent";
+import FeaturedProducts from "./pages/FeaturedProducts";
 
 function App() {
   return (
@@ -37,6 +37,7 @@ function App() {
               <Route path="/productsmanagement" element={<ProductsManagement />}>
                 <Route path="/productsmanagement/categories" element={<Categories />} />
                 <Route path="/productsmanagement/products" element={<Products />} />
+                <Route path="/productsmanagement/featuredproducts" element={<FeaturedProducts />} />
                 <Route path="/productsmanagement/createproduct" element={<CreateProduct />} />
                 <Route path="/productsmanagement/viewproduct/:id" element={<ViewProduct />} />
                 <Route path="/productsmanagement/editproduct/:id" element={<EditProduct />} />
@@ -46,7 +47,6 @@ function App() {
               <Route path="/viewcomponent/:id" element={<ViewComponent />} />
               <Route path="/editcomponent/:id" element={<EditComponent />} />
               <Route path="/leads" element={<Leads />} />
-              <Route path="/profile" element={<Profile />} />
             </Route>
             <Route path="/login" element={< Login />} />
             <Route path="*" element={< NotFound />} />

@@ -6,6 +6,8 @@ export const AuthContext = createContext();
 
 const AuthProvider = ({ children }) => {
     const [userInfo, setUserInfo] = useState({});
+    const [viewProfile, setViewProfile] = useState(false);
+    const [editProfile, setEditProfile] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
@@ -36,7 +38,7 @@ const AuthProvider = ({ children }) => {
                 const destination = location?.state?.from || '/';
                 navigate(destination);
                 toast.success('Login Successfully!', {
-                    position: "bottom-left",
+                    position: "bottom-right",
                     autoClose: 5000,
                     hideProgressBar: false,
                     closeOnClick: true,
@@ -96,6 +98,10 @@ const AuthProvider = ({ children }) => {
                 isLoading,
                 userInfo,
                 setUserInfo,
+                viewProfile,
+                setViewProfile,
+                editProfile,
+                setEditProfile,
                 loginUser,
                 logout,
                 uniqueName,
